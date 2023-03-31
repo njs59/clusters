@@ -1,6 +1,7 @@
 function coagulation = cell_coagulation(n,i,t,N)
 
     function out = B_ij(i,j,t)
+        % Need very small b constant
         b = 0.0001;
         out = b*1;
         % out = 1;
