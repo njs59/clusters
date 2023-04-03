@@ -2,7 +2,7 @@
 
 %Initial condition of a single cluster of size 1
 N = 100;
-n0 = ones(1,2*N);
+n0 = ones(1,N);
 n0(1) = 1;
 tmin = 0;
 tmax = 100;
