@@ -24,6 +24,8 @@ tspan = [tmin tmax];
 
 [t,n] = ode45(@ext_smol, tspan, n0);
 
+output_statistics = sum_totals(n,t);
+
 figure(1)
 plot(t,n(:,1), t, n(:,2))
 xlabel('time') 
@@ -36,7 +38,25 @@ xlabel('Size of cluster')
 ylabel('Number of clusters') 
 legend('t=0','t = mid', 't=end')
 
-% figure(3)
+figure(3)
+tspan = [tmin tmax];
+t_len = length(t);
+t_step = (tmax-tmin)/t_len;
+
+t_list = tmin:t_step:tmax-t_step;
+ % p = plot(nan,nan);
+ % p.XData = x;
+tlen = length(t_list);
+x = 1:100;
+for j = 1:tlen
+
+   % p.YData = n(y,:);
+   y = n(j,1:100);
+   plot(x,y);
+   exportgraphics(gcf,'testAnimated2.gif','Append',true);
+end
+
+% figure(4)
 % tspan = [tmin tmax];
 % t_len = length(t);
 % t_step = (tmax-tmin)/t_len;
@@ -44,33 +64,15 @@ legend('t=0','t = mid', 't=end')
 % t_list = tmin:t_step:tmax-t_step;
 % % p = plot(nan,nan);
 % % p.XData = x;
-%tlen = length(t_list);
-%x = 1:100;
-%for j = 1:tlen
+% tlen = length(t_list);
+% x = 1:100;
+% for j = 1:tlen
 
-%    % p.YData = n(y,:);
-%    y = n(j,1:100);
-%    plot(x,y);
-%    exportgraphics(gcf,'testAnimated2.gif','Append',true);
-%end
-
-figure(4)
-tspan = [tmin tmax];
-t_len = length(t);
-t_step = (tmax-tmin)/t_len;
-
-t_list = tmin:t_step:tmax-t_step;
-% p = plot(nan,nan);
-% p.XData = x;
-tlen = length(t_list);
-x = 1:100;
-for j = 1:tlen
-
-    % p.YData = n(y,:);
-    y = n(j,101:200);
-    plot(x,y);
-    exportgraphics(gcf,'testAnimated2.gif','Append',true);
-end
+    % % p.YData = n(y,:);
+    % y = n(j,101:200);
+    % plot(x,y);
+    % exportgraphics(gcf,'testAnimated2.gif','Append',true);
+% end
 
 function [dni_dt, meta] = rhs_i(i,n,t)
 N = 100;
@@ -113,7 +115,7 @@ d = 0.01;
 %        disp('Hit')
 %    end
     
-    mu = 0.0001;
+    mu = 0.00001;
     metastatic = mu*n(i);
 
     % Output is the sum of these terms
@@ -129,6 +131,7 @@ dn_dt = zeros(N+1,1);
 
 %n = zeros(N,length(tspan));
 %n(0,:) = n0;
+
     for i = 1:N
         % dn_dt(i) = rhs_i(i,n(i,:),t);
         [dn_dt(i), metastatic] = rhs_i(i,n0,t);

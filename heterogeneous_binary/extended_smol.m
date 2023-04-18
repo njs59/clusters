@@ -2,8 +2,8 @@
 
 %Initial condition of a single cluster of size 1
 N = 100;
-n0 = ones(1,N);
-n0(1) = 1;
+n0 = zeros(N,N);
+n0(1,:) = 1;
 tmin = 0;
 tmax = 100;
 tspan = [tmin tmax];
@@ -40,7 +40,7 @@ for j = 1:tlen
     exportgraphics(gcf,'testAnimated2.gif','Append',true);
 end
 
-function dni_dt = rhs_i(i,n,t)
+function dphi_ij_dt = rhs_ij(i,j,n,t)
 N = 100;
 gamma = 0;
 alpha = 1;
@@ -57,13 +57,13 @@ d = 0.01;
     flux = gamma/(alpha*V) - n(i)/beta;
     
     % Coagulation term calculation
-    coagulation = cell_coagulation(n,i,t,N);
+    coagulation = cell_coagulation(n,i,j,t,N);
     
     % lifespan term is mitosis + death
     if i == 1
         mitosis = -1*m*n(i);
         % death = d*(n(i+1)-n(i));
-        death = cell_death(n,i,N);
+        death = cell_death(n,i,j,N);
     elseif i == N
         mitosis = m*(n(i-1)-n(i));
         % death = -1*d*n(i);
