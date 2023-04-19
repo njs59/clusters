@@ -18,6 +18,7 @@ N = 100;
 % Metastatic invasion IC
 n0 = zeros(1,2*N);
 n0(1:100) = 1;
+% n0(1) = 1000;
 tmin = 0;
 tmax = 100;
 tspan = [tmin tmax];
