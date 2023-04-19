@@ -26,53 +26,7 @@ tspan = [tmin tmax];
 
 output_statistics = sum_totals(n,t);
 
-figure(1)
-plot(t,n(:,1), t, n(:,2))
-xlabel('time') 
-ylabel('Number of clusters') 
-legend('n=1', 'n=2')
-
-figure(2)
-plot(1:100, n(1,1:100), '-o', 1:100, n(40,1:100),'-o', 1:100, n(end,1:100),'-o')
-xlabel('Size of cluster') 
-ylabel('Number of clusters') 
-legend('t=0','t = mid', 't=end')
-
-figure(3)
-tspan = [tmin tmax];
-t_len = length(t);
-t_step = (tmax-tmin)/t_len;
-
-t_list = tmin:t_step:tmax-t_step;
- % p = plot(nan,nan);
- % p.XData = x;
-tlen = length(t_list);
-x = 1:100;
-for j = 1:tlen
-
-   % p.YData = n(y,:);
-   y = n(j,1:100);
-   plot(x,y);
-   exportgraphics(gcf,'testAnimated2.gif','Append',true);
-end
-
-% figure(4)
-% tspan = [tmin tmax];
-% t_len = length(t);
-% t_step = (tmax-tmin)/t_len;
-
-% t_list = tmin:t_step:tmax-t_step;
-% % p = plot(nan,nan);
-% % p.XData = x;
-% tlen = length(t_list);
-% x = 1:100;
-% for j = 1:tlen
-
-    % % p.YData = n(y,:);
-    % y = n(j,101:200);
-    % plot(x,y);
-    % exportgraphics(gcf,'testAnimated2.gif','Append',true);
-% end
+population_plots(n,t,tspan);
 
 function [dni_dt, meta] = rhs_i(i,n,t)
 N = 100;
@@ -94,29 +48,12 @@ d = 0.01;
     coagulation = cell_coagulation(n,i,t,N);
     
     % lifespan term is mitosis + death
-    if i == 1
-        mitosis = -1*m*n(i);
-        % death = d*(n(i+1)-n(i));
-        death = cell_death(n,i,N);
-    elseif i == N
-        mitosis = m*(n(i-1)-n(i));
-        % death = -1*d*n(i);
-        death = cell_death(n,i,N);
-    else
-        mitosis = m*(n(i-1)-n(i));
-        death = cell_death(n,i,N);
-    end
-    lifespan = mitosis + death;
+    lifespan = cell_lifespan(n,i,N,m);
     
     % Now call the cell splitting function
     split = cluster_splitting(n,i,t,N);
-
-%    if t > 5
-%        disp('Hit')
-%    end
     
-    mu = 0.00001;
-    metastatic = mu*n(i);
+    metastatic = metastatic_invasion(n,i,N);
 
     % Output is the sum of these terms
     dni_dt = flux + coagulation + lifespan +  split - metastatic;
