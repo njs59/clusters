@@ -25,9 +25,14 @@ tspan = [tmin tmax];
 
 [t,n] = ode45(@ext_smol, tspan, n0);
 
+save('array_n.mat','n')
+save('array_t.mat','t')
+
 output_statistics = sum_totals(n,t);
 
-population_plots(n,t,tspan);
+population_plots(n,t,tspan)
+
+% population_plots2(n,t,tspan)
 
 function [dni_dt, meta] = rhs_i(i,n,t)
 N = 100;

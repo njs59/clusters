@@ -17,37 +17,19 @@ function [] = population_plots(n,t,tspan)
     tmax = tspan(2);
     t_len = length(t);
     t_step = (tmax-tmin)/t_len;
-
     t_list = tmin:t_step:tmax-t_step;
-    % p = plot(nan,nan);
-     % p.XData = x;
     tlen = length(t_list);
     x = 1:100;
-    for j = 1:tlen
 
-        % p.YData = n(y,:);
+    for j = 1
         y = n(j,1:100);
         plot(x,y);
-        exportgraphics(gcf,'testAnimated2.gif','Append',true);
+        gif('clustersize.gif','overwrite',true);
     end
-
-    figure(4)
-    tmin = tspan(1);
-    tmax = tspan(2);
-    t_len = length(t);
-    t_step = (tmax-tmin)/t_len;
-
-    t_list = tmin:t_step:tmax-t_step;
-    % p = plot(nan,nan);
-     % p.XData = x;
-    tlen = length(t_list);
-    x = 1:100;
-    for j = 1:tlen
-
-        % p.YData = n(y,:);
-        y = n(j,101:200);
+    for j = 2:tlen
+        y = n(j,1:100);
         plot(x,y);
-        % exportgraphics(gcf,'testAnimated3.gif','Append',true);
+        gif;
     end
-
+    
 end
