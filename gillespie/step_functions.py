@@ -24,7 +24,6 @@ def single_step(c_v, psi, t, N):
     a_v = calc_av(eqns, h_v, c_v)
     a_0 = 0
     for i in range(eqns):
-        print(len(a_v))
         a_0 += a_v[i]
 
     tau = (1/a_0)*np.log(1/r_0)
@@ -43,7 +42,7 @@ def single_step(c_v, psi, t, N):
     # This corresponds to python indexing (i-1)
     t += tau
     python_mu = mu - 1
-    psi_new = update_psi(psi, python_mu)
+    psi_new = update_psi.update_master(psi, python_mu)
 
 
 ########### Below this are functions for use in this file
