@@ -51,7 +51,7 @@ t = 0
 simulation_counter = 0
 simulation_max = 1000
 
-psi_output = np.zeros((simulation_max, N+1))
+psi_output = np.zeros((simulation_max + 1, N))
 t_output = np.zeros(simulation_max)
 
 psi_output[0,:] = IC
