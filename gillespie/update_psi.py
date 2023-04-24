@@ -6,7 +6,7 @@ def update_master(psi, index):
 
     Input:
     psi: distribution to be updated
-    index: Integer between 0 and 5196 for python subscript of corresponding equation
+    index: Integer between 0 and 5197 for python subscript of corresponding equation
     '''
     if index in range(0, 2500):
         ## Coagulation update
@@ -36,6 +36,6 @@ def update_master(psi, index):
         ## Death update
         psi[index - 2500 + 1] -= 1 # Remove 1 cluster of size i
         psi[index - 2500] += 1 # Add 1 cluster of size i-1
-    elif index in range(2698, 5197):
+    elif index in range(2698, 5198):
         ## Splitting update
-        Stuff
+        
