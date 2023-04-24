@@ -1,4 +1,3 @@
-import numpy as np
 import math
 
 def update_master(psi, index):
@@ -6,8 +5,11 @@ def update_master(psi, index):
     Function to update psi with new distribution once equation of iven index is applied
 
     Input:
-    psi: distribution to be updated
+    psi: distribution of cluster sizes to be updated
     index: Integer between 0 and 5197 for python subscript of corresponding equation
+
+    Ouput:
+    psi: UPdated distribution of cluster sizes
     '''
     if index in range(0, 2500):
         ## Coagulation update
@@ -57,4 +59,6 @@ def update_master(psi, index):
         psi[i_python] -= 1 # Remove 1 cluster of size i
         psi[j_python] += 1 # Remove 1 cluster of size j
         psi[i_python - j_python] += 1 # Add 1 cluster of size i+j
+
+    return psi
         
