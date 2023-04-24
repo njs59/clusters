@@ -35,7 +35,7 @@ if include_death ==True:
         c_v = np.append(c_v, d_cst)
 
 if include_splitting ==True:
-    for i in range(2698,5197,1):
+    for i in range(2698,5198,1):
         c_v = np.append(c_v, s_cst)
 print(c_v)
 print(len(c_v))
@@ -51,7 +51,7 @@ t = 0
 simulation_counter = 0
 simulation_max = 1000
 
-psi_output = np.zeros(simulation_max, N+1)
+psi_output = np.zeros((simulation_max, N+1))
 t_output = np.zeros(simulation_max)
 
 psi_output[0,:] = IC
