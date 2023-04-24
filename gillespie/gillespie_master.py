@@ -55,7 +55,7 @@ psi_output = np.zeros((simulation_max + 1, N))
 t_output = np.zeros(simulation_max)
 
 psi_output[0,:] = IC
-
+psi_old = IC
 while simulation_counter < simulation_max:
     psi_new = step_fns.single_step(c_v, psi_old, t, N)
     print('t is: ', t)
