@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 def update_master(psi, index):
     '''
@@ -38,4 +39,22 @@ def update_master(psi, index):
         psi[index - 2500] += 1 # Add 1 cluster of size i-1
     elif index in range(2698, 5198):
         ## Splitting update
+        index_maths = index - 2698 + 1
+        i = 2
+        ticker = 1
+        if ticker < index_maths:
+            i += 1
+            ticker += math.floor(i/2)
+        else:
+            last_lower_i = i-1
+            last_lower = ticker - math.floor(i/2)
+            diff = index - last_lower
+            j = diff + last_lower_i
+        ## (i,j) now corresponds to cluster of size i splitting into clusters
+        # of sizes j & i-j where j <= i-j
+        i_python = i-1
+        j_python = j-1
+        psi[i_python] -= 1 # Remove 1 cluster of size i
+        psi[j_python] += 1 # Remove 1 cluster of size j
+        psi[i_python - j_python] += 1 # Add 1 cluster of size i+j
         
