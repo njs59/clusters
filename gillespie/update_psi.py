@@ -16,7 +16,7 @@ def update_master(psi, index):
         index_maths = index + 1
         i = 1
         ticker = 99
-        if ticker < index_maths:
+        while ticker < index_maths:
             i += 1
             ticker += (101- 2*i)
         else:
@@ -44,7 +44,7 @@ def update_master(psi, index):
         index_maths = index - 2698 + 1
         i = 2
         ticker = 1
-        if ticker < index_maths:
+        while ticker < index_maths:
             i += 1
             ticker += math.floor(i/2)
         else:
