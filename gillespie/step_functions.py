@@ -23,7 +23,8 @@ def single_step(c_v, psi, t, N):
     h_v = calc_hv(eqns, psi)
     a_v = calc_av(eqns, h_v, c_v)
     a_0 = 0
-    for i in range(5198):
+    for i in range(eqns):
+        print(len(a_v))
         a_0 += a_v[i]
 
     tau = (1/a_0)*np.log(1/r_0)
