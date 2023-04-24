@@ -3,7 +3,7 @@ import random
 import math
 import logging
 
-import gillespie_master as gill
+import update_psi
 
 def single_step(c_v, psi, t, N):
     '''
@@ -41,11 +41,11 @@ def single_step(c_v, psi, t, N):
     # mu now corresponds to the subscript of the equation to be used to update psi
     # This corresponds to python indexing (i-1)
     t += tau
+    python_mu = mu - 1
+    psi_new = update_psi(psi, python_mu)
 
-    psi_new = update_psi(psi, mu)
 
-def update_psi(psi, mu):
-
+########### Below this are functions for use in this file
 
 
 def calc_hv(eqns, psi):
