@@ -57,8 +57,14 @@ def calc_hv(eqns, psi):
     h_v = np.zeros(eqns)
     for i in range(50):
         for j in range(i, 100-i-1):
-            h_v[index] = psi[i] * psi[j]
-            index += 1
+            if j == i: # Clusters of same size have to be treated separately psi choose 2
+                # As we have assumed i <= j it makes sense that we have a factor of 1/2 to not double 
+                # count these interactions
+                h_v[index] = (1/2) * psi[i] * psi[j]
+                index += 1
+            else:
+                h_v[index] = psi[i] * psi[j]
+                index += 1
     
     if eqns == 2500:
         return h_v
