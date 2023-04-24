@@ -26,7 +26,7 @@ def update_master(psi, index):
         j_python = j-1
         psi[i_python] -= 1 # Remove 1 cluster of size i
         psi[j_python] -= 1 # Remove 1 cluster of size j
-        psi[i_python + j_python] += 1 # Add 1 cluster of size i+1
+        psi[i_python + j_python] += 1 # Add 1 cluster of size i+j
 
     elif index in range(2500, 2599):
         ## Mitosis update
