@@ -10,13 +10,13 @@ N = 100 # The maximal cluster size
 
 # Initialisation
 include_coagulation = True
-include_mitosis = False
-include_death = False
+include_mitosis = True
+include_death = True
 include_splitting = False
 
 c_v = []
 c_v = np.array(c_v)
-c_cst = 0.001
+c_cst = 0.01
 m_cst = 0.01
 d_cst = 0.01
 s_cst = 0.001
