@@ -3,6 +3,7 @@ import numpy as np
 
 import initial_conditions
 import step_functions as step_fns
+import gillespie_plots as gill_plt
 
 # Global constants
 N = 100 # The maximal cluster size
@@ -68,3 +69,5 @@ while simulation_counter < simulation_max:
     print('New distribution', psi_new)
 
 print('Output', psi_output)
+print('Size', np.shape(psi_output))
+# gill_plt.animate_plot(psi, simulation_counter)
