@@ -16,9 +16,9 @@ include_splitting = False
 
 c_v = []
 c_v = np.array(c_v)
-c_cst = 0.01
+c_cst = 0.002
 m_cst = 0.01
-d_cst = 0.01
+d_cst = 0.003
 s_cst = 0.001
 
 
@@ -43,7 +43,7 @@ print(min(c_v))
 print(c_v[0])
 
 
-IC = initial_conditions.set_initial_conditions(N,3)
+IC = initial_conditions.set_initial_conditions(N,1)
 print(IC)
 print(sum(IC))
 
