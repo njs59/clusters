@@ -35,7 +35,7 @@ def set_initial_conditions(N, opt):
         # fig, ax = plt.subplots(1, 1)
         ax = plt.gca() # get axis handle
 
-        r = expon.rvs(size=1000)
+        r = expon.rvs(size=100)
 
         x = np.linspace(expon.ppf(0.01),
                 expon.ppf(0.99), 100)
