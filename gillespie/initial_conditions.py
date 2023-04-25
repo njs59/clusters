@@ -32,28 +32,18 @@ def set_initial_conditions(N, opt):
         IC[0] = 100
 
     if opt == 3:
-        fig, ax = plt.subplots(1, 1)
+        # fig, ax = plt.subplots(1, 1)
+        ax = plt.gca() # get axis handle
 
         r = expon.rvs(size=1000)
 
         x = np.linspace(expon.ppf(0.01),
                 expon.ppf(0.99), 100)
 
-        ax.hist(r, density=True, bins=100, histtype='stepfilled', alpha=0.2)
-        ax.set_xlim([x[0], x[-1]])
-        ax.legend(loc='best', frameon=False)
+        n, bins, patches = plt.hist(r, bins=100, histtype='stepfilled', alpha=0.2)
         plt.show()
 
-
-        # x = np.random.rand(100)
-        # plt.hist(r)
-        # plt.show()
-        # ax = plt.gca() # get axis handle
-
-        # p = ax.patches
-        # p[0].get_height()
-
-        heights = [patch.get_height() for patch in x]
+        heights = n
         print(heights)
         IC = heights
 
