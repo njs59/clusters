@@ -31,9 +31,14 @@ def update_master(psi, index):
         j_python = j-1
         ij_python = ij_cluster - 1
         print('python sizes', i_python, j_python)
-        psi[i_python] -= 1 # Remove 1 cluster of size i
-        psi[j_python] -= 1 # Remove 1 cluster of size j
-        psi[ij_python] += 1 # Add 1 cluster of size i+j
+        if psi[i_python] <= 0 or psi[j_python] <= 0:
+            print('Attempted to coagulate a cluster that does not exist')
+        elif psi[i_python] == 1 and psi[j_python] == 1 and i_python == j_python:
+            print('Attempted to coagulate a cluster with itself')
+        else:
+            psi[i_python] -= 1 # Remove 1 cluster of size i
+            psi[j_python] -= 1 # Remove 1 cluster of size j
+            psi[ij_python] += 1 # Add 1 cluster of size i+j
 
     elif index in range(2500, 2599):
         ## Mitosis update

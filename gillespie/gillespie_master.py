@@ -66,3 +66,5 @@ while simulation_counter < simulation_max:
     psi_output[simulation_counter,:] = psi_new
     psi_old = psi_new
     print('New distribution', psi_new)
+
+print('Output', psi_output)
