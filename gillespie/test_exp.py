@@ -25,4 +25,4 @@ p = ax2.patches
 p[0].get_height()
 
 heights = [patch.get_height() for patch in p]
-print(heights)
+print('Initial exp condition', heights)

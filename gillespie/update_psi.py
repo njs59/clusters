@@ -20,16 +20,20 @@ def update_master(psi, index):
             i += 1
             ticker += (101- 2*i)
         else:
-            last_lower_i = i-1
+            last_lower_i = i
             last_lower = ticker - (101 - 2*i)
             diff = index - last_lower
             j = diff + last_lower_i
+            print('Value check', last_lower_i, last_lower, diff, j)
         ## (i,j) now corresponds to the size of the 2 clusters to coagulate
+        ij_cluster = i + j
         i_python = i-1
         j_python = j-1
+        ij_python = ij_cluster - 1
+        print('python sizes', i_python, j_python)
         psi[i_python] -= 1 # Remove 1 cluster of size i
         psi[j_python] -= 1 # Remove 1 cluster of size j
-        psi[i_python + j_python] += 1 # Add 1 cluster of size i+j
+        psi[ij_python] += 1 # Add 1 cluster of size i+j
 
     elif index in range(2500, 2599):
         ## Mitosis update

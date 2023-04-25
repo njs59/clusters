@@ -20,7 +20,6 @@ m_cst = 0.01
 d_cst = 0.01
 s_cst = 0.001
 
-print(c_v)
 
 if include_coagulation == True:
     for i in range(2500):
@@ -38,27 +37,32 @@ if include_splitting ==True:
     for i in range(2698,5198,1):
         c_v = np.append(c_v, s_cst)
 print(c_v)
-print(len(c_v))
+print('Length of c_v', len(c_v))
 print(min(c_v))
 print(c_v[0])
 
 
-IC = initial_conditions.set_initial_conditions(N,1)
+IC = initial_conditions.set_initial_conditions(N,2)
 print(IC)
 print(sum(IC))
 
-t = 0
+t_init = 0
 simulation_counter = 0
-simulation_max = 1000
+simulation_max = 100
 
 psi_output = np.zeros((simulation_max + 1, N))
-t_output = np.zeros(simulation_max)
+t_output = np.zeros(simulation_max + 1)
 
 psi_output[0,:] = IC
 psi_old = IC
+t_old = t_init
+t_output[0] = t_old
 while simulation_counter < simulation_max:
-    psi_new = step_fns.single_step(c_v, psi_old, t, N)
-    print('t is: ', t)
+    psi_new, t_new = step_fns.single_step(c_v, psi_old, t_old, N)
+    simulation_counter += 1
+    print('t is: ', t_new)
+    t_output[simulation_counter] = t_new
+    t_old = t_new
     psi_output[simulation_counter,:] = psi_new
     psi_old = psi_new
-    simulation_counter += 1
+    print('New distribution', psi_new)
