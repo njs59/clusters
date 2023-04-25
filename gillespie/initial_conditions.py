@@ -46,14 +46,14 @@ def set_initial_conditions(N, opt):
 
 
         # x = np.random.rand(100)
-        plt.hist(r)
+        # plt.hist(r)
         # plt.show()
-        ax2 = plt.gca() # get axis handle
+        # ax = plt.gca() # get axis handle
 
-        p = ax2.patches
-        p[0].get_height()
+        # p = ax.patches
+        # p[0].get_height()
 
-        heights = [patch.get_height() for patch in p]
+        heights = [patch.get_height() for patch in x]
         print(heights)
         IC = heights
 
