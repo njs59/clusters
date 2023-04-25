@@ -46,8 +46,8 @@ def update_master(psi, index):
         psi[index - 2500 + 1] += 1 # Add 1 cluster of size i+1
     elif index in range(2599, 2698):
         ## Death update
-        psi[index - 2500 + 1] -= 1 # Remove 1 cluster of size i
-        psi[index - 2500] += 1 # Add 1 cluster of size i-1
+        psi[index - 2599 + 1] -= 1 # Remove 1 cluster of size i
+        psi[index - 2599] += 1 # Add 1 cluster of size i-1
     elif index in range(2698, 5198):
         ## Splitting update
         index_maths = index - 2698 + 1
