@@ -13,19 +13,28 @@ N = 100 # The maximal cluster size
 include_coagulation = True
 include_mitosis = True
 include_death = True
-include_splitting = False
+include_splitting = True
 
 c_v = []
 c_v = np.array(c_v)
-c_cst = 0.002
+
+# Set the proportions of the events that are 
+# coagulations (b), mitosis (m), death (d), splitting (s)
+b_prop = 0.25
+m_prop = 0.25
+d_prop = 0.25
+s_prop = 0.25
+
+# Set values for c_v for each type of event
+b_cst = b_prop/2500
 m_cst = 0.02
 d_cst = 0.019
-s_cst = 0.001
+s_cst = 0.01
 
 
 if include_coagulation == True:
     for i in range(2500):
-        c_v = np.append(c_v, c_cst)
+        c_v = np.append(c_v, b_cst)
 
 if include_mitosis ==True:
     for i in range(2500,2599,1):
