@@ -40,7 +40,6 @@ def single_step(c_v, psi, t, N):
     # mu now corresponds to the subscript of the equation to be used to update psi
     # This corresponds to python indexing (i-1)
     t += tau
-    print('Current mu', mu)
     python_mu = mu - 1
     psi_new = update_psi.update_master(psi, python_mu)
     ##RETURN
@@ -69,7 +68,6 @@ def calc_hv(eqns, psi):
                 index += 1
     
     if eqns == 2500:
-        print('Current hv', h_v)
         return h_v
     
 
@@ -109,6 +107,5 @@ def calc_av(eqns, h_v, c_v):
         a_v = np.zeros(eqns)
         for i in range(eqns):
             a_v[i] = h_v[i] * c_v[i]
-    print('Current av', a_v)
     return a_v
 

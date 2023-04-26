@@ -24,13 +24,13 @@ def update_master(psi, index):
             last_lower = ticker - (101 - 2*i)
             diff = index - last_lower
             j = diff + last_lower_i
-            print('Value check', last_lower_i, last_lower, diff, j)
+            # print('Value check', last_lower_i, last_lower, diff, j)
         ## (i,j) now corresponds to the size of the 2 clusters to coagulate
         ij_cluster = i + j
         i_python = i-1
         j_python = j-1
         ij_python = ij_cluster - 1
-        print('python sizes', i_python, j_python)
+        # print('python sizes', i_python, j_python)
         if psi[i_python] <= 0 or psi[j_python] <= 0:
             print('Attempted to coagulate a cluster that does not exist')
         elif psi[i_python] == 1 and psi[j_python] == 1 and i_python == j_python:

@@ -1,5 +1,6 @@
 ## Master code for implementing gillespie algorithm
 import numpy as np
+import math
 
 import initial_conditions
 import step_functions as step_fns
@@ -17,8 +18,8 @@ include_splitting = False
 c_v = []
 c_v = np.array(c_v)
 c_cst = 0.002
-m_cst = 0.01
-d_cst = 0.003
+m_cst = 0.02
+d_cst = 0.019
 s_cst = 0.001
 
 
@@ -49,7 +50,7 @@ print(sum(IC))
 
 t_init = 0
 simulation_counter = 0
-simulation_max = 100
+simulation_max = 10000
 
 psi_output = np.zeros((simulation_max + 1, N))
 t_output = np.zeros(simulation_max + 1)
@@ -61,12 +62,12 @@ t_output[0] = t_old
 while simulation_counter < simulation_max:
     psi_new, t_new = step_fns.single_step(c_v, psi_old, t_old, N)
     simulation_counter += 1
-    print('t is: ', t_new)
+    if math.floor(simulation_counter/1000) == simulation_counter/1000:
+        print('counter is: ', simulation_counter)
     t_output[simulation_counter] = t_new
     t_old = t_new
     psi_output[simulation_counter,:] = psi_new
     psi_old = psi_new
-    print('New distribution', psi_new)
 
 print('Output', psi_output)
 print('Size', np.shape(psi_output))

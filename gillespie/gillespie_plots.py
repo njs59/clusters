@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import math
 
 import glob
 import contextlib
@@ -7,9 +8,11 @@ from PIL import Image
 
 def animate_plot(psi, t):
     n_max = np.max(psi)
-    for i in range(0,len(t),1):
+    plots_number = 100
+    for i in range(0,plots_number+1,1):
+        plots_step = math.floor(len(t)/plots_number)
         x = range(1,101)
-        y = psi[i,:]
+        y = psi[i*plots_step,:]
         plt.bar(x,y)
         plt.ylim([0, n_max])
         if i < 10:
