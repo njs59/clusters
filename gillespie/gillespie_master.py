@@ -5,6 +5,7 @@ import math
 import initial_conditions
 import step_functions as step_fns
 import gillespie_plots as gill_plt
+import constant_functions as cst_fns
 
 # Global constants
 N = 100 # The maximal cluster size
@@ -27,10 +28,10 @@ s_prop = 0.25
 
 # Set values for c_v for each type of event
 b_cst = b_prop/2500
-m_cst = 0.02
-d_cst = 0.019
-s_cst = 0.01
-
+m_cst = m_prop/99
+d_cst = cst_fns.death_cst(d_prop, N)
+s_cst = s_prop/2500
+print
 
 if include_coagulation == True:
     for i in range(2500):
@@ -42,7 +43,7 @@ if include_mitosis ==True:
 
 if include_death ==True:
     for i in range(2599,2698,1):
-        c_v = np.append(c_v, d_cst)
+        c_v = np.append(c_v, d_cst[i - 2599])
 
 if include_splitting ==True:
     for i in range(2698,5198,1):
@@ -59,7 +60,7 @@ print(sum(IC))
 
 t_init = 0
 simulation_counter = 0
-simulation_max = 10000
+simulation_max = 1000
 
 psi_output = np.zeros((simulation_max + 1, N))
 t_output = np.zeros(simulation_max + 1)
