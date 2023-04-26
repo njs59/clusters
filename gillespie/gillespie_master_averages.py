@@ -1,6 +1,7 @@
 ## Master code for implementing gillespie algorithm
 import numpy as np
 import math
+import time
 
 import initial_conditions
 import step_functions as step_fns
@@ -22,10 +23,10 @@ c_v = np.array(c_v)
 
 # Set the proportions of the events that are 
 # coagulations (b), mitosis (m), death (d), splitting (s)
-b_prop = 0.25
-m_prop = 0.25
-d_prop = 0.25
-s_prop = 0.25
+b_prop = 0.35
+m_prop = 0.35
+d_prop = 0.5
+s_prop = 0.1
 
 # Set values for c_v for each type of event
 b_cst = b_prop/2500
@@ -43,7 +44,7 @@ if include_mitosis ==True:
 
 if include_death ==True:
     for i in range(2599,2698,1):
-        c_v = np.append(c_v, d_cst)
+        c_v = np.append(c_v, d_cst[i - 2599])
 
 if include_splitting ==True:
     for i in range(2698,5198,1):
@@ -64,6 +65,8 @@ simulation_max = 100
     
 psi_output = np.zeros((simulation_max + 1, N))
 t_output = np.zeros(simulation_max + 1)
+
+start_time = time.time()
 
 for i in range(sim_num):
     IC = initial_conditions.set_initial_conditions(N,1)
@@ -87,12 +90,19 @@ for i in range(sim_num):
     print('Simulation', i, ' complete')
     simulation_counter = 0
 
-print('IC', IC)
-print('Final sim', psi_single_sim)
-print('Max before division', np.max(psi_output))
 psi_output = psi_output/sim_num
+end_time = time.time()
+
+total_simulation_time = end_time - start_time
+average_single_sim_time = total_simulation_time/sim_num
 
 print('Output', psi_output)
 print('Size', np.shape(psi_output))
 print('T len', len(t_output))
+print('Total simulation time', total_simulation_time)
+print('Average single simulation time', average_single_sim_time)
+start_time_plot = time.time()
 gill_plt.animate_plot(psi_output, t_output)
+end_time_plot = time.time()
+plotting_time = end_time_plot - start_time_plot
+print('Plotting time', plotting_time)

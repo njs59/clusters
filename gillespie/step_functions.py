@@ -95,7 +95,7 @@ def calc_hv(eqns, psi):
                 if eqns == 5198:
                     return h_v
                 else:
-                    logging.error('Incorrect number of equations in h_v: '+ eqns)
+                    logging.error('Incorrect number of equations in h_v: ' + eqns)
 
 
 def calc_av(eqns, h_v, c_v):
