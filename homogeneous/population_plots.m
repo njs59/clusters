@@ -1,5 +1,5 @@
 function [] = population_plots(n,t,tspan)
-
+    global N
     figure(1)
     plot(t,n(:,1), t, n(:,2))
     xlabel('time') 
@@ -7,7 +7,7 @@ function [] = population_plots(n,t,tspan)
     legend('n=1', 'n=2')
 
     figure(2)
-    plot(1:100, n(1,1:100), '-o', 1:100, n(40,1:100),'-o', 1:100, n(end,1:100),'-o')
+    plot(1:N, n(1,1:N), '-o', 1:N, n(40,1:N),'-o', 1:N, n(end,1:N),'-o')
     xlabel('Size of cluster') 
     ylabel('Number of clusters') 
     legend('t=0','t = mid', 't=end')
@@ -19,15 +19,15 @@ function [] = population_plots(n,t,tspan)
     t_step = (tmax-tmin)/t_len;
     t_list = tmin:t_step:tmax-t_step;
     tlen = length(t_list);
-    x = 1:100;
+    x = 1:N;
 
     for j = 1
-        y = n(j,1:100);
+        y = n(j,1:N);
         plot(x,y);
         gif('clustersize.gif','overwrite',true);
     end
     for j = 2:tlen
-        y = n(j,1:100);
+        y = n(j,1:N);
         plot(x,y);
         gif;
     end

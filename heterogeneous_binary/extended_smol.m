@@ -8,6 +8,9 @@ tmin = 0;
 tmax = 100;
 tspan = [tmin tmax];
 
+%Give value of 1 for shedding or 0 for splitting
+shed_or_split = 1;
+
 
 [t,n] = ode45(@ext_smol, tspan, n0);
 figure(1)
@@ -17,7 +20,7 @@ ylabel('Number of clusters')
 legend('n=1', 'n=2')
 
 figure(2)
-plot(1:100, n(1,:), '-o', 1:100, n(40,:),'-o', 1:100, n(end,:),'-o')
+plot(1:N, n(1,:), '-o', 1:N, n(40,:),'-o', 1:N, n(end,:),'-o')
 xlabel('Size of cluster') 
 ylabel('Number of clusters') 
 legend('t=0','t = mid', 't=10')
@@ -31,7 +34,7 @@ t_list = tmin:t_step:tmax-t_step;
 % p = plot(nan,nan);
 % p.XData = x;
 tlen = length(t_list);
-x = 1:100;
+x = 1:N;
 for j = 1:tlen
 
     % p.YData = n(y,:);
@@ -48,6 +51,7 @@ V = 1;
 beta = 100000; % Large beta reduces exit from region
 m = 0.9;
 d = 0.01;
+q= 0.01;
     % Function inputs:
     % i integer, size of cluster
     % n vector of length N, previous distribution of cluster sizes
@@ -75,10 +79,22 @@ d = 0.01;
     lifespan = mitosis + death;
     
     % Now call the cell splitting function
-    split = cluster_splitting(n,i,t,N);
+    if shed_or_split == 0
+        shed_split = cluster_splitting(n,i,t,N);
+    elseif shed_or_split == 1
+            if i == 1
+                shed_1_sum = 0;
+                for j = 2:N
+                    shed_1_sum = shed_1_sum + cluster_shedding(n,j,q,t);
+                end
+                shed_split = shed_1_sum;
+            else
+                shed_split = cluster_shedding(n,i+1,t) - cluster_shedding(n,i,q,t);
+            end
+    end
 
     % Output is the sum of these terms
-    dni_dt = flux + coagulation + lifespan +  split;
+    dphi_ij_dt = flux + coagulation + lifespan +  shed_split;
 end
 
 function dn_dt = ext_smol(t,n0)

@@ -21,7 +21,7 @@ function coagulation = cell_coagulation(n,i,t,N)
 
     % 2nd sum of coagulation term calculation
     sum2 = 0;
-    for j = 1:N
+    for j = 1:N-i
             sum2 = sum2 + B_ij(i,j,t)*n(i)*n(j);
     end
 coagulation = (1/2)*sum1 - sum2;
