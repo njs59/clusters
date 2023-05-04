@@ -110,6 +110,8 @@ global shed_or_split
     metastatic = metastatic_invasion(n,i,N);
 
     % Output is the sum of these terms
+    
+    
     dni_dt = flux + coagulation + lifespan +  shed_split - metastatic;
     meta = metastatic;
 end
