@@ -15,6 +15,7 @@ t_array = mat_contents_t['t']
 print(t_array)
 print(np.shape(n_array))
 print(np.shape(t_array))
+print(n_array)
 
 x = t_array[:,0]
 # y =  n_array[:,2]

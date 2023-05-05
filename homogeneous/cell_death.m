@@ -1,5 +1,6 @@
 function death_factor = cell_death(n,i,N)
-    global d
+    % global d
+    d = 0;
     x = 1:N;
     d_an = d*geopdf(x,0.1);
     d_ap = d*geopdf(N-x,0.1);

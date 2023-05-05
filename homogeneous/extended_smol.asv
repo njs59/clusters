@@ -1,5 +1,8 @@
 global N
-N = 100;
+N = 5;
+
+global test_sum
+test_sum = 0;
 
 %global q
 %q = 0.01;
@@ -60,6 +63,7 @@ population_plots(n,t,tspan)
 % population_plots2(n,t,tspan)
 
 function [dni_dt, meta] = rhs_i(i,n,t)
+global test_sum
 global N
 % global m
 % global d
@@ -104,12 +108,12 @@ global shed_or_split
     elseif shed_or_split == 1
         shed_split = 0;
             if i == 1
-                shed_1_sum = cluster_shedding(n,2,q,t); %Need to count twice from cluster of size 2
-                %Cluster size 2 splits into "big" 1 and "shedded" 1
+                shed_1_sum = 0;
                 for j = 2:N
                     shed_1_sum = shed_1_sum + cluster_shedding(n,j,q,t);
                     shed_split = shed_1_sum;
                 end
+            
             elseif i == N
                 shed_split = - cluster_shedding(n,i,q,t);
             else
@@ -130,6 +134,7 @@ global shed_or_split
     %    disp('Over!');
     %end
     dni_dt = flux + coagulation + lifespan +  shed_split - metastatic;
+    test_sum = test_sum + dni_dt;
     meta = metastatic;
 end
 
@@ -147,6 +152,8 @@ dn_dt = zeros(N+1,1);
         [dn_dt(i), metastatic] = rhs_i(i,n0,t);
         dn_dt(N+i) = metastatic;
         sum_dn_dt = sum_dn_dt + dn_dt(i);
+        disp('Sum:')
+        disp(sum_dn_dt)
     end
 
 end
