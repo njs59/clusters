@@ -1,5 +1,5 @@
 global N
-N = 10;
+N = 100;
 
 global q
 q = 0.01;
@@ -42,10 +42,10 @@ shed_or_split = 1;
 
 % Metastatic invasion IC
 n0 = zeros(1,2*N);
-n0(1:N) = 1;
-% n0(1) = 1000;
+% n0(1:N) = 1;
+n0(1) = 100;
 tmin = 0;
-tmax = 100;
+tmax = 1000;
 tspan = [tmin tmax];
 
 [t,n] = ode45(@ext_smol, tspan, n0);

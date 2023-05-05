@@ -29,6 +29,7 @@ function [] = population_plots(n,t,tspan)
     for j = 2:tlen
         y = n(j,1:N);
         plot(x,y);
+        ylim = ([0 30]);
         gif;
     end
     
