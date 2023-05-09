@@ -42,20 +42,29 @@ shed_or_split = 1;
 
 % Metastatic invasion IC
 n0 = zeros(1,2*N);
-n0(1:N) = 1;
-% n0(1) = 100;
+%n0(1:N) = 1;
+n0(1) = 10000;
 tmin = 0;
-tmax = 100;
+tmax = 1000;
 tspan = [tmin tmax];
 
 [t,n] = ode45(@ext_smol, tspan, n0);
 
+derivatives = zeros(length(t),N);
+derivative_l2_norm = zeros(length(t),1);
+for i = 1:length(t)
+    derivatives = ext_smol(t(i), n(i,1:100));
+    derivative_l2_norm(i) = norm(derivatives,2);
+end
+
+
 save('array_n.mat','n')
-save('array_t.mat','t')
+save('array_t_0.0001.mat','t')
+save('array_norms_0.0001.mat', 'derivative_l2_norm')
 
 output_statistics = sum_totals(n,t);
 
-population_plots(n,t,tspan)
+population_plots(n,t,tspan, derivative_l2_norm)
 
 % population_plots2(n,t,tspan)
 
@@ -64,7 +73,8 @@ global N
 % global m
 % global d
 % global q
-q = 0.01;
+b = 0.0001;
+q = 0;
 
 
 global include_flux
@@ -86,7 +96,7 @@ global shed_or_split
     end
     
     % Coagulation term calculation
-    coagulation = cell_coagulation(n,i,t,N);
+    coagulation = cell_coagulation(n,i,b,t,N);
     
     % lifespan term is mitosis + death
     m = 0;
@@ -133,7 +143,8 @@ global shed_or_split
     meta = metastatic;
 end
 
-function dn_dt = ext_smol(t,n0)
+
+function [dn_dt]  = ext_smol(t,n0)
 global N
 mu = 0.0001;
 % Evaluates the RHS of all N equations that form the RHS of the system
@@ -148,5 +159,4 @@ dn_dt = zeros(N+1,1);
         dn_dt(N+i) = metastatic;
         sum_dn_dt = sum_dn_dt + dn_dt(i);
     end
-
 end

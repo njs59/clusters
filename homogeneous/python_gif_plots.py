@@ -12,6 +12,11 @@ mat_contents_t = scipy.io.loadmat('array_t.mat', mdict=None, appendmat=True)
 n_array = mat_contents_n['n']
 t_array = mat_contents_t['t']
 
+n_last = n_array[:,-1]
+max_n_last = np.max(n_last)
+print('Max last', max_n_last)
+
+
 print(t_array)
 print(np.shape(n_array))
 print(np.shape(t_array))

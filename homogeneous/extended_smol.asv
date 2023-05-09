@@ -1,8 +1,5 @@
 global N
-N = 5;
-
-global test_sum
-test_sum = 0;
+N = 100;
 
 %global q
 %q = 0.01;
@@ -45,16 +42,36 @@ shed_or_split = 1;
 
 % Metastatic invasion IC
 n0 = zeros(1,2*N);
-n0(1:N) = 1;
-% n0(1) = 100;
+%n0(1:N) = 1;
+n0(1) = 10000;
 tmin = 0;
-tmax = 100;
+tmax = 1000;
 tspan = [tmin tmax];
+
+global ticker
+ticker = 0;
+global ticker2
+ticker2 = 0;
+global current_t
+current_t = 0;
 
 [t,n] = ode45(@ext_smol, tspan, n0);
 
+derivative = ecxt
+
+change = zeros(N,1);
+l2_norms = zeros(length(t) - 1);
+for i = 1:(length(t) - 1)
+    for j = 1:N
+        change(j) = n(i+1,j) - n(i,j);
+    end
+    l2_norm = norm(change,2);
+    l2_norms(i) = l2_norm;
+end
+
 save('array_n.mat','n')
-save('array_t.mat','t')
+save('array_t_0.0001.mat','t')
+save('array_norms_0.0001.mat', 'l2_norms')
 
 output_statistics = sum_totals(n,t);
 
@@ -63,12 +80,12 @@ population_plots(n,t,tspan)
 % population_plots2(n,t,tspan)
 
 function [dni_dt, meta] = rhs_i(i,n,t)
-global test_sum
 global N
 % global m
 % global d
 % global q
-q = 0.01;
+b = 0.0001;
+q = 0;
 
 
 global include_flux
@@ -90,7 +107,7 @@ global shed_or_split
     end
     
     % Coagulation term calculation
-    coagulation = cell_coagulation(n,i,t,N);
+    coagulation = cell_coagulation(n,i,b,t,N);
     
     % lifespan term is mitosis + death
     m = 0;
@@ -108,12 +125,12 @@ global shed_or_split
     elseif shed_or_split == 1
         shed_split = 0;
             if i == 1
-                shed_1_sum = 0;
+                shed_1_sum = cluster_shedding(n,2,q,t); %Need to count twice from cluster of size 2
+                %Cluster size 2 splits into "big" 1 and "shedded" 1
                 for j = 2:N
                     shed_1_sum = shed_1_sum + cluster_shedding(n,j,q,t);
                     shed_split = shed_1_sum;
                 end
-            
             elseif i == N
                 shed_split = - cluster_shedding(n,i,q,t);
             else
@@ -134,11 +151,22 @@ global shed_or_split
     %    disp('Over!');
     %end
     dni_dt = flux + coagulation + lifespan +  shed_split - metastatic;
-    test_sum = test_sum + dni_dt;
     meta = metastatic;
 end
 
-function dn_dt = ext_smol(t,n0)
+
+function [dn_dt]  = ext_smol(t,n0)
+global ticker
+ticker = ticker +1;
+global current_t
+global ticker2
+global stored_t
+if t > current_t
+    ticker2 = ticker2 +1;
+    current_t = t;
+    stored_t(ticker2) = current_t;
+    disp(stored_t)
+end
 global N
 mu = 0.0001;
 % Evaluates the RHS of all N equations that form the RHS of the system
@@ -152,8 +180,6 @@ dn_dt = zeros(N+1,1);
         [dn_dt(i), metastatic] = rhs_i(i,n0,t);
         dn_dt(N+i) = metastatic;
         sum_dn_dt = sum_dn_dt + dn_dt(i);
-        disp('Sum:')
-        disp(sum_dn_dt)
+        sum dn_dt(i)
     end
-
 end

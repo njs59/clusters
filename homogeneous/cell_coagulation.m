@@ -1,9 +1,9 @@
-function coagulation = cell_coagulation(n,i,t,N)
+function coagulation = cell_coagulation(n,i,b,t,N)
 
-    function out = B_ij(i,j,t)
+    function out = B_ij(i,j,b,t)
         % Need very small b constant
         %b = 0.00000001;
-        b = 0.01;
+        % b = 0.01;
         %D_i = 1/i;
         %D_j = 1/j;
         %out = b*(1/(D_i+D_j));
@@ -18,7 +18,7 @@ function coagulation = cell_coagulation(n,i,t,N)
         sum1 = 0;
     else
         for j = 1:i-1
-            sum1 = sum1 + B_ij(i,j,t)*n(i-j)*n(j);
+            sum1 = sum1 + B_ij(i,j,b,t)*n(i-j)*n(j);
         end
     end
 
@@ -34,7 +34,7 @@ function coagulation = cell_coagulation(n,i,t,N)
     %    sum2 = sum2 + B_ij(i,j,t)*n(i)*n(j);
     %end
     for j = 1:N-i
-        sum2 = sum2 + B_ij(i,j,t)*n(i)*n(j);
+        sum2 = sum2 + B_ij(i,j,b,t)*n(i)*n(j);
     end
 coagulation = (1/2)*sum1 - sum2;
 end
