@@ -61,11 +61,16 @@ print(np.shape(t_array_3))
 # n_array_short_3 = n_array_3[:t_short_len_3]
 
 
-t_array_3 = np.delete(t_array_3, range(100))
-n_array_3 = np.delete(n_array_3, range(100))
+#t_array_3 = np.delete(t_array_3, range(100))
+#n_array_3 = np.delete(n_array_3, range(100))
 #del t_array_3[:100]
 #del n_array_3[:100]
 print(np.shape(t_array_3))
 # print(t_array_3)
+plt.plot(t_array_1, n_array_1)
+plt.plot(t_array_2, n_array_2)
 plt.plot(t_array_3, n_array_3)
+plt.yscale('log')
+plt.legend(['b = 0.01', 'b = 0.001', 'b=0.0001'])
 plt.show()
+
