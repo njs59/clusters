@@ -16,16 +16,22 @@ function [] = population_plots(n,t,tspan, derivative_norm)
     disp(t_10)
     disp('t_50 is')
     disp(t_50)
-    %t_1000 = find(t > 1000, 1);
-    %disp('t_1000 is')
-    %disp(t_1000)
+    t_1000 = find(t > 1000, 1);
+    disp('t_1000 is')
+    disp(t_1000)
+    %t_10000 = find(t > 10000, 1);
+    %disp('t_10000 is')
+    %disp(t_10000)
+    %1:N, n(t_1000,1:N),'-o', 1:N, n(t_10000,1:N),'-o',  1:N, 
 
-    plot(1:N, n(1,1:N), '-o', 1:N, n(t_10,1:N),'-o', 1:N, n(t_50,1:N),'-o', 1:N, n(end,1:N),'-o')
-    ylim([0 3])
+    plot(1:N, n(1,1:N), '-o', 1:N, n(t_10,1:N),'-o', 1:N, n(t_50,1:N),'-o', ...
+        1:N, n(t_1000,1:N),'-o', 1:N, n(end,1:N),'-o')
+    ylim([0 4])
     xlabel('Size of cluster') 
     ylabel('Number of clusters') 
-    legend('t=0','t = 10', 't = 50', 't=end')
-
+    legend('t = 0','t = 10', 't = 50', 't = 1000', 't = 10000', 't = end', location = 'north')
+    f = gcf;
+    exportgraphics(f,'graph_high_res.png','Resolution',600);
     %figure(3)
     %tmin = tspan(1);
     %tmax = tspan(2);
