@@ -10,13 +10,13 @@ import constant_functions as cst_fns
 
 # Global constants
 N = 100 # The maximal cluster size
-sim_num = 100 # The number of simulations
+sim_num = 1000 # The number of simulations
 
 # Initialisation
 include_coagulation = True
-include_mitosis = True
-include_death = True
-include_splitting = True
+include_mitosis = False
+include_death = False
+include_splitting = False
 
 c_v = []
 c_v = np.array(c_v)
@@ -29,14 +29,14 @@ d_prop = 0.5
 s_prop = 0.1
 
 # Set values for c_v for each type of event
-b_cst = b_prop/2500
+b_cst = cst_fns.coagulation_cst(b_prop, N)
 m_cst = m_prop/99
 d_cst = cst_fns.death_cst(d_prop, N)
 s_cst = s_prop/2500
 
 if include_coagulation == True:
     for i in range(2500):
-        c_v = np.append(c_v, b_cst)
+        c_v = np.append(c_v, b_cst[i])
 
 if include_mitosis ==True:
     for i in range(2500,2599,1):
