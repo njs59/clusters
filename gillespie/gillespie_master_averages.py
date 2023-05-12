@@ -10,7 +10,7 @@ import constant_functions as cst_fns
 
 # Global constants
 N = 100 # The maximal cluster size
-sim_num = 1000 # The number of simulations
+sim_num = 10000 # The number of simulations
 
 # Initialisation
 include_coagulation = True
@@ -55,7 +55,7 @@ print(min(c_v))
 print(c_v[0])
 
 
-IC = initial_conditions.set_initial_conditions(N,1)
+IC = initial_conditions.set_initial_conditions(N,2)
 print(IC)
 print(sum(IC))
 
