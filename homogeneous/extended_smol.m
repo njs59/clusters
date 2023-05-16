@@ -80,8 +80,8 @@ global N
 % global m
 % global d
 % global q
-b = 0.01;
-q = 0.1;
+b = 0.001;
+q = 0.001;
 
 
 global include_flux
