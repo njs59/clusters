@@ -44,12 +44,12 @@ shed_or_split = 1;
 %% IC 
 % (set to allow for metastatic invasion)
 n0 = zeros(1,2*N);
-n0(1:N) = 1;
-%n0(1) = 10000;
+%n0(1:N) = 1;
+n0(1) = 100;
 
 %% Running of solver
 tmin = 0;
-tmax = 10000;
+tmax = 100000;
 tspan = [tmin tmax];
 
 [t,n] = ode45(@ext_smol, tspan, n0);
@@ -80,8 +80,8 @@ global N
 % global m
 % global d
 % global q
-b = 0.001;
-q = 0;
+b = 0.01;
+q = 0.1;
 
 
 global include_flux

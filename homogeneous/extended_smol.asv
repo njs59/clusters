@@ -1,3 +1,4 @@
+%% Set-up
 global N
 N = 100;
 
@@ -40,14 +41,15 @@ shed_or_split = 1;
 %n0 = ones(1,N);
 %n0(N) = 0;
 
-%% IC (set to 
+%% IC 
+% (set to allow for metastatic invasion)
 n0 = zeros(1,2*N);
 %n0(1:N) = 1;
-n0(1) = 10000;
+n0(1) = 100;
 
 %% Running of solver
 tmin = 0;
-tmax = 10000;
+tmax = 100000;
 tspan = [tmin tmax];
 
 [t,n] = ode45(@ext_smol, tspan, n0);
@@ -71,13 +73,15 @@ population_plots(n,t,tspan, derivative_l2_norm)
 
 % population_plots2(n,t,tspan)
 
+
+%% Functions
 function [dni_dt, meta] = rhs_i(i,n,t)
 global N
 % global m
 % global d
 % global q
-b = 0.001;
-q = 0;
+b = 0.01;
+q = 0.001;
 
 
 global include_flux
