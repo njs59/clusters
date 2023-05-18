@@ -81,7 +81,7 @@ global N
 % global d
 % global q
 b = 0.001;
-q = 0.001;
+q = 0.1;
 
 
 global include_flux

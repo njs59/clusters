@@ -3,15 +3,16 @@ function coagulation = cell_coagulation(n,i,b,t,N)
         % Need very small b constant
         %b = 0.00000001;
         % b = 0.01;
-        D_i = 1/i;
-        D_j = 1/j;
-        out = b*(1/scaling)*(1/(D_i+D_j));
-        %out = i*j;
+        %D_i = 1/i;
+        %D_j = 1/j;
+        %out = b*(1/scaling)*(1/(D_i+D_j));
+        out = b*(1/scaling)*i*j;
         %out = b*1;
     end
 
 % Coagulation term calculation
-    scaling = (floor(N/2)*ceil(N/2))/(floor(N/2)+ceil(N/2));
+    %scaling = (floor(N/2)*ceil(N/2))/(floor(N/2)+ceil(N/2));
+    scaling = N*N;
     
     % 1st sum of coagulation term calculation
     sum1 = 0;

@@ -77,15 +77,15 @@ plt.show()
 
 
 
-img1 = mpimg.imread('coag_and_shed/b_0.1_q_0.1.png')
-img2 = mpimg.imread('coag_and_shed/b_0.1_q_0.01.png')
-img3 = mpimg.imread('coag_and_shed/b_0.1_q_0.001.png')
-img4 = mpimg.imread('coag_and_shed/b_0.01_q_0.1.png')
-img5 = mpimg.imread('coag_and_shed/b_0.01_q_0.01.png')
-img6 = mpimg.imread('coag_and_shed/b_0.01_q_0.001.png')
-img7 = mpimg.imread('coag_and_shed/b_0.001_q_0.1.png')
-img8 = mpimg.imread('coag_and_shed/b_0.001_q_0.01.png')
-img9 = mpimg.imread('coag_and_shed/b_0.001_q_0.001.png')
+img1 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.1_q_0.1.png')
+img2 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.1_q_0.01.png')
+img3 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.1_q_0.001.png')
+img4 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.01_q_0.1.png')
+img5 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.01_q_0.01.png')
+img6 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.01_q_0.001.png')
+img7 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.001_q_0.1.png')
+img8 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.001_q_0.01.png')
+img9 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.001_q_0.001.png')
 
 cols = ['q = {}'.format(col) for col in ['0.1', '0.01', '0.001']]
 rows = ['b = {}'.format(row) for row in ['0.1', '0.01', '0.001']]
@@ -134,15 +134,25 @@ plt.show()
 #####################
 
 
-img1 = mpimg.imread('coag_and_shed/b_0.1_q_0.1_zoomed.png')
-img2 = mpimg.imread('coag_and_shed/b_0.1_q_0.01_zoomed.png')
-img3 = mpimg.imread('coag_and_shed/b_0.1_q_0.001_zoomed.png')
-img4 = mpimg.imread('coag_and_shed/b_0.01_q_0.1_zoomed.png')
-img5 = mpimg.imread('coag_and_shed/b_0.01_q_0.01_zoomed.png')
-img6 = mpimg.imread('coag_and_shed/b_0.01_q_0.001_zoomed.png')
-img7 = mpimg.imread('coag_and_shed/b_0.001_q_0.1_zoomed.png')
-img8 = mpimg.imread('coag_and_shed/b_0.001_q_0.01_zoomed.png')
-img9 = mpimg.imread('coag_and_shed/b_0.001_q_0.001_zoomed.png')
+# img1 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.1_q_0.1_zoomed.png')
+# img2 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.1_q_0.01_zoomed.png')
+# img3 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.1_q_0.001_zoomed.png')
+# img4 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.01_q_0.1_zoomed.png')
+# img5 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.01_q_0.01_zoomed.png')
+# img6 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.01_q_0.001_zoomed.png')
+# img7 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.001_q_0.1_zoomed.png')
+# img8 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.001_q_0.01_zoomed.png')
+# img9 = mpimg.imread('coag_and_shed/diffusion_kernel/b_0.001_q_0.001_zoomed.png')
+
+img1 = mpimg.imread('coag_and_shed/ij_kernel/b_0.1_q_0.1.png')
+img2 = mpimg.imread('coag_and_shed/ij_kernel/b_0.1_q_0.01.png')
+img3 = mpimg.imread('coag_and_shed/ij_kernel/b_0.1_q_0.001.png')
+img4 = mpimg.imread('coag_and_shed/ij_kernel/b_0.01_q_0.1.png')
+img5 = mpimg.imread('coag_and_shed/ij_kernel/b_0.01_q_0.01.png')
+img6 = mpimg.imread('coag_and_shed/ij_kernel/b_0.01_q_0.001.png')
+img7 = mpimg.imread('coag_and_shed/ij_kernel/b_0.001_q_0.1.png')
+img8 = mpimg.imread('coag_and_shed/ij_kernel/b_0.001_q_0.01.png')
+img9 = mpimg.imread('coag_and_shed/ij_kernel/b_0.001_q_0.001.png')
 
 cols = ['q = {}'.format(col) for col in ['0.1', '0.01', '0.001']]
 rows = ['b = {}'.format(row) for row in ['0.1', '0.01', '0.001']]
