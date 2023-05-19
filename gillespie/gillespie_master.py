@@ -54,7 +54,7 @@ print(min(c_v))
 print(c_v[0])
 
 
-IC = initial_conditions.set_initial_conditions(N,1)
+IC = initial_conditions.set_initial_conditions(N,2)
 print(IC)
 print(sum(IC))
 

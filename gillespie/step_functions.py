@@ -19,7 +19,7 @@ def single_step(c_v, psi, t, N):
 
     r_0 = random.random()
     r_1 = random.random()
-    h_v = calc_hv(eqns, psi)
+    h_v = calc_hv(eqns, psi, N)
     a_v = calc_av(eqns, h_v, c_v)
     a_0 = 0
     for i in range(eqns):
@@ -49,7 +49,7 @@ def single_step(c_v, psi, t, N):
 ########### Below this are functions for use in this file
 
 
-def calc_hv(eqns, psi):
+def calc_hv(eqns, psi, N):
     '''
     Calculates the values for h_v s
     Only works for N = 100 (number of eqns change for maximal cluster size)
@@ -57,7 +57,7 @@ def calc_hv(eqns, psi):
     index = 0
     h_v = np.zeros(eqns)
     for i in range(50):
-        for j in range(i, 100-i-1):
+        for j in range(i, N-i-1):
             if j == i: # Clusters of same size have to be treated separately psi choose 2
                 # As we have assumed i <= j it makes sense that we have a factor of 1/2 to not double 
                 # count these interactions

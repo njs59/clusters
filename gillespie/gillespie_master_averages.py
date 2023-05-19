@@ -10,7 +10,7 @@ import constant_functions as cst_fns
 
 # Global constants
 N = 100 # The maximal cluster size
-sim_num = 10000 # The number of simulations
+sim_num = 100 # The number of simulations
 
 # Initialisation
 include_coagulation = True
@@ -69,7 +69,7 @@ t_output = np.zeros(simulation_max + 1)
 start_time = time.time()
 
 for i in range(sim_num):
-    IC = initial_conditions.set_initial_conditions(N,1)
+    IC = initial_conditions.set_initial_conditions(N,2)
     psi_single_sim = np.zeros((simulation_max + 1, N))
     psi_single_sim[0,:] = IC
     psi_single_sim_old = IC
