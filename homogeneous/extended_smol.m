@@ -45,7 +45,7 @@ shed_or_split = 1;
 % (set to allow for metastatic invasion)
 n0 = zeros(1,2*N);
 %n0(1:N) = 1;
-n0(1) = 10;
+n0(1) = 100;
 
 %% Running of solver
 tmin = 0;
@@ -93,9 +93,9 @@ for l = 1:N
     N_t_before = l*n(l)+ N_t_before;
 end
 N_t = round(N_t_before);
-if N_t > 10.1
-    disp('problem!');
-end
+%if N_t > 10.1
+%    disp('problem!');
+%end
 
 
 global include_flux
