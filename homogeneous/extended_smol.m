@@ -49,7 +49,7 @@ n0(1) = 100;
 
 %% Running of solver
 tmin = 0;
-tmax = 1000;
+tmax = 400000;
 tspan = [tmin tmax];
 
 [t,n] = ode45(@ext_smol, tspan, n0);
@@ -81,21 +81,21 @@ global N
 % global d
 % global q
 b = 1;
-lambda = 0;
+lambda = 0.1;
 q = lambda/b;
-%tau = tau + 1;
+%scaling_q = 0;
+%for l = 1:100
+%    scaling_q = scaling_q + exp(i*0.01);
+%end
+
 N_t = 0;
 N_t_before = 0;
-%if t > 0.3884
-%    disp('Break');
-%end
+
 for l = 1:N
     N_t_before = l*n(l)+ N_t_before;
 end
 N_t = round(N_t_before);
-%if N_t > 10.1
-%    disp('problem!');
-%end
+
 
 
 global include_flux
@@ -180,5 +180,8 @@ dn_dt = zeros(N+1,1);
         [dn_dt(i), metastatic] = rhs_i(i,n0,t);
         dn_dt(N+i) = metastatic;
         sum_dn_dt = sum_dn_dt + dn_dt(i);
+    end
+    if sum_dn_dt < 1e-6
+        return
     end
 end
