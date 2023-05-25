@@ -7,7 +7,7 @@ img1 = mpimg.imread('K_cst_IC_100_lam_0.01.png')
 img2 = mpimg.imread('K_cst_IC_100_lam_0.1.png')
 img3 = mpimg.imread('K_cst_IC_100_lam_1.png')
 img4 = mpimg.imread('K_cst_IC_100_lam_10.png')
-img5 = mpimg.imread('K_cst_IC_100_lam_100.png')
+img5 = mpimg.imread('K_cst_IC_100_lam_100_zoomed_out.png')
 
 
 #cols = ['q = {}'.format(col) for col in ['0.1', '0.01', '0.001']]

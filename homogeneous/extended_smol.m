@@ -81,7 +81,7 @@ global N
 % global d
 % global q
 b = 1;
-lambda = 0.01;
+lambda = 10;
 q = lambda/b;
 %scaling_q = 0;
 %for l = 1:100

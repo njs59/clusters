@@ -5,7 +5,7 @@ import matplotlib.image as mpimg
 
 img1 = mpimg.imread('K_cst_IC_10_t_1000.png')
 img2 = mpimg.imread('K_cst_IC_100_t_1000.png')
-img3 = mpimg.imread('K_cst_IC_100_t_1000.png')
+img3 = mpimg.imread('K_cst_IC_1000_t_1000.png')
 img4 = mpimg.imread('K_mult_IC_10_t_1000.png')
 img5 = mpimg.imread('K_mult_IC_100_t_100000_almost_steady_zoomed_out.png')
 img6 = mpimg.imread('K_mult_IC_1000_t_100000_almost_steady_zoomed_out.png')
@@ -14,8 +14,8 @@ img8 = mpimg.imread('K_diff_IC_100_t_1000.png')
 img9 = mpimg.imread('K_diff_IC_1000_t_1000.png')
 
 
-cols = ['q = {}'.format(col) for col in ['IC 10', 'IC 100', 'IC 1000']]
-rows = ['b = {}'.format(row) for row in ['K cst', 'K mult', 'K diff']]
+cols = ['IC = {}'.format(col) for col in ['10', '100', '1000']]
+rows = ['Kernel is {}'.format(row) for row in ['cst', 'mult', 'diff']]
 
 
 
