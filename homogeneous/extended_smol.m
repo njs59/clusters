@@ -49,7 +49,7 @@ n0(1) = 100;
 
 %% Running of solver
 tmin = 0;
-tmax = 400000;
+tmax = 10000;
 tspan = [tmin tmax];
 
 [t,n] = ode45(@ext_smol, tspan, n0);
@@ -81,7 +81,7 @@ global N
 % global d
 % global q
 b = 1;
-lambda = 0.1;
+lambda = 0.01;
 q = lambda/b;
 %scaling_q = 0;
 %for l = 1:100
