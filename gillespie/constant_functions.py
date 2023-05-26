@@ -15,7 +15,7 @@ def death_cst(death_proportion, N):
         sum = np.sum(prob_tot)
 
     for j in range(1, N+1):
-        death_cst[j-1] = (prob_tot[j-1]*death_proportion) * (1/sum)
+        death_cst[j-1] = 0*(prob_tot[j-1]*death_proportion) * (1/sum)
     # Plot current death constant
     plt.plot(death_cst)
     plt.show()
