@@ -40,7 +40,7 @@ function F = rhs(x)
         end
         for m = 1:i-1
             n = i-m;
-            sum_2 = sum_2 + 2*x(m)*x(n);
+            sum_2 = sum_2 + x(m)*x(n);
         end
         coag_i = sum_1 + sum_2;
 
@@ -54,7 +54,7 @@ function F = rhs(x)
     sum_2 = 0;
     for m = 1:i-1
         n = i-m;
-        sum_2 = sum_2 + 2*x(m)*x(n);
+        sum_2 = sum_2 + x(m)*x(n);
     end
     coag_cap = sum_1 + sum_2;
     shed_cap = -2*lam*x(cap);
