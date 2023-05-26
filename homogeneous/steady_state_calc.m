@@ -10,7 +10,7 @@ M=100;
 x = fsolve(fun,x0)
 bar(1:N, x)
 
-function F = rhs(x,lam)
+function F = rhs(x)
     global lambda
     lam = lambda;
     global N
@@ -38,10 +38,9 @@ function F = rhs(x,lam)
         for j = 1:cap-i
             sum_1 = sum_1 + -2*x(i)*x(j);
         end
-        for l = 1:i-1
-            for m = 1:i-l
-                sum_2 = sum_2 + x(l)*x(m);
-            end
+        for m = 1:i-1
+            n = i-m;
+            sum_2 = sum_2 + 2*x(m)*x(n);
         end
         coag_i = sum_1 + sum_2;
 
@@ -53,10 +52,9 @@ function F = rhs(x,lam)
     %% Calculation for max cluster size
     sum_1 = 0;
     sum_2 = 0;
-    for l = 1:i-1
-        for m = 1:i-l
-            sum_2 = sum_2 + x(l)*x(m);
-        end
+    for m = 1:i-1
+        n = i-m;
+        sum_2 = sum_2 + 2*x(m)*x(n);
     end
     coag_cap = sum_1 + sum_2;
     shed_cap = -2*lam*x(cap);
