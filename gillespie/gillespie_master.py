@@ -22,13 +22,13 @@ c_v = np.array(c_v)
 # Set the proportions of the events that are 
 # coagulations (b), mitosis (m), death (d), splitting (s)
 b_prop = 0.25
-m_prop = 0.25
-d_prop = 0.25
-s_prop = 0.25
+m_prop = 0
+d_prop = 0
+s_prop = 0
 
 # Set values for c_v for each type of event
 b_cst = b_prop/2500
-m_cst = m_prop/99
+m_cst = 0*m_prop/99
 d_cst = cst_fns.death_cst(d_prop, N)
 s_cst = s_prop/2500
 print

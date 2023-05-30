@@ -1,4 +1,4 @@
-function [] = population_plots(n,t,tspan, derivative_norm)
+function [] = population_plots(n,t,tspan, derivative_l2_norm)
     global N
     %figure(1)
     %plot(t,n(:,1), t,n(:,2), t,n(:,10), t,n(:,40))
@@ -73,11 +73,17 @@ function [] = population_plots(n,t,tspan, derivative_norm)
 
     figure(6)
     bar(1:N, n(end,1:N))
-    ylim([0 1000])
-    xlim([-1 1000])
+    ylim([0 0.45])
+    xlim([0 100])
     xlabel('Size of cluster') 
     ylabel('Number of clusters') 
     %legend('t = 1000', 't = 10000', 't = end', location = 'north')
     f = gcf;
     exportgraphics(f,'bar.png','Resolution',600);
+
+
+    figure(7)
+    loglog(t,derivative_l2_norm)
+    xlabel('time') 
+    ylabel('l2 norm of derivatives') 
 end

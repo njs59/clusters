@@ -1,6 +1,6 @@
 %% Set-up
 global N
-N = 1000;
+N = 100;
 
 %global q
 %q = 0.01;
@@ -45,11 +45,11 @@ shed_or_split = 1;
 % (set to allow for metastatic invasion)
 n0 = zeros(1,2*N);
 %n0(1:N) = 1;
-n0(1) = 1000;
+n0(1) = 10;
 
 %% Running of solver
 tmin = 0;
-tmax = 1000;
+tmax = 1000000;
 tspan = [tmin tmax];
 
 [t,n] = ode45(@ext_smol, tspan, n0);
@@ -81,7 +81,7 @@ global N
 % global d
 % global q
 b = 1;
-lambda = 0.1;
+lambda = 0;
 q = lambda/b;
 %scaling_q = 0;
 %for l = 1:100

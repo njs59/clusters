@@ -61,7 +61,7 @@ print(sum(IC))
 
 t_init = 0
 simulation_counter = 0
-simulation_max = 100
+simulation_max = 110
     
 psi_output = np.zeros((simulation_max + 1, N))
 t_output = np.zeros(simulation_max + 1)
@@ -102,7 +102,9 @@ print('T len', len(t_output))
 print('Total simulation time', total_simulation_time)
 print('Average single simulation time', average_single_sim_time)
 start_time_plot = time.time()
-gill_plt.animate_plot(psi_output, t_output)
+gill_plt.animate_plot(psi_output, t_output, simulation_max)
 end_time_plot = time.time()
 plotting_time = end_time_plot - start_time_plot
 print('Plotting time', plotting_time)
+
+gill_plt.animate_plot_mass(psi_output, t_output, simulation_max)
