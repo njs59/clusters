@@ -12,7 +12,12 @@ x = fsolve(fun,x0)
 bar(1:N, x)
 
 function F = rhs(x)
+    global N
     lam = 0.1;
+    b = 1;
+    %scaling = 1;
+    scaling = (floor(N/2)*ceil(N/2))/(floor(N/2)+ceil(N/2)); %Scaling for diffusion kernel
+    %scaling = floor(N/2)*ceil(N/2); %Scaling for multiplicative kernel
     global N
     global M
     cap = min(N,M);
@@ -20,7 +25,7 @@ function F = rhs(x)
     sum_1 = 0;
     sum_2 = 0;
     for j = 1:cap-1
-        sum_1 = sum_1 + -2*x(1)*x(j);
+        sum_1 = sum_1 + -B_ij(1,j,b,scaling)*x(1)*x(j);
     end
     coag_1 = sum_1 + sum_2;
 
@@ -36,11 +41,11 @@ function F = rhs(x)
         sum_1 = 0;
         sum_2 = 0;
         for j = 1:cap-i
-            sum_1 = sum_1 + -2*x(i)*x(j);
+            sum_1 = sum_1 + -B_ij(i,j,b,scaling)*x(i)*x(j);
         end
         for m = 1:i-1
             n = i-m;
-            sum_2 = sum_2 + x(m)*x(n);
+            sum_2 = sum_2 + (1/2)*B_ij(m,n,b,scaling)*x(m)*x(n);
         end
         coag_i = sum_1 + sum_2;
 
@@ -54,7 +59,7 @@ function F = rhs(x)
     sum_2 = 0;
     for m = 1:cap-1
         n = cap-m;
-        sum_2 = sum_2 + x(m)*x(n);
+        sum_2 = sum_2 + (1/2)*B_ij(m,n,b,scaling)*x(m)*x(n);
     end
     coag_cap = sum_1 + sum_2;
     shed_cap = -2*lam*x(cap);
@@ -68,3 +73,13 @@ function F = rhs(x)
     end
     F(cap+1) = alg_sum - M_star;
 end
+
+function out = B_ij(i,j,b,scaling)
+    % Need very small b constant
+    % WLOG b = 1
+    D_i = 1/i;
+    D_j = 1/j;
+    out = b*(1/scaling)*(1/(D_i+D_j));
+    %out = b*(1/scaling)*i*j;
+    %out = b*2;
+    end
