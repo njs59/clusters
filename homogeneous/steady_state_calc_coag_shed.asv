@@ -12,9 +12,12 @@ x = fsolve(fun,x0)
 bar(1:N, x)
 
 function F = rhs(x)
-    lam = 0.1;
+    global N
+    lam = 0.001;
     b = 1;
-    scaling = 1;
+    %scaling = 1;
+    %scaling = (floor(N/2)*ceil(N/2))/(floor(N/2)+ceil(N/2)); %Scaling for diffusion kernel
+    scaling = floor(N/2)*ceil(N/2); %Scaling for multiplicative kernel
     global N
     global M
     cap = min(N,M);
@@ -77,6 +80,19 @@ function out = B_ij(i,j,b,scaling)
     %D_i = 1/i;
     %D_j = 1/j;
     %out = b*(1/scaling)*(1/(D_i+D_j));
-    %out = b*(1/scaling)*i*j;
-    out = b*2;
+    out = b*(1/scaling)*i*j;
+    %out = b*2;
+end
+
+function scaling_factor = calc_scaling(N)
+    scaling_factor = 0
+    for i = 1:N
+        for j = 1:N
+            %scaling_factor = scaling_factor + 1; %Cst Kernel
+            scaling_factor = scaling_factor + (i*j)/(i+j); %Diffusion kernel
+            %scaling_factor = scaling_factor + i*j; %Mult kernel
+        end
     end
+end
+
+

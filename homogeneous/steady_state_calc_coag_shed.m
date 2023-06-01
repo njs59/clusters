@@ -13,13 +13,13 @@ bar(1:N, x)
 
 function F = rhs(x)
     global N
-    lam = 0.1;
+    global M
+    lam = 1;
     b = 1;
     %scaling = 1;
-    scaling = (floor(N/2)*ceil(N/2))/(floor(N/2)+ceil(N/2)); %Scaling for diffusion kernel
+    %scaling = (floor(N/2)*ceil(N/2))/(floor(N/2)+ceil(N/2)); %Scaling for diffusion kernel
     %scaling = floor(N/2)*ceil(N/2); %Scaling for multiplicative kernel
-    global N
-    global M
+    scaling = calc_scaling(N,1); % 1 for cst, 2 for diff, 3 for mult
     cap = min(N,M);
     %% Calculation for clusters of size 1
     sum_1 = 0;
@@ -77,9 +77,27 @@ end
 function out = B_ij(i,j,b,scaling)
     % Need very small b constant
     % WLOG b = 1
-    D_i = 1/i;
-    D_j = 1/j;
-    out = b*(1/scaling)*(1/(D_i+D_j));
+    %D_i = 1/i;
+    %D_j = 1/j;
+    %out = b*(1/scaling)*(1/(D_i+D_j));
     %out = b*(1/scaling)*i*j;
-    %out = b*2;
+    out = b*2;
+end
+
+function scaling_factor = calc_scaling(N,selection)
+    scaling_factor_sum = 0;
+    for i = 1:N
+        for j = 1:N
+            if selection == 1
+                scaling_factor_sum = scaling_factor_sum + 1; %Cst Kernel
+            elseif selection == 2
+                scaling_factor_sum = scaling_factor_sum + (i*j)/(i+j); %Diffusion kernel
+            elseif selection == 3
+                scaling_factor_sum = scaling_factor_sum + i*j; %Mult kernel
+            end
+        end
     end
+    scaling_factor = N*N/scaling_factor_sum;
+end
+
+
