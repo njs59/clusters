@@ -29,7 +29,7 @@ def animate_plot(psi, t, simulation_max):
             plt.clf()
         else:
             print ("values" + str(i) + ".jpg")
-            plt.savefig("plots_to_gif/value" + str(i) + ".jpg")
+            plt.savefig("plots_to_gif/values" + str(i) + ".jpg")
             plt.clf()
 
         # filepaths
@@ -77,7 +77,7 @@ def animate_plot_mass(psi, t, simulation_max):
             plt.clf()
         else:
             print ("mass_values" + str(i) + ".jpg")
-            plt.savefig("plots_to_gif/mass_value" + str(i) + ".jpg")
+            plt.savefig("plots_to_gif/mass_values" + str(i) + ".jpg")
             plt.clf()
 
         # filepaths

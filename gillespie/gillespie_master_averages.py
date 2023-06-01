@@ -10,7 +10,7 @@ import constant_functions as cst_fns
 
 # Global constants
 N = 100 # The maximal cluster size
-sim_num = 100 # The number of simulations
+sim_num = 500 # The number of simulations
 
 # Initialisation
 include_coagulation = True
@@ -61,7 +61,7 @@ print(sum(IC))
 
 t_init = 0
 simulation_counter = 0
-simulation_max = 110
+simulation_max = 150
     
 psi_output = np.zeros((simulation_max + 1, N))
 t_output = np.zeros(simulation_max + 1)

@@ -4,9 +4,9 @@ function shed = cluster_shedding(n,i,q,t)
         %global q
         s = 1;
         %s = exp(i*0.01)/q_scaling;
-        out = s*q;
+        out = s*q*i;
         % out = 1;
     end
-    %shed = S_i(i,q,t)*n(i);
-    shed = q*n(i);
+    shed = S_i(i,q,t)*n(i);
+    %shed = q*n(i);
 end

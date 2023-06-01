@@ -29,7 +29,7 @@ def set_initial_conditions(N, opt):
         IC = np.ones(N)
     
     if opt == 2:
-        IC[0] = 100
+        IC[0] = 120
 
     if opt == 3:
         # fig, ax = plt.subplots(1, 1)

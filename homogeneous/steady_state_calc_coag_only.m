@@ -1,7 +1,7 @@
 global N
 N=100;
 global M
-M=50;
+M=10;
 
 fun = @rhs;
 x0 = zeros(N,1);
