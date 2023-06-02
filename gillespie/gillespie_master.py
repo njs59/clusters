@@ -53,8 +53,8 @@ print('Length of c_v', len(c_v))
 print(min(c_v))
 print(c_v[0])
 
-
-IC = initial_conditions.set_initial_conditions(N,2)
+M = 100
+IC = initial_conditions.set_initial_conditions(N,2,M)
 print(IC)
 print(sum(IC))
 
@@ -82,4 +82,6 @@ while simulation_counter < simulation_max:
 print('Output', psi_output)
 print('Size', np.shape(psi_output))
 print('T len', len(t_output))
-gill_plt.animate_plot(psi_output, t_output)
+# gill_plt.animate_plot(psi_output, t_output, simulation_max)
+
+gill_plt.final_step_plot(psi_output, t_output, simulation_max)

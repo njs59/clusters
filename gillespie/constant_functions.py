@@ -17,8 +17,8 @@ def death_cst(death_proportion, N):
     for j in range(1, N+1):
         death_cst[j-1] = 0*(prob_tot[j-1]*death_proportion) * (1/sum)
     # Plot current death constant
-    plt.plot(death_cst)
-    plt.show()
+    # plt.plot(death_cst)
+    # plt.show()
     print('Sum', np.sum(death_cst))
     return death_cst
 
@@ -41,13 +41,13 @@ def coagulation_cst(coag_proportion, N):
         ## (i,j) now corresponds to the size of the 2 clusters to coagulate
         D_i = 1/i
         D_j = 1/j
-        prob_coag[index] = 1/(D_i +D_j)
+        prob_coag[index] = (D_i +D_j)
     
     sum_prob_coag = np.sum(prob_coag)
     coag_cst = coag_proportion * (prob_coag/sum_prob_coag)
 
-    plt.plot(coag_cst)
-    plt.show()
+    # plt.plot(coag_cst)
+    # plt.show()
     print('Sum', np.sum(coag_cst))
 
     return coag_cst

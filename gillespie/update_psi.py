@@ -34,40 +34,50 @@ def update_master(psi, index):
         if psi[i_python] <= 0 or psi[j_python] <= 0:
             print('Attempted to coagulate a cluster that does not exist')
         elif psi[i_python] == 1 and psi[j_python] == 1 and i_python == j_python:
-            print('Attempted to coagulate a cluster with itself')
+            psi = psi # Keep psi the same as we don't coagulate a cluster with itself
+            # print('Attempted to coagulate a cluster with itself')
         else:
             psi[i_python] -= 1 # Remove 1 cluster of size i
             psi[j_python] -= 1 # Remove 1 cluster of size j
             psi[ij_python] += 1 # Add 1 cluster of size i+j
 
     elif index in range(2500, 2599):
-        ## Mitosis update
-        psi[index - 2500] -= 1 # Remove 1 cluster of size i
-        psi[index - 2500 + 1] += 1 # Add 1 cluster of size i+1
-    elif index in range(2599, 2698):
         ## Death update
-        psi[index - 2599 + 1] -= 1 # Remove 1 cluster of size i
-        psi[index - 2599] += 1 # Add 1 cluster of size i-1
-    elif index in range(2698, 5198):
-        ## Splitting update
-        index_maths = index - 2698 + 1
-        i = 2
-        ticker = 1
-        while ticker < index_maths:
-            i += 1
-            ticker += math.floor(i/2)
-        else:
-            last_lower_i = i-1
-            last_lower = ticker - math.floor(i/2)
-            diff = index - 2698 + 1 - last_lower
-            j = diff
-        ## (i,j) now corresponds to cluster of size i splitting into clusters
-        # of sizes j & i-j where j <= i-j
-        i_python = i-1
-        j_python = j
-        psi[i_python] -= 1 # Remove 1 cluster of size i
-        psi[j_python] += 1 # Remove 1 cluster of size j
-        psi[i_python - j_python] += 1 # Add 1 cluster of size i-j
+        psi[index - 2500 + 1] -= 1 # Remove 1 cluster of size i
+        psi[index - 2500] += 1 # Add 1 cluster of size i-1
+        psi[0] += 1 # Add 1 cluster of size 1
+
+    elif index in range(2599, 2598):
+        ## Mitosis update
+        psi[index - 2599] -= 1 # Remove 1 cluster of size i
+        psi[index - 2599 + 1] += 1 # Add 1 cluster of size i+1
+    elif index in range(2698, 2797):
+        ## Death update
+        psi[index - 2698 + 1] -= 1 # Remove 1 cluster of size i
+        psi[index - 2698] += 1 # Add 1 cluster of size i-1
+    
+
+    ## Code for splitting fragmentation
+    # elif index in range(2698, 5198):
+    #     ## Splitting update
+    #     index_maths = index - 2698 + 1
+    #     i = 2
+    #     ticker = 1
+    #     while ticker < index_maths:
+    #         i += 1
+    #         ticker += math.floor(i/2)
+    #     else:
+    #         last_lower_i = i-1
+    #         last_lower = ticker - math.floor(i/2)
+    #         diff = index - 2698 + 1 - last_lower
+    #         j = diff
+    #     ## (i,j) now corresponds to cluster of size i splitting into clusters
+    #     # of sizes j & i-j where j <= i-j
+    #     i_python = i-1
+    #     j_python = j
+    #     psi[i_python] -= 1 # Remove 1 cluster of size i
+    #     psi[j_python] += 1 # Remove 1 cluster of size j
+    #     psi[i_python - j_python] += 1 # Add 1 cluster of size i-j
 
     return psi
         

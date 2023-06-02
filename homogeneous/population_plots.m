@@ -73,7 +73,7 @@ function [] = population_plots(n,t,tspan, derivative_l2_norm, n_change)
 
     figure(6)
     bar(1:N, n(end,1:N))
-    ylim([0 0.5])
+    ylim([0 2])
     xlim([0 100])
     xlabel('Size of cluster') 
     ylabel('Number of clusters') 

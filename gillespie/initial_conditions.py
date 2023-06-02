@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def set_initial_conditions(N, opt):
+def set_initial_conditions(N, opt, M):
     '''
     Returns the initial conditions psi_i for gillespie algorithm
 
@@ -16,6 +16,8 @@ def set_initial_conditions(N, opt):
         for opt = 1 we have constant I.C.
         for opt = 2 we have only clusters of size 1
         for opt = 3 we have exponential distribution of cluster sizes
+
+    M: for opt 2 M is number of inputted singletons
     
     Returns:
 
@@ -29,7 +31,7 @@ def set_initial_conditions(N, opt):
         IC = np.ones(N)
     
     if opt == 2:
-        IC[0] = 120
+        IC[0] = M
 
     if opt == 3:
         # fig, ax = plt.subplots(1, 1)

@@ -6,6 +6,22 @@ import glob
 import contextlib
 from PIL import Image
 
+
+def final_step_plot(psi, t, simulation_max):
+    n_max = np.max(psi)
+    # plots_number = simulation_max
+    x = range(1,101)
+    y = psi[-1,:]
+    plt.bar(x,y)
+    plt.savefig("plots_to_gif/final_plot" + ".jpg")
+    plt.xlabel('Cluster size')
+    plt.ylabel('Average number of clusters')
+    plt.clf()
+
+            
+
+
+
 def animate_plot(psi, t, simulation_max):
     n_max = np.max(psi)
     plots_number = simulation_max
@@ -24,12 +40,12 @@ def animate_plot(psi, t, simulation_max):
             plt.savefig("plots_to_gif/value" + str(0) + str(i) + ".jpg")
             plt.clf()
         elif 100 <= i < 110:
-            print ("values" + str(i) + ".jpg")
-            plt.savefig("plots_to_gif/values" + str(i) + ".jpg")
+            print ("value" + str(i) + ".jpg")
+            plt.savefig("plots_to_gif/value" + str(i) + ".jpg")
             plt.clf()
         else:
-            print ("values" + str(i) + ".jpg")
-            plt.savefig("plots_to_gif/values" + str(i) + ".jpg")
+            print ("value" + str(i) + ".jpg")
+            plt.savefig("plots_to_gif/value" + str(i) + ".jpg")
             plt.clf()
 
         # filepaths

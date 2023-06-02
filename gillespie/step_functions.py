@@ -73,29 +73,40 @@ def calc_hv(eqns, psi, N):
 
     else:
         for i in range(99):
-            h_v[2500 + i] = psi[i]
+            h_v[2500 + i] = psi[i+1]
         
         if eqns == 2599:
             return h_v
-        
+
         else:
             for i in range(99):
-                h_v[2599 + i] = psi[i+1]
-            
+                h_v[2599 + i] = psi[i]
+        
             if eqns == 2698:
                 return h_v
-            
+        
             else:
-                index = 0
-                for i in range(1,100):
-                    for j in range(0, math.floor((i+1)/2)):
-                        h_v[2698 + index] = psi[i]
-                        index += 1
-                
-                if eqns == 5198:
+                for i in range(99):
+                    h_v[2698 + i] = psi[i+1]
+            
+                if eqns == 2797:
                     return h_v
                 else:
                     logging.error('Incorrect number of equations in h_v: ' + eqns)
+
+                    
+            ## Old splitting code             
+            # else:
+            #     index = 0
+            #     for i in range(1,100):
+            #         for j in range(0, math.floor((i+1)/2)):
+            #             h_v[2698 + index] = psi[i]
+            #             index += 1
+                
+            #     if eqns == 5198:
+            #         return h_v
+            #     else:
+            #         logging.error('Incorrect number of equations in h_v: ' + eqns)
 
 
 def calc_av(eqns, h_v, c_v):
