@@ -42,10 +42,13 @@ def update_master(psi, index):
             psi[ij_python] += 1 # Add 1 cluster of size i+j
 
     elif index in range(2500, 2599):
-        ## Death update
-        psi[index - 2500 + 1] -= 1 # Remove 1 cluster of size i
-        psi[index - 2500] += 1 # Add 1 cluster of size i-1
-        psi[0] += 1 # Add 1 cluster of size 1
+        ## Shedding code
+        if psi[index - 2500 + 1] <=0:
+            print('Attempted to shed a cluster that does not exist')
+        else:
+            psi[index - 2500 + 1] -= 1 # Remove 1 cluster of size i
+            psi[index - 2500] += 1 # Add 1 cluster of size i-1
+            psi[0] += 1 # Add 1 cluster of size 1
 
     elif index in range(2599, 2598):
         ## Mitosis update
