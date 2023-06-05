@@ -13,12 +13,25 @@ def final_step_plot(psi, t, simulation_max):
     x = range(1,101)
     y = psi[-1,:]
     plt.bar(x,y)
-    plt.savefig("plots_to_gif/final_plot" + ".jpg")
     plt.xlabel('Cluster size')
     plt.ylabel('Average number of clusters')
+    plt.savefig("plots_to_gif/final_plot" + ".jpg")
     plt.clf()
 
-            
+def final_step_normalise_plot(psi, t, simulation_max):
+    n_max = np.max(psi)
+    # plots_number = simulation_max
+    x = range(1,101)
+    y_raw = psi[-1,:]
+    y_sum = np.sum(y_raw)
+    y = y_raw/y_sum
+    y_check = np.sum(y)
+    print('Check', y_check)
+    plt.bar(x,y)
+    plt.xlabel('Cluster size')
+    plt.ylabel('Normalised number of clusters')
+    plt.savefig("plots_to_gif/final_plot_normalised" + ".jpg")
+    plt.clf()            
 
 
 

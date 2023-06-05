@@ -1,26 +1,9 @@
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 from scipy.stats import expon
 
-#calculate probability that x is less than 50 when mean rate is 40
-def death_cst(death_proportion, N):
-    prob_an = np.zeros(N)
-    prob_ap = np.zeros(N)
-    prob_tot = np.zeros(N)
-    death_cst = np.zeros(N)
-    for i in range(1, N+1):
-        prob_an[i-1] = expon.cdf(x=i, scale=40) - expon.cdf(x=i-1, scale=40)
-        prob_ap[i-1] = expon.cdf(x= N - i + 1, scale=40) - expon.cdf(x= N - i + 1 - 1, scale=40)
-        prob_tot[i-1] = prob_an[i-1] + prob_ap[i-1]
-        sum = np.sum(prob_tot)
 
-    for j in range(1, N+1):
-        death_cst[j-1] = 0*(prob_tot[j-1]*death_proportion) * (1/sum)
-    # Plot current death constant
-    # plt.plot(death_cst)
-    # plt.show()
-    print('Sum', np.sum(death_cst))
-    return death_cst
 
 def coagulation_cst(coag_proportion, N):
     prob_coag = np.zeros(2500)
@@ -52,3 +35,51 @@ def coagulation_cst(coag_proportion, N):
 
     return coag_cst
 
+
+#
+def shed_cst(shed_proportion, N, shed_type):
+    shed_prop = np.zeros(99)
+    shed_prob = np.zeros(99)
+    shed_cst = np.zeros(99)
+    if shed_type == 1: #Constant dependence
+        for i in range(99):
+            shed_prob[i] = 1/99
+    if shed_type == 2: #Linear dependence
+        for i in range(99):
+            shed_prop[i] = i+1
+        shed_sum = np.sum(shed_prop)
+        for j in range(99):
+            shed_prob[j] = shed_prop[j]/shed_sum
+    if shed_type == 3: #Exponential dependence
+        for i in range(99):
+            shed_prop[i] = math.exp(i+1)
+        shed_sum = np.sum(shed_prop)
+        for j in range(99):
+            shed_prob[j] = shed_prop[j]/shed_sum
+
+    shed_cst = shed_proportion*shed_prob
+
+    return shed_cst
+
+
+
+
+#calculate probability that x is less than 50 when mean rate is 40
+def death_cst(death_proportion, N):
+    prob_an = np.zeros(N)
+    prob_ap = np.zeros(N)
+    prob_tot = np.zeros(N)
+    death_cst = np.zeros(N)
+    for i in range(1, N+1):
+        prob_an[i-1] = expon.cdf(x=i, scale=40) - expon.cdf(x=i-1, scale=40)
+        prob_ap[i-1] = expon.cdf(x= N - i + 1, scale=40) - expon.cdf(x= N - i + 1 - 1, scale=40)
+        prob_tot[i-1] = prob_an[i-1] + prob_ap[i-1]
+        sum = np.sum(prob_tot)
+
+    for j in range(1, N+1):
+        death_cst[j-1] = 0*(prob_tot[j-1]*death_proportion) * (1/sum)
+    # Plot current death constant
+    # plt.plot(death_cst)
+    # plt.show()
+    print('Sum', np.sum(death_cst))
+    return death_cst

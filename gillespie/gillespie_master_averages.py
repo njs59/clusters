@@ -11,7 +11,7 @@ import constant_functions as cst_fns
 ###################
 # Global constants
 N = 100 # The maximal cluster size
-sim_num = 100 # The number of simulations
+sim_num = 10000 # The number of simulations
 ###################
 
 
@@ -29,15 +29,17 @@ c_v = np.array(c_v)
 
 # Set the proportions of the events that are 
 # coagulations (b), mitosis (m), death (d), splitting (s)
-lam = 0.1
+lam = 0
 b_prop = 1
+s_prop = lam * b_prop
 m_prop = 0
 d_prop = 0
-s_prop = lam * b_prop
 
 # Set values for c_v for each type of event
 b_cst = cst_fns.coagulation_cst(b_prop, N)
-s_cst = s_prop/99
+print('b sum check', np.sum(b_cst))
+print('S prob', s_prop)
+s_cst = cst_fns.shed_cst(s_prop, N, 1) #3rd argument gives type of dependence (constant, linear, exponential)
 print('Shed cst', s_cst)
 
 m_cst = m_prop/99
@@ -50,15 +52,15 @@ if include_coagulation == True:
 
 if include_shedding ==True:
     for i in range(2500,2599,1):
-        c_v = np.append(c_v, s_cst)
+        c_v = np.append(c_v, s_cst[i-2500])
 
 if include_mitosis ==True:
-    for i in range(2500,2599,1):
+    for i in range(2599,2698,1):
         c_v = np.append(c_v, m_cst)
 
 if include_death ==True:
-    for i in range(2599,2698,1):
-        c_v = np.append(c_v, d_cst[i - 2599])
+    for i in range(2698,2797,1):
+        c_v = np.append(c_v, d_cst[i - 2698])
 
 # if include_splitting ==True:
 #     for i in range(2698,5198,1):
@@ -72,14 +74,14 @@ print(c_v[0])
 
 
 ##############################
-M = 100
+M = 120
 IC = initial_conditions.set_initial_conditions(N, 2, M)
 print(IC)
 print(sum(IC))
 
 t_init = 0
 simulation_counter = 0
-simulation_max = 1000
+simulation_max = 200
 ############################
 
 psi_output = np.zeros((simulation_max + 1, N))
@@ -109,6 +111,7 @@ for i in range(sim_num):
     print('Simulation', i, ' complete')
     simulation_counter = 0
 
+
 psi_output = psi_output/sim_num
 end_time = time.time()
 
@@ -129,3 +132,5 @@ print('Plotting time', plotting_time)
 # gill_plt.animate_plot_mass(psi_output, t_output, simulation_max)
 
 gill_plt.final_step_plot(psi_output, t_output, simulation_max)
+
+gill_plt.final_step_normalise_plot(psi_output, t_output, simulation_max)

@@ -12,30 +12,41 @@ N = 100 # The maximal cluster size
 
 # Initialisation
 include_coagulation = True
+include_shedding = True
+
 include_mitosis = False
 include_death = False
 include_splitting = False
+
 
 c_v = []
 c_v = np.array(c_v)
 
 # Set the proportions of the events that are 
 # coagulations (b), mitosis (m), death (d), splitting (s)
-b_prop = 0.25
+lam = 0
+b_prop = 1
+s_prop = lam * b_prop
 m_prop = 0
 d_prop = 0
-s_prop = 0
 
 # Set values for c_v for each type of event
-b_cst = b_prop/2500
-m_cst = 0*m_prop/99
+b_cst = cst_fns.coagulation_cst(b_prop, N)
+print('b sum check', np.sum(b_cst))
+s_cst = cst_fns.shed_cst(s_prop, N, 1) #3rd argument gives type of dependence (constant, linear, exponential)
+print('Shed cst', s_cst)
+
+m_cst = m_prop/99
 d_cst = cst_fns.death_cst(d_prop, N)
-s_cst = s_prop/2500
-print
+
 
 if include_coagulation == True:
     for i in range(2500):
-        c_v = np.append(c_v, b_cst)
+        c_v = np.append(c_v, b_cst[i])
+
+if include_shedding ==True:
+    for i in range(2500,2599,1):
+        c_v = np.append(c_v, s_cst[i])
 
 if include_mitosis ==True:
     for i in range(2500,2599,1):
@@ -45,13 +56,16 @@ if include_death ==True:
     for i in range(2599,2698,1):
         c_v = np.append(c_v, d_cst[i - 2599])
 
-if include_splitting ==True:
-    for i in range(2698,5198,1):
-        c_v = np.append(c_v, s_cst)
+# if include_splitting ==True:
+#     for i in range(2698,5198,1):
+#         c_v = np.append(c_v, s_cst)
+
+
 print(c_v)
 print('Length of c_v', len(c_v))
 print(min(c_v))
 print(c_v[0])
+
 
 M = 100
 IC = initial_conditions.set_initial_conditions(N,2,M)
