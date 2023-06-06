@@ -22,9 +22,14 @@ def coagulation_cst(coag_proportion, N):
             j = diff + last_lower_i
             # print('Value check', last_lower_i, last_lower, diff, j)
         ## (i,j) now corresponds to the size of the 2 clusters to coagulate
+        
+        ## Diffusion based kernel
         D_i = 1/i
         D_j = 1/j
         prob_coag[index] = (D_i +D_j)
+
+        ## Constant kernel
+        # prob_coag[index] = 1
     
     sum_prob_coag = np.sum(prob_coag)
     coag_cst = coag_proportion * (prob_coag/sum_prob_coag)
@@ -81,5 +86,5 @@ def death_cst(death_proportion, N):
     # Plot current death constant
     # plt.plot(death_cst)
     # plt.show()
-    print('Sum', np.sum(death_cst))
+    print('Sum death', np.sum(death_cst))
     return death_cst
