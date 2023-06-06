@@ -11,7 +11,7 @@ import constant_functions as cst_fns
 ###################
 # Global constants
 N = 100 # The maximal cluster size
-sim_num = 20 # The number of simulations
+sim_num = 10000 # The number of simulations
 ###################
 
 
