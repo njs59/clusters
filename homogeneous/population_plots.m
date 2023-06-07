@@ -87,7 +87,20 @@ function [] = population_plots(n,t,tspan, derivative_l2_norm, n_change)
     %xlabel('time') 
     %ylabel('l2 norm of derivatives') 
 
-    figure(8)
-    t_after = t(2:end);
-    loglog(t_after,n_change)
+    %figure(8)
+    %t_after = t(2:end);
+    %loglog(t_after,n_change)
+
+    figure(9)
+    psi_end = n(end,1:N);
+    psi_end_sum = sum(psi_end);
+    psi_end_normed = psi_end/psi_end_sum;
+    bar(1:N, psi_end_normed)
+    ylim([0 1])
+    xlim([0 100])
+    xlabel('Size of cluster') 
+    ylabel('Normed proportion of clusters') 
+    %legend('t = 1000', 't = 10000', 't = end', location = 'north')
+    f = gcf;
+    exportgraphics(f,'normed_bar.png','Resolution',600);
 end
