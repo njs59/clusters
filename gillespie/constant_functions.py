@@ -66,7 +66,7 @@ def shed_cst(shed_proportion, N, shed_type):
             shed_prob[j] = shed_prop[j]/shed_sum
     if shed_type == 4: #Power 2/3
         for i in range(99):
-            shed_prop[i] = i**(2)/100
+            shed_prop[i] = i**(2)
         shed_sum = np.sum(shed_prop)
         for j in range(99):
             shed_prob[j] = shed_prop[j]/shed_sum
