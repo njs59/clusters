@@ -29,7 +29,7 @@ c_v = np.array(c_v)
 
 # Set the proportions of the events that are 
 # coagulations (b), mitosis (m), death (d), splitting (s)
-lam = 0.1
+lam = 1
 b_prop = 1
 s_prop = lam * b_prop
 m_prop = 0
@@ -39,7 +39,7 @@ d_prop = 0
 b_cst = cst_fns.coagulation_cst(b_prop, N)
 print('b sum check', np.sum(b_cst))
 print('S prob', s_prop)
-s_cst = cst_fns.shed_cst(s_prop, N, 3) #3rd argument gives type of dependence (constant, linear, exponential)
+s_cst = cst_fns.shed_cst(s_prop, N, 4) #3rd argument gives type of dependence (constant, linear, exponential, 2/3 power)
 print('Shed cst', s_cst)
 
 m_cst = m_prop/99
@@ -81,7 +81,7 @@ print(sum(IC))
 
 t_init = 0
 simulation_counter = 0
-simulation_max = 300
+simulation_max = 1000
 ############################
 
 psi_output = np.zeros((simulation_max + 1, N))
@@ -134,3 +134,6 @@ print('Plotting time', plotting_time)
 gill_plt.final_step_plot(psi_output, t_output, simulation_max)
 
 gill_plt.final_step_normalise_plot(psi_output, t_output, simulation_max)
+
+gill_plt.final_step_mass_plot(psi_output, t_output, simulation_max)
+

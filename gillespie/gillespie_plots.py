@@ -33,6 +33,23 @@ def final_step_normalise_plot(psi, t, simulation_max):
     plt.savefig("plots_to_gif/final_plot_normalised" + ".jpg")
     plt.clf()            
 
+def final_step_mass_plot(psi, t, simulation_max):
+    n_max = np.max(psi)
+    # plots_number = simulation_max
+    x = range(1,101)
+    y_raw = psi[-1,:]
+    y_mass = np.zeros(100)
+    for i in range(100):
+        y_mass[i] = (i+1)*y_raw[i]
+    y_sum = np.sum(y_mass)
+    y = y_mass/y_sum
+    y_check = np.sum(y)
+    print('Check', y_check)
+    plt.bar(x,y)
+    plt.xlabel('Cluster size')
+    plt.ylabel('Chance cell is in cluster')
+    plt.savefig("plots_to_gif/final_plot_mass" + ".jpg")
+    plt.clf()   
 
 
 def animate_plot(psi, t, simulation_max):
