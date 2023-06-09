@@ -11,7 +11,7 @@ import constant_functions as cst_fns
 ###################
 # Global constants
 N = 100 # The maximal cluster size
-sim_num = 10000 # The number of simulations
+sim_num = 1000 # The number of simulations
 ###################
 
 
@@ -74,14 +74,14 @@ print(c_v[0])
 
 
 ##############################
-M = 300
+M = 5000
 IC = initial_conditions.set_initial_conditions(N, 2, M)
 print(IC)
 print(sum(IC))
 
 t_init = 0
 simulation_counter = 0
-simulation_max = 500
+simulation_max = 6000
 ############################
 
 psi_output = np.zeros((simulation_max + 1, N))

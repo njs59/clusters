@@ -24,15 +24,15 @@ def coagulation_cst(coag_proportion, N):
         ## (i,j) now corresponds to the size of the 2 clusters to coagulate
         
         ## Diffusion based kernel
-        D_i = 1/i
-        D_j = 1/j
-        prob_coag[index] = (D_i +D_j)
+        # D_i = 1/i
+        # D_j = 1/j
+        # prob_coag[index] = (D_i +D_j)
 
         ## Constant kernel
         # prob_coag[index] = 1
 
         ## Multiplicative kernel
-        # prob_coag[index] = i*j
+        prob_coag[index] = i*j
     
     sum_prob_coag = np.sum(prob_coag)
     coag_cst = coag_proportion * (prob_coag/sum_prob_coag)
