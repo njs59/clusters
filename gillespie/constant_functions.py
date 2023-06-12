@@ -24,15 +24,15 @@ def coagulation_cst(coag_proportion, N):
         ## (i,j) now corresponds to the size of the 2 clusters to coagulate
         
         ## Diffusion based kernel
-        # D_i = 1/i
-        # D_j = 1/j
-        # prob_coag[index] = (D_i +D_j)
+        D_i = 1/i
+        D_j = 1/j
+        prob_coag[index] = (D_i +D_j)
 
         ## Constant kernel
         # prob_coag[index] = 1
 
         ## Multiplicative kernel
-        prob_coag[index] = i*j
+        # prob_coag[index] = i*j
     
     sum_prob_coag = np.sum(prob_coag)
     coag_cst = coag_proportion * (prob_coag/sum_prob_coag)
@@ -66,7 +66,7 @@ def shed_cst(shed_proportion, N, shed_type):
             shed_prob[j] = shed_prop[j]/shed_sum
     if shed_type == 4: #Power 2/3
         for i in range(99):
-            shed_prop[i] = i**(2)
+            shed_prop[i] = i**(2/3)
         shed_sum = np.sum(shed_prop)
         for j in range(99):
             shed_prob[j] = shed_prop[j]/shed_sum

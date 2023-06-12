@@ -221,59 +221,83 @@ img5 = mpimg.imread('plots_to_gif/coag_only/cst_kernel/coag_cst_IC_100_num_sims_
 img6 = mpimg.imread('plots_to_gif/coag_only/cst_kernel/coag_cst_IC_120_num_sims_10000_steps_200.jpg')
 img7 = mpimg.imread('plots_to_gif/coag_only/cst_kernel/coag_cst_IC_200_num_sims_1000_steps_1000.jpg')
 img8 = mpimg.imread('plots_to_gif/coag_only/cst_kernel/coag_cst_IC_5000_num_sims_1000_steps_6000.jpg')
+img9 = mpimg.imread('plots_to_gif/coag_only/mult_kernel/coag_mult_IC_100_num_sims_1000_steps_120.jpg')
+img10 = mpimg.imread('plots_to_gif/coag_only/mult_kernel/coag_mult_IC_120_num_sims_1000_steps_200.jpg')
+img11 = mpimg.imread('plots_to_gif/coag_only/mult_kernel/coag_mult_IC_200_num_sims_1000_steps_300.jpg')
+img12 = mpimg.imread('plots_to_gif/coag_only/mult_kernel/coag_mult_IC_5000_num_sims_1000_steps_6000.jpg')
 
 rows = ['Average number of clusters']
 
 
 
-fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(16, 9))
+fig, axes = plt.subplots(nrows=3, ncols=4, figsize=(16, 9))
 
 
 for ax, row in zip(axes[:,0], rows):
     ax.set_ylabel(row, rotation=90, size='large')
 
 
-plt.subplot(2,4,1)
+plt.subplot(3,4,1)
 plt.title('Diffusion kernel IC = 100')
 plt.imshow(img1)
 plt.axis('off')
 
-plt.subplot(2,4,2)
+plt.subplot(3,4,2)
 plt.title('Diffusion kernel IC = 120')
 plt.imshow(img2)
 plt.axis('off')
 
-plt.subplot(2,4,3)
+plt.subplot(3,4,3)
 plt.title('Diffusion kernel IC = 200')
 plt.imshow(img3)
 plt.axis('off')
 
-plt.subplot(2,4,4)
+plt.subplot(3,4,4)
 plt.title('Diffusion kernel IC = 5000')
 plt.imshow(img4)
 plt.axis('off')
 
-plt.subplot(2,4,5)
+plt.subplot(3,4,5)
 plt.title('Constant kernel IC = 100')
 plt.imshow(img5)
 plt.axis('off')
 
-plt.subplot(2,4,6)
+plt.subplot(3,4,6)
 plt.title('Constant kernel IC = 120')
 plt.imshow(img6)
 plt.axis('off')
 
-plt.subplot(2,4,7)
+plt.subplot(3,4,7)
 plt.title('Constant kernel IC = 200')
 plt.imshow(img7)
 plt.axis('off')
 
-plt.subplot(2,4,8)
+plt.subplot(3,4,8)
 plt.title('Constant kernel IC = 5000')
 plt.imshow(img8)
 plt.axis('off')
 
-plt.savefig("plots_to_gif/IC_sweep_coag_only_compare_kernels" + ".jpg")
+plt.subplot(3,4,9)
+plt.title('Multiplicative kernel IC = 100')
+plt.imshow(img9)
+plt.axis('off')
+
+plt.subplot(3,4,10)
+plt.title('Multiplicative kernel IC = 120')
+plt.imshow(img10)
+plt.axis('off')
+
+plt.subplot(3,4,11)
+plt.title('Multiplicative kernel IC = 200')
+plt.imshow(img11)
+plt.axis('off')
+
+plt.subplot(3,4,12)
+plt.title('Multiplicative kernel IC = 5000')
+plt.imshow(img12)
+plt.axis('off')
+
+plt.savefig("plots_to_gif/IC_sweep_coag_only_compare_kernels_3" + ".jpg")
 
 
 
