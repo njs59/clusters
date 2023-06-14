@@ -303,10 +303,14 @@ plt.savefig("plots_to_gif/IC_sweep_coag_only_compare_kernels_3" + ".jpg")
 
 
 
-img1 = mpimg.imread('plots_to_gif/coag_shed/coag_shed_lam_1_IC_120_num_sims_1000_steps_200.jpg')
-img2 = mpimg.imread('plots_to_gif/coag_shed/coag_shed_lam_0.1_IC_120_num_sims_1000_steps_200.jpg')
-img3 = mpimg.imread('plots_to_gif/coag_shed/coag_shed_lam_0.01_IC_120_num_sims_1000_steps_200.jpg')
-img4 = mpimg.imread('plots_to_gif/coag_only/coag_IC_120_num_sims_1000_steps_500.jpg')
+img1 = mpimg.imread('plots_to_gif/coag_shed_final/norm_lam_0.01_cst_shed_IC_200_steps_300_num_sims_1000.jpg')
+img2 = mpimg.imread('plots_to_gif/coag_shed_final/norm_lam_0.1_cst_shed_IC_200_steps_300_num_sims_1000.jpg')
+img3 = mpimg.imread('plots_to_gif/coag_shed_final/norm_lam_1_cst_shed_IC_200_steps_300_num_sims_1000.jpg')
+img4 = mpimg.imread('plots_to_gif/coag_shed_final/norm_lam_10_cst_shed_IC_200_steps_300_num_sims_1000.jpg')
+img5 = mpimg.imread('plots_to_gif/coag_shed_final/norm_lam_0.01_surf_area_shed_IC_200_steps_300_num_sims_1000.jpg')
+img6 = mpimg.imread('plots_to_gif/coag_shed_final/norm_lam_0.1_surf_area_shed_IC_200_steps_300_num_sims_1000.jpg')
+img7 = mpimg.imread('plots_to_gif/coag_shed_final/norm_lam_1_surf_area_shed_IC_200_steps_300_num_sims_1000.jpg')
+img8 = mpimg.imread('plots_to_gif/coag_shed_final/norm_lam_10_surf_area_shed_IC_200_steps_300_num_sims_1000.jpg')
 
 
 
@@ -317,35 +321,56 @@ rows = ['Average number of clusters']
 
 
 
-fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(9, 9))
+fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(16, 9))
 
 
 for ax, row in zip(axes[:,0], rows):
     ax.set_ylabel(row, rotation=90, size='large')
 
 
-plt.subplot(2,2,1)
-plt.title('lambda = 1')
+plt.subplot(2,4,1)
+plt.title('lambda = 0.01')
 plt.imshow(img1)
 plt.axis('off')
 
-plt.subplot(2,2,2)
+plt.subplot(2,4,2)
 plt.title('lambda = 0.1')
 plt.imshow(img2)
 plt.axis('off')
 
-plt.subplot(2,2,3)
-plt.title('lambda = 0.01')
+plt.subplot(2,4,3)
+plt.title('lambda = 1')
 plt.imshow(img3)
 plt.axis('off')
 
-plt.subplot(2,2,4)
-plt.title('lambda = 0')
+plt.subplot(2,4,4)
+plt.title('lambda = 10')
 plt.imshow(img4)
+plt.axis('off')
+
+plt.subplot(2,4,5)
+plt.title('lambda = 0.01')
+plt.imshow(img5)
+plt.axis('off')
+
+plt.subplot(2,4,6)
+plt.title('lambda = 0.1')
+plt.imshow(img6)
+plt.axis('off')
+
+plt.subplot(2,4,7)
+plt.title('lambda = 1')
+plt.imshow(img7)
+plt.axis('off')
+
+plt.subplot(2,4,8)
+plt.title('lambda = 10')
+plt.imshow(img8)
 plt.axis('off')
 
 
 
-plt.savefig("plots_to_gif/lambda_sweep_coag_diff" + ".jpg")
+plt.savefig("plots_to_gif/lam_sweep" + ".jpg")
+
 
 plt.show()

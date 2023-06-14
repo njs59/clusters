@@ -29,7 +29,7 @@ c_v = np.array(c_v)
 
 # Set the proportions of the events that are 
 # coagulations (b), mitosis (m), death (d), splitting (s)
-lam = 1
+lam = 0.01
 b_prop = 1
 s_prop = lam * b_prop
 m_prop = 0
@@ -81,7 +81,7 @@ print(sum(IC))
 
 t_init = 0
 simulation_counter = 0
-simulation_max = 1000
+simulation_max = 300
 ############################
 
 psi_output = np.zeros((simulation_max + 1, N))
