@@ -1,12 +1,15 @@
 function [] = population_plots(n,t,tspan, derivative_l2_norm, n_change)
     global N
-    %figure(1)
-    %plot(t,n(:,1), t,n(:,2), t,n(:,10), t,n(:,40))
-    %xlabel('time') 
-    %ylabel('Number of clusters')
-    %xlim([0 2])
-    %ylim([0 60])
-    %legend('n=1', 'n=2', 'n=10', 'n=40')
+    figure(1)
+    plot(t,n(:,1), t,n(:,2), t,n(:,3), t,n(:,5), t,n(:,10))
+    xlabel('time') 
+    ylabel('Number of clusters')
+    xlim([0 0.2])
+    ylim([0 40])
+    legend('n=1', 'n=2', 'n=3', 'n=5', 'n=10')
+    f = gcf;
+    exportgraphics(f,'individual_cluster_size.png','Resolution',600);
+
 
     figure(2)
     
@@ -96,7 +99,7 @@ function [] = population_plots(n,t,tspan, derivative_l2_norm, n_change)
     psi_end_sum = sum(psi_end);
     psi_end_normed = psi_end/psi_end_sum;
     bar(1:N, psi_end_normed)
-    ylim([0 1])
+    ylim([0 0.06])
     xlim([0 100])
     xlabel('Size of cluster') 
     ylabel('Normed proportion of clusters') 

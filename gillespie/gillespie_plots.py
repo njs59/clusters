@@ -51,6 +51,37 @@ def final_step_mass_plot(psi, t, simulation_max):
     plt.savefig("plots_to_gif/final_plot_mass" + ".jpg")
     plt.clf()   
 
+def final_step_mass_hist(psi, t, simulation_max, sim_num):
+    n_max = np.max(psi)
+    # plots_number = simulation_max
+    x = range(1,101,5)
+    y_raw = psi[-1,:]
+    print('y raw', y_raw)
+    y_raw_scale = sim_num*y_raw
+    hist_values = []
+    for k in range (100):
+        count = y_raw_scale[k]
+        count_round = round(count)
+        for l in range(count_round*(k+1)):
+            hist_values.append(k+1)
+            #print('l', l)
+
+    #y_mass = np.zeros(20)
+    #for j in range(20):
+    #    for i in range(5):
+    #        y_mass[j] = (5*j+i+1)*y_raw[5*j+i]
+    #y_sum = np.sum(y_mass)
+    #y = y_mass/y_sum
+    #y_check = np.sum(y)
+    #print('Check', y_check)
+    print('Hist values', hist_values)
+    plt.hist(hist_values, bins=20, density=True)
+    #plt.bar(x,y)
+    plt.xlabel('Cluster size')
+    plt.ylabel('Chance cell is in cluster')
+    plt.savefig("plots_to_gif/final_plot_mass_hist" + ".jpg")
+    plt.clf()  
+
 
 def animate_plot(psi, t, simulation_max):
     n_max = np.max(psi)

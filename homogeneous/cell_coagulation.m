@@ -2,17 +2,17 @@ function coagulation = cell_coagulation(n,i,b,t,N_t,N)
     function out = B_ij(i,j,b,scaling,t)
         % Need very small b constant
         % WLOG b = 1
-        D_i = 1/i;
-        D_j = 1/j;
-        out = b*(1/scaling)*(D_i+D_j);
+        %D_i = 1/i;
+        %D_j = 1/j;
+        %out = b*(1/scaling)*(D_i+D_j);
         %out = b*(1/scaling)*i*j;
-        %out = b*1;
+        out = b*1;
     end
 
 % Coagulation term calculation
-    scaling = (floor(N/2)+ceil(N/2))/(floor(N/2)*ceil(N/2)); %Scaling for diffusion kernel
+    %scaling = (floor(N/2)+ceil(N/2))/(floor(N/2)*ceil(N/2)); %Scaling for diffusion kernel
     %scaling = floor(N/2)*ceil(N/2); %Scaling for multiplicative kernel
-    %scaling = 1;
+    scaling = 1;
     %if i == 11
     %    disp('Hit!')
     %end

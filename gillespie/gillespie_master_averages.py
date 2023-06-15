@@ -29,7 +29,7 @@ c_v = np.array(c_v)
 
 # Set the proportions of the events that are 
 # coagulations (b), mitosis (m), death (d), splitting (s)
-lam = 0.01
+lam = 1
 b_prop = 1
 s_prop = lam * b_prop
 m_prop = 0
@@ -137,3 +137,4 @@ gill_plt.final_step_normalise_plot(psi_output, t_output, simulation_max)
 
 gill_plt.final_step_mass_plot(psi_output, t_output, simulation_max)
 
+gill_plt.final_step_mass_hist(psi_output, t_output, simulation_max, sim_num)
