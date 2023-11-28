@@ -39,7 +39,7 @@ d_prop = 0
 b_cst = cst_fns.coagulation_cst(b_prop, N)
 print('b sum check', np.sum(b_cst))
 print('S prob', s_prop)
-s_cst = cst_fns.shed_cst(s_prop, N, 4) #3rd argument gives type of dependence (constant, linear, exponential, 2/3 power)
+s_cst = cst_fns.shed_cst(s_prop, N, 1) #3rd argument gives type of dependence (constant, linear, exponential, 2/3 power)
 print('Shed cst', s_cst)
 
 m_cst = m_prop/99

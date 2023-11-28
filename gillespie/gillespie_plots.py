@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import scipy as sci
 
 import glob
 import contextlib
@@ -80,6 +81,8 @@ def final_step_mass_hist(psi, t, simulation_max, sim_num):
     plt.xlabel('Cluster size')
     plt.ylabel('Chance cell is in cluster')
     plt.savefig("plots_to_gif/final_plot_mass_hist" + ".jpg")
+    iqr = sci.stats.iqr(hist_values)
+    print('iqr', iqr)
     plt.clf()  
 
 
