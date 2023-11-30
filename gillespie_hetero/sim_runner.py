@@ -44,9 +44,14 @@ plt.xlabel('Cluster size')
 plt.show()
 plt.clf()
 
-#df.to_csv('data2.csv', index=False, header=False)
+df.to_csv('data2.csv', index=False, header=False)
 
+import csv
 
+with open('data2.csv', newline='') as csvfile:
+    data_numerical = list(csv.reader(csvfile))
+
+print(data_numerical)
 
 # # gill_plt.animate_plot_mass(psi_output, t_output, simulation_max)
 
