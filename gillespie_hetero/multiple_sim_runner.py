@@ -53,7 +53,7 @@ plt.xlabel('Cluster size')
 plt.show()
 plt.clf()
 
-df.to_csv('data2.csv', index=False, header=False)
+df.to_csv('data_multiple.csv', index=False, header=False)
 
 import csv
 
