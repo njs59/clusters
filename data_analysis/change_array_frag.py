@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 from scipy.ndimage import *
+from skimage import measure
 from pylab import arange
 
 ## These are outputs of the basic abm with 0.5 prob_move and 0 prob_prolif with addition to have a fragmentation event
@@ -57,5 +59,19 @@ labeled_array, num_features = label(arr_1)
 print(labeled_array)
 print(num_features)
 
-area = measurements.sum(arr_1, labeled_array, index=arange(labeled_array.max() + 1))
+area = sum(arr_1, labeled_array, index=arange(labeled_array.max() + 1))
 areaImg = area[labeled_array]
+
+
+
+###################### timepoints_3D_array code below  ########################
+print(arr_1.shape)
+labeled_0 = measure.label(arr_1[:, :])
+props_0 = measure.regionprops_table(
+        labeled_0, properties=('label', 'area', 'bbox'))
+props_0_df = pd.DataFrame(props_0)
+props_0_df = props_0_df.sort_values('area', ascending=False)
+# Show top five rows
+print(props_0_df.shape)
+# props_0_df.head()
+print(props_0_df)
