@@ -1,20 +1,18 @@
-from osgeo import gdal as GD
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import time
 
-import cv2
+
 import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
-import os
-from skimage import io
-from PIL import Image
 
 from pylab import *
 from scipy.ndimage import *
 
 import read_tif_file as tif
 import pre_pro_operators as pre_oper
+
+t_before = time.time()
 
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 
@@ -26,7 +24,7 @@ folder_3 = 'sphere_timelapse/'
 
 fileID = '.tif'
 
-time_array = range(21,31)
+time_array = range(1,98)
 
 time_list = [str(x).zfill(2) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
@@ -35,7 +33,7 @@ well_loc = 's11'
 
 threshold = 0.66
 min_clus_size = 20
-use_existing_file = True
+use_existing_file = False
 
 
 
@@ -55,7 +53,7 @@ if use_existing_file == False:
 
     tf_bool_3D = pre_oper.threshold_arr(raw_arr_3D, threshold)
 
-    print(tf_bool_3D)
+    # print(tf_bool_3D)
     print(tf_bool_3D.shape)
 
 else:
@@ -71,8 +69,10 @@ else:
 
 
 ######### Adapt array ################
-
+t_mid = time.time()
 for i in range(len(time_array)):
+
+    t_step_before = time.time()
 
     current_array_holes = tf_bool_3D[:,:,i]
 
@@ -80,8 +80,8 @@ for i in range(len(time_array)):
 
     label_arr, num_clus = label(current_array)
 
-    plt.imshow(label_arr, interpolation=None)
-    plt.show()
+    # plt.imshow(label_arr, interpolation=None)
+    # plt.show()
 
     area_list = sum(current_array, label_arr, index=arange(label_arr.max() + 1))
 
@@ -92,21 +92,30 @@ for i in range(len(time_array)):
 
     applyall = np.vectorize(update_arr)
     area_slice = applyall(area_arr)
-    plt.imshow(area_slice, interpolation=None)
-    plt.show()
-    print(area_slice)
+    # plt.imshow(area_slice, interpolation=None)
+    # plt.show()
 
 
  
     df = pd.DataFrame(area_slice)
     csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '.csv'
     csv_name_list_2  =''.join(csv_name_list)
-    print(csv_name_list_2)
     df.to_csv(csv_name_list_2)
 
+    t_step_after = time.time()
+
+    t_step = t_step_after - t_step_before
+
+    print('Time for step', i, t_step)
 
 
 
+t_after = time.time()
 
+t_tot = t_after - t_before
+t_arr_manip = t_after - t_mid
+
+print('Total time to run', t_tot)
+print('Time from 3D array to final output', t_arr_manip)
 
     
