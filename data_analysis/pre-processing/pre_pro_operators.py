@@ -1,26 +1,15 @@
 import numpy as np
 
-def threshold_arr(img_1):
-    im_1_adapted = np.zeros((img_1.shape[1],img_1.shape[2]))
-    for j in range(img_1.shape[1]):
-      for k in range(img_1.shape[2]):
-        ## Main diffferences are in the green channel
-        value = img_1[(0,j,k)]
-        im_1_adapted[(j,k)] = value
+def threshold_arr(tf_array, threshold):
+    tf_ad = tf_array
+    for p in range(tf_array.shape[0]):
+      for q in range(tf_array.shape[1]):
+        for r in range(tf_array.shape[2]):
+            if tf_array[(p,q,r)] > threshold:
+                tf_ad[(p,q,r)] = 1
+            else:
+                tf_ad[(p,q,r)] = 0
 
-
-    max_val = img_1.max()
-    for l in range(img_1.shape[1]):
-      for m in range(img_1.shape[2]):
-        im_1_adapted[(l,m)] = im_1_adapted[(l,m)]/max_val
-
-
-    tf_array_bool = np.array(tf_array, dtype = bool)
-
-    if i == 0:
-      main_array = tf_array_bool
-
-    else:
-      print(i)
-      main_array = np.dstack((main_array, tf_array_bool))
-      print(main_array.shape)
+    # tf_array_bool = np.array(tf_ad, dtype = bool)
+    tf_array_bool = tf_ad
+    return tf_array_bool

@@ -15,6 +15,7 @@ from scipy.ndimage import measurements
 from scipy.ndimage import *
 
 import read_tif_file as tif
+import pre_pro_operators as pre_oper
 
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 
@@ -34,4 +35,8 @@ well_loc = 's11'
 
 raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID)
 
-print(raw_arr_3D.shape())
+threshold = 0.66
+tf_bool_holes = pre_oper.threshold_arr(raw_arr_3D, threshold)
+
+print(tf_bool_holes)
+print(tf_bool_holes.shape)
