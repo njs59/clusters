@@ -42,7 +42,7 @@ for i in range(len(time_list)):
     print(area_2D_current)
 
 
-    df_step.iloc[:, 1] = area_2D_current
+    df_step.iloc[:,1] = area_2D_current
     df_step.iloc[:,2] = centres_2D_current[:,0].tolist()
     df_step.iloc[:,3] = centres_2D_current[:,1].tolist()
     df_step.iloc[:,6] = time_list[i]
