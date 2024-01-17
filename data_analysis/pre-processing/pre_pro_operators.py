@@ -38,3 +38,24 @@ def threshold_arr(tf_array, threshold):
 
 
     return tf_array_bool
+
+
+def remove_fragments(area, num_clus, min_clus_size):
+    ## Get a list of indexes for slice of array that correspond to large enough to be considered a cluster
+
+    index_to_del = np.argwhere(area < min_clus_size)
+    area_new = np.delete(area, index_to_del)
+
+    # print(lw)
+    print(area_new)
+
+
+    # print(index_to_del)
+
+    index_keep = np.arange(num_clus+1)
+    for i in range(len(index_to_del)):
+        index_keep = np.delete(index_keep, np.where(index_keep == index_to_del[i]))
+
+    print(index_keep)
+
+    return area_new, index_keep
