@@ -4,8 +4,6 @@ import pandas as pd
 import time
 
 
-import matplotlib.pyplot as plt
-
 from pylab import *
 from scipy.ndimage import *
 
@@ -26,6 +24,7 @@ fileID = '.tif'
 
 time_array = range(1,98)
 
+# Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
 
@@ -100,7 +99,7 @@ for i in range(len(time_array)):
     df = pd.DataFrame(area_slice)
     csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '.csv'
     csv_name_list_2  =''.join(csv_name_list)
-    df.to_csv(csv_name_list_2)
+    df.to_csv(csv_name_list_2, index=False, header=False)
 
     t_step_after = time.time()
 
