@@ -33,10 +33,23 @@ time_list = [str(x).zfill(2) for x in time_array]
 
 well_loc = 's11'
 
-raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID)
+use_existing_file = False
 
-threshold = 0.66
-tf_bool_holes = pre_oper.threshold_arr(raw_arr_3D, threshold)
+if use_existing_file == False:
+    raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID)
 
-print(tf_bool_holes)
-print(tf_bool_holes.shape)
+    threshold = 0.66
+    tf_bool_3D = pre_oper.threshold_arr(raw_arr_3D, threshold)
+
+    print(tf_bool_3D)
+    print(tf_bool_3D.shape)
+
+else:
+    # retrieving data from file.
+    loaded_arr = np.loadtxt("/Users/Nathan/Documents/Oxford/DPhil/test_3D.txt")
+    
+    tf_bool_3D = loaded_arr.reshape(
+        loaded_arr.shape[0], loaded_arr.shape[1] // len(time_list), len(time_list))
+    
+    # check the shapes:
+    print("shape of arr: ", tf_bool_3D.shape)
