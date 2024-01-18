@@ -25,8 +25,11 @@ for i in range(len(time_list)):
     df = pd.read_csv(csv_name_list_2)
 
     array_area_current_time = df.to_numpy()
+    
+    ##### Re-binarize array
+    slice_binary = np.where(array_area_current_time>0)
 
-    label_arr, num_clus = label(array_area_current_time)
+    label_arr, num_clus = label(slice_binary)
 
     df_step = pd.DataFrame(np.nan, index=range(num_clus), columns=cols)
 
