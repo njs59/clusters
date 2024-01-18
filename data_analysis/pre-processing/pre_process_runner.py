@@ -4,6 +4,10 @@ import pandas as pd
 import time
 
 
+import matplotlib.animation as animation
+from IPython import display
+
+
 from pylab import *
 from scipy.ndimage import *
 
@@ -22,7 +26,7 @@ folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
-time_array = range(71,74)
+time_array = range(21,31)
 
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
@@ -89,8 +93,8 @@ for i in range(len(time_array)):
 
     label_arr, num_clus = label(current_array)
 
-    plt.imshow(label_arr, interpolation=None)
-    plt.show()
+    # plt.imshow(label_arr, interpolation=None)
+    # plt.show()
 
     area_list = sum(current_array, label_arr, index=arange(label_arr.max() + 1))
 
@@ -101,8 +105,8 @@ for i in range(len(time_array)):
 
     applyall = np.vectorize(update_arr)
     area_slice = applyall(area_arr)
-    plt.imshow(area_slice, interpolation=None)
-    plt.show()
+    # plt.imshow(area_slice, interpolation=None)
+    # plt.show()
 
     ##### Re-binarize array
     slice_binary = np.where(area_slice>0)
@@ -121,6 +125,9 @@ for i in range(len(time_array)):
     area_csv_name_list_2  =''.join(area_csv_name_list)
     df_index.to_csv(area_csv_name_list_2, index=False, header=False)
 
+    cluster_areas = pre_oper.save_clus_areas(i, area_new, cluster_areas)
+
+
     t_step_after = time.time()
 
     t_step = t_step_after - t_step_before
@@ -136,5 +143,25 @@ t_arr_manip = t_after - t_mid
 
 print('Total time to run', t_tot)
 print('Time from 3D array to final output', t_arr_manip)
+
+
+
+number_of_frames = len(time_list)
+data = cluster_areas
+fig = plt.figure()
+hist = plt.hist(data[0,:])
+
+animation = animation.FuncAnimation(fig, pre_oper.update_hist, number_of_frames, interval=500, fargs=(data, ) )
+
+# converting to an html5 video
+video = animation.to_html5_video()
+
+# embedding for the video
+html = display.HTML(video)
+
+# draw the animation
+display.display(html)
+plt.show()
+# plt.close()
 
     
