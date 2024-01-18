@@ -59,3 +59,52 @@ def remove_fragments(area, num_clus, min_clus_size):
     # print(index_keep)
 
     return area_new, index_keep
+
+def save_clus_areas(i, area_new, cluster_areas):
+    if i == 0:
+      cluster_areas = np.append(cluster_areas, area_new, axis=0)
+
+
+    elif i == 1:
+      print('Compare', len(area_new), cluster_areas.shape[0])
+      if len(area_new) < cluster_areas.shape[0]:
+        area_to_add = np.zeros((1,cluster_areas.shape[0]))
+
+        for n in range(len(area_new)):
+          area_to_add[0,n] = area_new[n]
+        cluster_areas = np.vstack((cluster_areas, area_to_add))
+      else:
+        ## Add zeros to current array
+        extra_clusters = len(area_new) - cluster_areas.shape[0]
+        for v in range(extra_clusters):
+          cluster_areas = np.append(cluster_areas,0)
+        # # Now add the new data
+        area_to_add = np.zeros((1,cluster_areas.shape[0]))
+        for n in range(len(area_new)):
+          area_to_add[0,n] = area_new[n]
+        cluster_areas = np.vstack((cluster_areas, area_to_add))
+      print('Shape clus', cluster_areas.shape)
+
+    else:
+      print('Compare', len(area_new), cluster_areas.shape[1])
+      if len(area_new) < cluster_areas.shape[1]:
+        area_to_add = np.zeros((1,cluster_areas.shape[1]))
+        for n in range(len(area_new)):
+          area_to_add[0,n] = area_new[n]
+        cluster_areas = np.vstack((cluster_areas, area_to_add))
+      else:
+        ## Add zeros to current array
+        extra_clusters = len(area_new) - cluster_areas.shape[1]
+        extra_zeros = np.zeros((cluster_areas.shape[0], extra_clusters))
+        print('Extras', extra_clusters, cluster_areas.shape)
+        print('Shapes', extra_zeros.shape)
+        cluster_areas = np.hstack((cluster_areas, extra_zeros))
+        # Now add the new data
+        area_to_add = np.zeros((1,cluster_areas.shape[1]))
+        for n in range(len(area_new)):
+          area_to_add[0,n] = area_new[n]
+        cluster_areas = np.vstack((cluster_areas, area_to_add))
+      print('Shape clus', cluster_areas.shape)
+
+    return cluster_areas
+

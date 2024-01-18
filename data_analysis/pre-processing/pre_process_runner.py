@@ -22,7 +22,7 @@ folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
-time_array = range(1,98)
+time_array = range(71,74)
 
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
@@ -76,6 +76,9 @@ else:
 
 ######### Adapt array ################
 t_mid = time.time()
+
+cluster_areas = np.array([])
+
 for i in range(len(time_array)):
 
     t_step_before = time.time()
@@ -86,8 +89,8 @@ for i in range(len(time_array)):
 
     label_arr, num_clus = label(current_array)
 
-    # plt.imshow(label_arr, interpolation=None)
-    # plt.show()
+    plt.imshow(label_arr, interpolation=None)
+    plt.show()
 
     area_list = sum(current_array, label_arr, index=arange(label_arr.max() + 1))
 
@@ -98,15 +101,25 @@ for i in range(len(time_array)):
 
     applyall = np.vectorize(update_arr)
     area_slice = applyall(area_arr)
-    # plt.imshow(area_slice, interpolation=None)
-    # plt.show()
+    plt.imshow(area_slice, interpolation=None)
+    plt.show()
+
+    ##### Re-binarize array
+    slice_binary = np.where(area_slice>0)
+
+    output_label_arr, nc = label(slice_binary)
 
 
  
-    df = pd.DataFrame(area_slice)
-    csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '.csv'
-    csv_name_list_2  =''.join(csv_name_list)
-    df.to_csv(csv_name_list_2, index=False, header=False)
+    df_area = pd.DataFrame(area_slice)
+    area_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_area', '.csv'
+    area_csv_name_list_2  =''.join(area_csv_name_list)
+    df_area.to_csv(area_csv_name_list_2, index=False, header=False)
+
+    df_index = pd.DataFrame(area_slice)
+    area_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_indexed', '.csv'
+    area_csv_name_list_2  =''.join(area_csv_name_list)
+    df_index.to_csv(area_csv_name_list_2, index=False, header=False)
 
     t_step_after = time.time()
 
