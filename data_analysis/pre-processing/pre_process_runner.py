@@ -12,14 +12,14 @@ import pre_pro_operators as pre_oper
 
 t_before = time.time()
 
+
+########### Input parameters ##################
+
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
-
-
 experiment = '2017-02-03_sphere_timelapse/'
 exp_date = '2017-02-03_'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
-
 fileID = '.tif'
 
 time_array = range(1,98)
@@ -34,8 +34,10 @@ threshold = 0.66
 min_clus_size = 20
 use_existing_file = False
 
+#################################################
 
 
+# Function to update indexed array to array displaying areas
 def update_arr(arr):
     global area_new, index_keep
     index = np.where(index_keep == arr)
@@ -46,10 +48,15 @@ def update_arr(arr):
     return i
 
 
+################### Code from tif file to txt file ###########################
+
 if use_existing_file == False:
+    # Convert tif file to 3D array with values between 0 and 1 (1 is maximum intensity point)
+    # ? Problem with thresholding, need constant value not constant proportion
+    # Might be ok as we're doing it over whole 3D array so probably ok
     raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID)
 
-
+    # Threshold 3D array to boolean array
     tf_bool_3D = pre_oper.threshold_arr(raw_arr_3D, threshold)
 
     # print(tf_bool_3D)

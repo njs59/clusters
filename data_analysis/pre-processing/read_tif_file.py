@@ -21,6 +21,7 @@ def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID):
 
 
     max_val = img_1.max()
+    print('Normalisation val (maximum pixel intensity)', max_val)
     for l in range(img_1.shape[1]):
       for m in range(img_1.shape[2]):
         im_1_adapted[(l,m)] = im_1_adapted[(l,m)]/max_val
