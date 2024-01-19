@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import numpy as np
 
 def threshold_arr(tf_array, threshold):
@@ -116,4 +117,14 @@ def update_hist(num, data):
     # plt.set_ylim([0,60])
     plt.axis([200,2000,0,60])
     plt.hist(data[num,:], bins=[200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000])
+
+
+
+def update_heat_map(data):
+  my_cmap = mpl.colormaps['spring']
+  my_cmap.set_under('k')
+  plt.imshow(data, cmap=my_cmap, vmin = 1)
+  plt.axis([0, data.shape[1], 0, data.shape[0]])
+  plt.colorbar()
+  plt.show()
 

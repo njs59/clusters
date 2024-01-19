@@ -1,3 +1,4 @@
+import copy
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -6,6 +7,11 @@ import time
 
 import matplotlib.animation as animation
 from IPython import display
+
+import glob
+import contextlib
+import os
+from PIL import Image
 
 
 from pylab import *
@@ -26,15 +32,15 @@ folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
-time_array = range(21,31)
+time_array = range(1,98)
 
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
 
-well_loc = 's11'
+well_loc = 's09'
 
-threshold = 0.66
+threshold = 0.75
 min_clus_size = 20
 use_existing_file = False
 
@@ -82,7 +88,7 @@ else:
 t_mid = time.time()
 
 cluster_areas = np.array([])
-
+fig_1 = plt.figure()
 for i in range(len(time_array)):
 
     t_step_before = time.time()
@@ -105,8 +111,19 @@ for i in range(len(time_array)):
 
     applyall = np.vectorize(update_arr)
     area_slice = applyall(area_arr)
-    # plt.imshow(area_slice, interpolation=None)
+    my_cmap = mpl.colormaps['spring']
+    my_cmap.set_under('k')
+    plt.imshow(area_slice, cmap=my_cmap, vmin = 1)
+    plt.axis([0, area_slice.shape[1], 0, area_slice.shape[0]])
+    plt.colorbar()
+    plt.savefig(f'{basedir}images/frame-{i:03d}.png', bbox_inches='tight', dpi=300)
+    plt.clf()
+
+    
     # plt.show()
+    # animation_1 = animation.FuncAnimation(fig_1, pre_oper.update_heat_map, len(time_array), interval=500, fargs=(area_slice) )
+
+
 
     ##### Re-binarize array
     slice_binary = np.where(area_slice>0)
@@ -135,6 +152,15 @@ for i in range(len(time_array)):
     print('Time for step', i, t_step)
 
 
+# # converting to an html5 video
+# video_1 = animation_1.to_html5_video()
+
+# # embedding for the video
+# html_1 = display.HTML(video_1)
+
+# # draw the animation
+# display.display(html_1)
+# plt.show()
 
 t_after = time.time()
 
@@ -145,23 +171,50 @@ print('Total time to run', t_tot)
 print('Time from 3D array to final output', t_arr_manip)
 
 
+# create an empty list called images
+images = []
 
-number_of_frames = len(time_list)
-data = cluster_areas
-fig = plt.figure()
-hist = plt.hist(data[0,:])
+# get the current time to use in the filename
+timestr = time.strftime("%Y%m%d-%H%M%S")
 
-animation = animation.FuncAnimation(fig, pre_oper.update_hist, number_of_frames, interval=500, fargs=(data, ) )
+# get all the images in the 'images for gif' folder
+for filename in sorted(glob.glob(basedir + 'images/frame-*.png')): # loop through all png files in the folder
+    im = Image.open(filename) # open the image
+    # im_small = im.resize((1200, 1500), resample=0) # resize them to make them a bit smaller
+    images.append(im) # add the image to the list
 
-# converting to an html5 video
-video = animation.to_html5_video()
+# calculate the frame number of the last frame (ie the number of images)
+last_frame = (len(images)) 
 
-# embedding for the video
-html = display.HTML(video)
+# create 10 extra copies of the last frame (to make the gif spend longer on the most recent data)
+for x in range(0, 9):
+    im = images[last_frame-1]
+    images.append(im)
 
-# draw the animation
-display.display(html)
-plt.show()
-# plt.close()
+# save as a gif   
+images[0].save(basedir + 'images/cluster_sizes' + timestr + '.gif',
+               save_all=True, append_images=images[1:], optimize=False, duration=500, loop=0)
+
+for file in glob.glob(basedir + 'images/frame-*.png'):  # Delete images after use
+        os.remove(file)
+
+
+# number_of_frames = len(time_list)
+# data = cluster_areas
+# fig = plt.figure()
+# hist = plt.hist(data[0,:])
+
+# animation = animation.FuncAnimation(fig, pre_oper.update_hist, number_of_frames, interval=500, fargs=(data, ) )
+
+# # converting to an html5 video
+# video = animation.to_html5_video()
+
+# # embedding for the video
+# html = display.HTML(video)
+
+# # draw the animation
+# display.display(html)
+# plt.show()
+# # plt.close()
 
     
