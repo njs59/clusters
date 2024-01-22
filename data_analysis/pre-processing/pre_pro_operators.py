@@ -115,7 +115,7 @@ def update_hist(num, data):
     plt.cla()
     plt.gca()
     # plt.set_ylim([0,60])
-    plt.axis([200,2000,0,60])
+    plt.axis([150,25000,0,200])
     plt.hist(data[num,:], bins=[200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000])
 
 

@@ -27,7 +27,7 @@ for i in range(len(time_list)):
     array_area_current_time = df.to_numpy()
     
     ##### Re-binarize array
-    slice_binary = np.where(array_area_current_time>0)
+    slice_binary = (array_area_current_time > 0).astype(np.int_)
 
     label_arr, num_clus = label(slice_binary)
 

@@ -38,10 +38,10 @@ time_array = range(1,98)
 time_list = [str(x).zfill(2) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
 
-well_loc = 's09'
+well_loc = 's11'
 
-threshold = 0.75
-min_clus_size = 20
+threshold = 1.2
+min_clus_size = 150
 use_existing_file = False
 
 #################################################
@@ -89,6 +89,7 @@ t_mid = time.time()
 
 cluster_areas = np.array([])
 fig_1 = plt.figure()
+num_clusters = []
 for i in range(len(time_array)):
 
     t_step_before = time.time()
@@ -109,11 +110,14 @@ for i in range(len(time_array)):
     global area_new, index_keep
     area_new, index_keep = pre_oper.remove_fragments(area_list, num_clus, min_clus_size)
 
+    num_clusters = np.append(num_clusters,len(area_new))
+
     applyall = np.vectorize(update_arr)
     area_slice = applyall(area_arr)
     my_cmap = mpl.colormaps['spring']
     my_cmap.set_under('k')
-    plt.imshow(area_slice, cmap=my_cmap, vmin = 1)
+    plt.imshow(area_slice, cmap=my_cmap, vmin=1)
+    # plt.imshow(area_slice, cmap=my_cmap, norm=matplotlib.colors.LogNorm(vmin=100,vmax=25000))
     plt.axis([0, area_slice.shape[1], 0, area_slice.shape[0]])
     plt.colorbar()
     plt.savefig(f'{basedir}images/frame-{i:03d}.png', bbox_inches='tight', dpi=300)
@@ -195,26 +199,29 @@ for x in range(0, 9):
 images[0].save(basedir + 'images/cluster_sizes' + timestr + '.gif',
                save_all=True, append_images=images[1:], optimize=False, duration=500, loop=0)
 
-for file in glob.glob(basedir + 'images/frame-*.png'):  # Delete images after use
-        os.remove(file)
+# for file in glob.glob(basedir + 'images/frame-*.png'):  # Delete images after use
+#         os.remove(file)
+print('Number of clusters:', num_clusters)
+plt.plot(num_clusters)
+plt.show()
 
 
-# number_of_frames = len(time_list)
-# data = cluster_areas
-# fig = plt.figure()
-# hist = plt.hist(data[0,:])
+number_of_frames = len(time_list)
+data = cluster_areas
+fig = plt.figure()
+hist = plt.hist(data[0,:])
 
-# animation = animation.FuncAnimation(fig, pre_oper.update_hist, number_of_frames, interval=500, fargs=(data, ) )
+animation = animation.FuncAnimation(fig, pre_oper.update_hist, number_of_frames, interval=500, fargs=(data, ) )
 
-# # converting to an html5 video
-# video = animation.to_html5_video()
+# converting to an html5 video
+video = animation.to_html5_video()
 
-# # embedding for the video
-# html = display.HTML(video)
+# embedding for the video
+html = display.HTML(video)
 
-# # draw the animation
-# display.display(html)
-# plt.show()
-# # plt.close()
+# draw the animation
+display.display(html)
+plt.show()
+# plt.close()
 
     
