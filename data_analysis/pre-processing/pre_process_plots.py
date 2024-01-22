@@ -88,7 +88,8 @@ plt.show()
 
 
 for j in range(len(time_list)):
-    plt.hist(cluster_areas[j,:], bins=[150, 200, 400, 600, 1000, 2000, 4000, 8000, 25000])
+    plt.hist(cluster_areas[j,:], bins=[150, 1000, 2000, 3000, 4000, 6000, 8000, 10000, 12000, 16000, 20000, 25000])
+    plt.ylim(0, 300) 
     plt.savefig(f'{basedir}images/histogram/frame-{j:03d}.png', bbox_inches='tight', dpi=300)
     plt.clf()
 
@@ -108,8 +109,8 @@ for x in range(0, 9):
     images_hist.append(im_hist)
 
 # save as a gif   
-images_hist[0].save(basedir + 'images/histogram/cluster_sizes' + timestr + 'hist' + '.gif',
-               save_all=True, append_images_hist=images_hist[1:], optimize=False, duration=500, loop=0)
+images_hist[0].save(basedir + 'images/histogram/cluster_sizes' + timestr + '.gif',
+               save_all=True, append_images=images_hist[1:], optimize=False, duration=500, loop=0)
 
 
 
