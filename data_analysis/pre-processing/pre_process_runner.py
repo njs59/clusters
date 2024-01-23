@@ -198,7 +198,7 @@ for x in range(0, 9):
 
 # save as a gif   
 images[0].save(basedir + 'images/cluster_sizes' + timestr + '.gif',
-               save_all=True, append_images=images[1:], optimize=False, duration=500, loop=0)
+               save_all=True, append_images=images[1:], optimize=False, duration=100, loop=0)
 
 # for file in glob.glob(basedir + 'images/frame-*.png'):  # Delete images after use
 #         os.remove(file)
