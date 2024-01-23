@@ -2,7 +2,7 @@ import numpy as np
 from osgeo import gdal as GD
 
 
-def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID):
+def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID, max_val):
   for i in range(len(time_list)):
     name_list_b = basedir, experiment, folder, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_ORG', fileID
     name_list_b_2  =''.join(name_list_b)
@@ -21,7 +21,7 @@ def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID):
 
 
     # max_val = img_1.max()
-    max_val = 330
+    # max_val = 330
     print('Normalisation val (maximum pixel intensity)', max_val)
     for l in range(img_1.shape[1]):
       for m in range(img_1.shape[2]):

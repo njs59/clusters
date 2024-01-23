@@ -40,7 +40,8 @@ time_list = [str(x).zfill(2) for x in time_array]
 
 well_loc = 's11'
 
-threshold = 1.2
+threshold = 1
+pixel_intensity_thresh = 440
 min_clus_size = 150
 use_existing_file = False
 
@@ -64,7 +65,7 @@ if use_existing_file == False:
     # Convert tif file to 3D array with values between 0 and 1 (1 is maximum intensity point)
     # ? Problem with thresholding, need constant value not constant proportion
     # Might be ok as we're doing it over whole 3D array so probably ok
-    raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID)
+    raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID, max_val = pixel_intensity_thresh)
 
     # Threshold 3D array to boolean array
     tf_bool_3D = pre_oper.threshold_arr(raw_arr_3D, threshold)
