@@ -41,6 +41,7 @@ time_list = [str(x).zfill(2) for x in time_array]
 well_loc = 's11'
 
 threshold = 1
+# pixel_intensity_thresh = 440
 pixel_intensity_thresh = 440
 min_clus_size = 150
 use_existing_file = False
@@ -91,6 +92,8 @@ t_mid = time.time()
 cluster_areas = np.array([])
 fig_1 = plt.figure()
 num_clusters = []
+total_area = []
+mean_area = []
 for i in range(len(time_array)):
 
     t_step_before = time.time()
@@ -111,7 +114,15 @@ for i in range(len(time_array)):
     global area_new, index_keep
     area_new, index_keep = pre_oper.remove_fragments(area_list, num_clus, min_clus_size)
 
+    total_curr_area = np.sum(area_new)
+    print('Total current area', total_curr_area)
+
+    mean_curr_area = np.mean(area_new)
+    print('Mean cluster area', mean_curr_area)
+
     num_clusters = np.append(num_clusters,len(area_new))
+    total_area = np.append(total_area, np.sum(area_new))
+    mean_area = np.append(mean_area, np.mean(area_new))
 
     applyall = np.vectorize(update_arr)
     area_slice = applyall(area_arr)
@@ -157,16 +168,6 @@ for i in range(len(time_array)):
     print('Time for step', i, t_step)
 
 
-# # converting to an html5 video
-# video_1 = animation_1.to_html5_video()
-
-# # embedding for the video
-# html_1 = display.HTML(video_1)
-
-# # draw the animation
-# display.display(html_1)
-# plt.show()
-
 t_after = time.time()
 
 t_tot = t_after - t_before
@@ -174,6 +175,25 @@ t_arr_manip = t_after - t_mid
 
 print('Total time to run', t_tot)
 print('Time from 3D array to final output', t_arr_manip)
+
+print('Shapes', cluster_areas.shape, mean_area.shape, total_area.shape)
+
+df_cluster_areas = pd.DataFrame(cluster_areas)
+cluster_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_cluster_areas', '.csv'
+cluster_areas_csv_name_list_2  =''.join(cluster_areas_csv_name_list)
+df_cluster_areas.to_csv(cluster_areas_csv_name_list_2, index=False, header=False)
+
+df_mean_areas = pd.DataFrame(mean_area)
+mean_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_mean_areas', '.csv'
+mean_areas_csv_name_list_2  =''.join(mean_areas_csv_name_list)
+df_mean_areas.to_csv(mean_areas_csv_name_list_2, index=False, header=False)
+
+df_total_areas = pd.DataFrame(total_area)
+total_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_total_areas', '.csv'
+total_areas_csv_name_list_2  =''.join(total_areas_csv_name_list)
+df_total_areas.to_csv(total_areas_csv_name_list_2, index=False, header=False)
+
+
 
 
 # create an empty list called images
@@ -198,7 +218,7 @@ for x in range(0, 9):
 
 # save as a gif   
 images[0].save(basedir + 'images/cluster_sizes' + timestr + '.gif',
-               save_all=True, append_images=images[1:], optimize=False, duration=100, loop=0)
+               save_all=True, append_images=images[1:], optimize=False, duration=200, loop=0)
 
 # for file in glob.glob(basedir + 'images/frame-*.png'):  # Delete images after use
 #         os.remove(file)

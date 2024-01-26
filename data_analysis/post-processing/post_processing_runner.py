@@ -22,7 +22,7 @@ for i in range(len(time_list)):
     csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '.csv'
     csv_name_list_2  =''.join(csv_name_list)
 
-    df = pd.read_csv(csv_name_list_2)
+    df = pd.read_csv(csv_name_list_2, header=None)
 
     array_area_current_time = df.to_numpy()
     

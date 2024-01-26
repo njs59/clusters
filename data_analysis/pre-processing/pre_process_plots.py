@@ -6,6 +6,7 @@ import glob
 from PIL import Image
 import time
 import matplotlib.animation as animation
+from matplotlib.colors import LogNorm
 from IPython import display
 
 from pylab import *
@@ -30,11 +31,62 @@ well_loc = 's11'
 num_clusters = []
 cluster_areas = np.array([])
 
+
+
+cluster_2D_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_cluster_areas', '.csv'
+cluster_2D_areas_csv_name_list_2  =''.join(cluster_2D_areas_csv_name_list)
+df_clus_areas = pd.read_csv(cluster_2D_areas_csv_name_list_2, header=None)
+cluster_2D_areas = df_clus_areas.to_numpy()
+
+mean_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_mean_areas', '.csv'
+mean_areas_csv_name_list_2  =''.join(mean_areas_csv_name_list)
+df_mean_areas = pd.read_csv(mean_areas_csv_name_list_2, header=None)
+mean_areas = df_mean_areas.to_numpy()
+
+total_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_total_areas', '.csv'
+total_areas_csv_name_list_2  =''.join(total_areas_csv_name_list)
+df_total_areas = pd.read_csv(total_areas_csv_name_list_2, header=None)
+total_areas = df_total_areas.to_numpy()
+
+plt.plot(mean_areas)
+plt.title("Mean Areas")
+plt.show()
+plt.clf()
+
+plt.plot(total_areas)
+plt.title("Total 2D area")
+plt.show()
+plt.clf()
+
+cluster_3D_area = (4/3)*pi*((sqrt(cluster_2D_areas/pi))**3)
+
+tot_3D_volume = []
+mean_3D_volume = []
+for p in range(len(time_array)):
+    time_3D = cluster_3D_area[p,:]
+    tot_3D_volume = np.append(tot_3D_volume,sum(time_3D))
+    time_3D[time_3D == 0] = np.nan
+    mean_curr = np.nanmean(time_3D)
+    mean_3D_volume = np.append(mean_3D_volume,mean_curr)
+
+plt.plot(tot_3D_volume)
+plt.title("Total 3D Volume")
+plt.show()
+plt.clf()
+
+plt.plot(mean_3D_volume)
+plt.title("Mean 3D Volume of a cluster")
+plt.show()
+plt.clf()
+
+
+
+
 for i in range(len(time_array)):
 
     area_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_area', '.csv'
     area_csv_name_list_2  =''.join(area_csv_name_list)
-    df_slice = pd.read_csv(area_csv_name_list_2)
+    df_slice = pd.read_csv(area_csv_name_list_2, header=None)
     current_array = df_slice.to_numpy()
 
     ##### Re-binarize array
@@ -51,6 +103,15 @@ for i in range(len(time_array)):
     num_clusters = np.append(num_clusters,len(area_new))
 
     cluster_areas = pre_oper.save_clus_areas(i, area_new, cluster_areas)
+
+    my_cmap = mpl.colormaps['spring']
+    my_cmap.set_under('w')
+    plt.imshow(current_array, cmap=my_cmap, norm = LogNorm(vmin=150, vmax=25000))
+    # plt.imshow(area_slice, cmap=my_cmap, norm=matplotlib.colors.LogNorm(vmin=100,vmax=25000))
+    plt.axis([0, current_array.shape[1], 0, current_array.shape[0]])
+    plt.colorbar()
+    plt.savefig(f'{basedir}images//cluster_sizes_log/frame-{i:03d}.png', bbox_inches='tight', dpi=300)
+    plt.clf()
     
 
 ##################################
@@ -63,7 +124,7 @@ images = []
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
 # get all the images in the 'images for gif' folder
-for filename in sorted(glob.glob(basedir + 'images/frame-*.png')): # loop through all png files in the folder
+for filename in sorted(glob.glob(basedir + 'images/cluster_sizes_log/frame-*.png')): # loop through all png files in the folder
     im = Image.open(filename) # open the image
     # im_small = im.resize((1200, 1500), resample=0) # resize them to make them a bit smaller
     images.append(im) # add the image to the list
@@ -77,8 +138,8 @@ for x in range(0, 9):
     images.append(im)
 
 # save as a gif   
-images[0].save(basedir + 'images/cluster_sizes' + timestr + '.gif',
-               save_all=True, append_images=images[1:], optimize=False, duration=500, loop=0)
+images[0].save(basedir + 'images/cluster_sizes_log/cluster_sizes' + timestr + '.gif',
+               save_all=True, append_images=images[1:], optimize=False, duration=300, loop=0)
 
 # for file in glob.glob(basedir + 'images/frame-*.png'):  # Delete images after use
 #         os.remove(file)
@@ -88,8 +149,8 @@ plt.show()
 
 
 for j in range(len(time_list)):
-    plt.hist(cluster_areas[j,:], bins=[150, 1000, 2000, 3000, 4000, 6000, 8000, 10000, 12000, 16000, 20000, 25000])
-    plt.ylim(0, 300) 
+    plt.hist(cluster_areas[j,:], bins=[0, 1000, 2000, 3000, 4000, 6000, 8000, 10000, 12000, 16000, 20000, 25000])
+    plt.ylim(0, 100) 
     plt.savefig(f'{basedir}images/histogram/frame-{j:03d}.png', bbox_inches='tight', dpi=300)
     plt.clf()
 
@@ -109,7 +170,7 @@ for x in range(0, 9):
     images_hist.append(im_hist)
 
 # save as a gif   
-images_hist[0].save(basedir + 'images/histogram/cluster_sizes' + timestr + '.gif',
+images_hist[0].save(basedir + 'images/histogram/' + timestr + '.gif',
                save_all=True, append_images=images_hist[1:], optimize=False, duration=500, loop=0)
 
 

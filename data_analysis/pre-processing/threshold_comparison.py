@@ -32,14 +32,14 @@ folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
-time_array = range(11,12)
+time_array = range(82,83)
 
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
 
-well_loc = 's11'
-threshold_pixel = [380, 400, 420, 440, 460, 480, 500]
+well_loc = 's09'
+threshold_pixel = [300, 310, 320]
 thresholds = 1
 min_clus_size = 150
 use_existing_file = False
@@ -115,7 +115,7 @@ for i in range(len(threshold_pixel)):
     # plt.imshow(area_slice, cmap=my_cmap, norm=matplotlib.colors.LogNorm(vmin=100,vmax=25000))
     plt.axis([0, area_slice.shape[1], 0, area_slice.shape[0]])
     plt.colorbar()
-    plt.savefig(f'{basedir}images/threshold_t_11_pixel-' + str(threshold_pixel[i]) + '.png', bbox_inches='tight', dpi=300)
+    plt.savefig(f'{basedir}images/threshold_PRO_t_82_pixel-' + str(threshold_pixel[i]) + '.png', bbox_inches='tight', dpi=300)
     plt.clf()
 
     
