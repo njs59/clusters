@@ -142,7 +142,7 @@ for i in range(len(time_array)):
 
 
     ##### Re-binarize array
-    slice_binary = np.where(area_slice>0)
+    slice_binary = np.array(area_slice, dtype=bool).astype(int)
 
     output_label_arr, nc = label(slice_binary)
 
@@ -153,7 +153,7 @@ for i in range(len(time_array)):
     area_csv_name_list_2  =''.join(area_csv_name_list)
     df_area.to_csv(area_csv_name_list_2, index=False, header=False)
 
-    df_index = pd.DataFrame(area_slice)
+    df_index = pd.DataFrame(output_label_arr)
     area_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_indexed', '.csv'
     area_csv_name_list_2  =''.join(area_csv_name_list)
     df_index.to_csv(area_csv_name_list_2, index=False, header=False)
