@@ -2,15 +2,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 
+import tifffile as tif
+
+
 random.seed(123)
 
 dim = 10
 
 arr = np.zeros((dim,dim))
 
-arr[1,1] = 1
-arr[4,4] = 1
-arr[8,8] = 1
+arr[1,1] = 600
+arr[4,4] = 600
+arr[8,8] = 600
 
 cells = np.nonzero(arr)
 print(cells)
@@ -35,7 +38,7 @@ for j in range(timesteps):
                 success = 1
             elif arr[x,y] == 0:
                 success = 1
-                arr[x,y] = 1
+                arr[x,y] = 600
             else:
                 print('Moving target')
 
@@ -49,7 +52,7 @@ for j in range(timesteps):
                 success = 1
             elif arr[x,y] == 0:
                 success = 1
-                arr[x,y] = 1
+                arr[x,y] = 600
             else:
                 print('Moving target')
 
@@ -63,7 +66,7 @@ for j in range(timesteps):
                 success = 1
             elif arr[x,y] == 0:
                 success = 1
-                arr[x,y] = 1
+                arr[x,y] = 600
             else:
                 print('Moving target')
 
@@ -77,10 +80,18 @@ for j in range(timesteps):
                 success = 1
             elif arr[x,y] == 0:
                 success = 1
-                arr[x,y] = 1
+                arr[x,y] = 600
             else:
                 print('Moving target')
+    
+    # image = np.ones((100,10,10), dtype=np.uint16)
+    tif.imwrite('/Users/Nathan/Documents/Oxford/DPhil/clusters/synthetic_data_analysis/test_'
+                 + str(j).zfill(2) + '.tif', arr)
 
 print('Array', arr)
 plt.imshow(arr)
 plt.show()
+
+
+
+

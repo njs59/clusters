@@ -24,7 +24,11 @@ t_before = time.time()
 
 
 ########### Input parameters ##################
-
+# basedir = '/Users/Nathan/Documents/Oxford/DPhil/clusters/'
+# experiment = 'synthetic_data_analysis/test_'
+# exp_date = ''
+# folder = ''
+# folder_3 = ''
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 experiment = '2017-02-03_sphere_timelapse/'
 exp_date = '2017-02-03_'
@@ -38,7 +42,7 @@ time_array = range(1,98)
 time_list = [str(x).zfill(2) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
 
-well_loc = 's12'
+well_loc = 's11'
 
 threshold = 1
 # pixel_intensity_thresh = 440
@@ -154,9 +158,9 @@ for i in range(len(time_array)):
     df_area.to_csv(area_csv_name_list_2, index=False, header=False)
 
     df_index = pd.DataFrame(output_label_arr)
-    area_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_indexed', '.csv'
-    area_csv_name_list_2  =''.join(area_csv_name_list)
-    df_index.to_csv(area_csv_name_list_2, index=False, header=False)
+    index_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_indexed', '.csv'
+    index_csv_name_list_2  =''.join(index_csv_name_list)
+    df_index.to_csv(index_csv_name_list_2, index=False, header=False)
 
     cluster_areas = pre_oper.save_clus_areas(i, area_new, cluster_areas)
 

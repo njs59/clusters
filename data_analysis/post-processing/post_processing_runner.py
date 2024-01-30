@@ -2,55 +2,149 @@ import csv
 import numpy as np
 import pandas as pd
 
+import matplotlib.pyplot as plt
+
 from scipy.ndimage import *
 
 import post_pro_operators as post_oper
 
 
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
-exp_date = '2017-02-03_'
-time_array = range(21,31)
+exp_date = '2017-02-03'
+time_array = range(71,81)
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
 well_loc = 's11'
 
-cols = ["Tag number", "Cluster size", "Cluster centre x", "Cluster Centre y", 
+cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
            "Event", "Clusters in event", "Timestep", "Date", "Well ID"]
 
+
+next_available_tag = 1
 for i in range(len(time_list)):
 
-    csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '.csv'
+    csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', time_list[i], 'c2_area', '.csv'
     csv_name_list_2  =''.join(csv_name_list)
 
-    df = pd.read_csv(csv_name_list_2, header=None)
+    df_area = pd.read_csv(csv_name_list_2, header=None)
 
-    array_area_current_time = df.to_numpy()
+    array_area_current_time = df_area.to_numpy()
+
+    csv_name_list_index = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', time_list[i], 'c2_indexed', '.csv'
+    csv_name_list_2_index  =''.join(csv_name_list_index)
+
+    df_index = pd.read_csv(csv_name_list_2_index, header=None)
+
+    array_index_current_time = df_index.to_numpy()
     
-    ##### Re-binarize array
-    slice_binary = (array_area_current_time > 0).astype(np.int_)
+    # ##### Re-binarize array
+    # slice_binary = (array_area_current_time > 0).astype(np.int_)
 
-    label_arr, num_clus = label(slice_binary)
+    # label_arr, num_clus = label(slice_binary)
 
-    df_step = pd.DataFrame(np.nan, index=range(num_clus), columns=cols)
+    df_step = pd.DataFrame(np.nan, index=range(array_index_current_time.max()), columns=cols)
 
-    centres_2D_current = post_oper.calc_clus_centre(label_arr)
+    centres_2D_current = post_oper.calc_clus_centre(array_index_current_time)
+
 
     area_2D_current = []
-    for j in range(1,num_clus+1):
-        loc_x = np.where(label_arr==j)[0][0]
-        loc_y = np.where(label_arr==j)[1][0]
+    for j in range(1,array_index_current_time.max()+1):
+        loc_x = np.where(array_index_current_time==j)[0][0]
+        loc_y = np.where(array_index_current_time==j)[1][0]
         area_2D_current.append(array_area_current_time[loc_x,loc_y])
+
+    if i == 0:
+        tag_number_current = []
+        for k in range(1,array_index_current_time.max()+1):
+            loc_x = np.where(array_index_current_time==k)[0][0]
+            loc_y = np.where(array_index_current_time==k)[1][0]
+            # Create list of tagged indices
+            tag_number_current.append(array_index_current_time[loc_x,loc_y])
+
+        centres_2D_old = centres_2D_current
+        next_available_tag = array_index_current_time.max()+1
+
+    else:
+        tag_number_current = []
+        for k in range(1,array_index_current_time.max()+1):
+            same_locs, same_locs_store = post_oper.previous_clusters_at_loc(array_index_current_time, centres_2D_old, k)
+
+            if same_locs == 1:
+                #Simple, it's just movement
+                print('Move')
+                mask = (df_old['Cluster Centre x'] == same_locs_store[0]) & (df_old['Cluster Centre y'] == same_locs_store[1])
+                matching_row = df_old[mask]
+
+                cluster_tag_number = matching_row['Tag number'].tolist()[0]
+                tag_number_current.append(cluster_tag_number)
+                print('Yay 2')
+
+                df_step.iloc[k-1,4] = 'None'
+                df_step.iloc[k-1,5] = ''
+
+            elif same_locs == 0:
+                # Splitting
+                print('Split')
+                tag_number_current.append(next_available_tag)
+                next_available_tag += 1
+                search_radius = 50
+
+                x_cen = int(centres_2D_current[k-1][0])
+                y_cen = int(centres_2D_current[k-1][1])
+
+                near_clus, clus_distances = post_oper.nearby_clusters(x_cen, y_cen, k+1, search_radius, array_index_current_time, array_area_current_time)
+
+                if len(near_clus) == 0:
+                    print('No nearby clusters')
+                    df_step.iloc[k-1,4] = 'Appearance'
+                    df_step.iloc[k-1,5] = ''
+
+                else:
+                    cluster_split_from = post_oper.pick_cluster_inverse_dist(near_clus, clus_distances)
+                    df_step.iloc[k-1,4] = 'Splitting'
+                    df_step.iloc[k-1,5] = str(cluster_split_from)
+                print('Yay 3')
+
+
+            else:
+                # same_locs will be greater than 1 so we have coagulation
+                print('Coag')
+                rows_to_save = []
+                for s in range(same_locs):
+                    mask = (df_old['Cluster Centre x'] == same_locs_store[s,0]) & (df_old['Cluster Centre y'] == same_locs_store[s,1])
+                    rows_to_save.append(np.where(mask == True)[0][0])
+                clusters_coagulating = df_old.iloc[rows_to_save]
+
+                cluster_tag_number = min(clusters_coagulating['Tag number'])
+                clusters_in_event = clusters_coagulating['Tag number'].tolist()
+
+                df_step.iloc[k-1,4] = 'Coagulation'
+                df_step.iloc[k-1,5] = str(clusters_in_event)
+
+                tag_number_current.append(cluster_tag_number)
+        
+
+        # Update centres_2D_old for use in next timestep
+        centres_2D_old = centres_2D_current
+        
+
+
+
 
     print(centres_2D_current.shape)
     print(area_2D_current)
 
-
+    df_step.iloc[:,0] = tag_number_current
     df_step.iloc[:,1] = area_2D_current
     df_step.iloc[:,2] = centres_2D_current[:,0].tolist()
     df_step.iloc[:,3] = centres_2D_current[:,1].tolist()
     df_step.iloc[:,6] = time_list[i]
+    df_step.iloc[:,7] = exp_date
+    df_step.iloc[:,8] = well_loc
 
     print(df_step)
+
+    df_old = df_step
 
     print('Yay')
 
