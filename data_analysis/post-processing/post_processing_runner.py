@@ -110,8 +110,16 @@ for i in range(len(time_list)):
                 else:
                     cluster_index_split_from = post_oper.pick_cluster_inverse_dist(near_clus, clus_distances)
                     cluster_ID = df_old.iloc[cluster_index_split_from - 1 , 0]
-                    df_step.iloc[k-1,4] = 'Splitting'
-                    df_step.iloc[k-1,5] = str([cluster_ID])
+                    old_cluster_size = df_old.iloc[cluster_index_split_from - 1 , 0]
+                    new_cluster_size = area_2D_current[k-1]
+                    percent_diff = 100*(abs(new_cluster_size - old_cluster_size))/((old_cluster_size+new_cluster_size)/2)
+                    if percent_diff < 20:
+                        df_step.iloc[k-1,0] = cluster_ID
+                        df_step.iloc[k-1,4] = 'Move large'
+                        df_step.iloc[k-1,5] = str([cluster_ID])
+                    else:
+                        df_step.iloc[k-1,4] = 'Splitting'
+                        df_step.iloc[k-1,5] = str([cluster_ID])
                 # print('Yay 3')
 
 
