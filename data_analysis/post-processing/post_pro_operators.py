@@ -30,24 +30,24 @@ def previous_clusters_at_loc(labelled_arr, centres_old, comparison_index):
                     same_locs_store = np.append(same_locs_store, d[m,:])
                 else:
                     same_locs_store = np.vstack([same_locs_store, d[m,:]])
-    print(same_locs)
-    print(same_locs_store)
+    # print(same_locs)
+    # print(same_locs_store)
 
     return same_locs, same_locs_store
 
 
-def nearby_clusters(x_loc, y_loc, index, search_radius, labelled_arr, area_arr):
+def nearby_clusters(x_loc, y_loc, search_radius, labelled_arr):
     search_arr = labelled_arr[x_loc - search_radius : x_loc + search_radius,
                               y_loc - search_radius: y_loc + search_radius]
-    search_arr[search_arr == index] = 0
+    # search_arr[search_arr == index] = 0
     clusters_index_present = np.unique(search_arr)
     #Remove 0's from consideration
     clusters_index_output = clusters_index_present[1:]
 
     distances = []
     for i in range(1,len(clusters_index_present)):
-        if len(clusters_index_present) > 2:
-            print('Hello')
+        # if len(clusters_index_present) > 2:
+        #     print('Hello')
         # Looping this way ignores the 0's present
 
         list_of_locs = np.where(search_arr == clusters_index_present[i])
@@ -57,7 +57,7 @@ def nearby_clusters(x_loc, y_loc, index, search_radius, labelled_arr, area_arr):
             dist_x = abs(list_of_locs[0][k] - search_radius)
             dist_y = abs(list_of_locs[1][k] - search_radius)
 
-            dist = dist_x + dist_y
+            dist = dist_x + dist_y + 1
             min_dist = min(min_dist, dist)
 
         distances = np.append(distances, min_dist)
@@ -66,10 +66,14 @@ def nearby_clusters(x_loc, y_loc, index, search_radius, labelled_arr, area_arr):
 
 
 def pick_cluster_inverse_dist(clusters_index_output, distances):
-    weights = np.reciprocal(distances)     # Invert all distances
-    weights = weights / np.sum(weights)         # Normalize
-    cluster_selected = np.random.choice(clusters_index_output, p=weights) # Sample
-    return cluster_selected
+    if 0 in distances:
+        position = np.where(distances == 0)
+        return clusters_index_output[position]
+    else:
+        weights = np.reciprocal(distances)     # Invert all distances
+        weights = weights / np.sum(weights)         # Normalize
+        cluster_selected = np.random.choice(clusters_index_output, p=weights) # Sample
+        return cluster_selected
 
 # def calc_clus_centre(labelled_arr, index_keep):
 # ## Returns a list of centres of clusters with desired indexes from a labelled array
