@@ -92,8 +92,6 @@ for i in range(len(time_list)):
             elif same_locs == 0:
                 # Splitting
                 # print('Split')
-                tag_number_current.append(next_available_tag)
-                next_available_tag += 1
                 search_radius = 50
 
                 x_cen = int(centres_2D_current[k-1][0])
@@ -106,6 +104,8 @@ for i in range(len(time_list)):
                     print('No nearby clusters')
                     df_step.iloc[k-1,4] = 'Appearance'
                     # df_step.iloc[k-1,5] = str([0])
+                    tag_number_current.append(next_available_tag)
+                    next_available_tag += 1
 
                 else:
                     cluster_index_split_from = post_oper.pick_cluster_inverse_dist(near_clus, clus_distances)
@@ -114,12 +114,15 @@ for i in range(len(time_list)):
                     new_cluster_size = area_2D_current[k-1]
                     percent_diff = 100*(abs(new_cluster_size - old_cluster_size))/((old_cluster_size+new_cluster_size)/2)
                     if percent_diff < 20:
-                        df_step.iloc[k-1,0] = cluster_ID
+                        # Keeps ID of old cluster
+                        tag_number_current.append(cluster_ID)
                         df_step.iloc[k-1,4] = 'Move large'
                         df_step.iloc[k-1,5] = str([cluster_ID])
                     else:
                         df_step.iloc[k-1,4] = 'Splitting'
                         df_step.iloc[k-1,5] = str([cluster_ID])
+                        tag_number_current.append(next_available_tag)
+                        next_available_tag += 1
                 # print('Yay 3')
 
 
