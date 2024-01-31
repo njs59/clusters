@@ -110,7 +110,7 @@ for i in range(len(time_list)):
                 else:
                     cluster_index_split_from = post_oper.pick_cluster_inverse_dist(near_clus, clus_distances)
                     cluster_ID = df_old.iloc[cluster_index_split_from - 1 , 0]
-                    old_cluster_size = df_old.iloc[cluster_index_split_from - 1 , 0]
+                    old_cluster_size = df_old.iloc[cluster_index_split_from - 1 , 1]
                     new_cluster_size = area_2D_current[k-1]
                     percent_diff = 100*(abs(new_cluster_size - old_cluster_size))/((old_cluster_size+new_cluster_size)/2)
                     if percent_diff < 20:
