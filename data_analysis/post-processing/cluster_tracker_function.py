@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 def cluster_tracker(start_time, end_time, timestep, cluster_index_final_time, basedir, exp_date, well_loc):
-    df_end_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', '97' , 'c2_post_processing', '.csv'
+    df_end_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', str(end_time).zfill(2) , 'c2_post_processing', '.csv'
     df_end_csv_name_list_2  =''.join(df_end_csv_name_list)
     df_end = pd.read_csv(df_end_csv_name_list_2)
 

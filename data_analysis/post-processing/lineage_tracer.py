@@ -27,7 +27,7 @@ cluster_lineage = [103]
 # for h in range(len(cluster_tags)):
 #     cluster_lineage = [cluster_tags[h]]
 
-for i in range(97, 30, -1) :
+for i in range(97, 50, -1) :
     print('i is', i)
     time_i = str(i).zfill(2)
     df_step_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', time_i, 'c2_post_processing', '.csv'
@@ -48,7 +48,7 @@ for i in range(97, 30, -1) :
 print(cluster_lineage)
 
 # Find locations of clusters at time 30
-df_step_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', '31', 'c2_post_processing', '.csv'
+df_step_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', '51', 'c2_post_processing', '.csv'
 df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
 df_step_interest = pd.read_csv(df_step_csv_name_list_2)
 
@@ -67,7 +67,7 @@ centres_2D_lineage = df1.to_numpy()
 # Read in array for given timestep
 
 # Locate indexes of clusters, print
-index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', '31', 'c2', '_indexed', '.csv'
+index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', '51', 'c2', '_indexed', '.csv'
 index_csv_name_list_2  =''.join(index_csv_name_list)
 df_slice = pd.read_csv(index_csv_name_list_2, header=None)
 current_array = df_slice.to_numpy()

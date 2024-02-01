@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 def lineage_tracer(start_time, end_time, basedir, exp_date, well_loc):
     
-    df_end_now_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', str(end_time), 'c2_post_processing', '.csv'
+    df_end_now_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', str(end_time).zfill(2), 'c2_post_processing', '.csv'
     df_end_now_csv_name_list_2  =''.join(df_end_now_csv_name_list)
     df_end_now = pd.read_csv(df_end_now_csv_name_list_2)
     cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
@@ -42,7 +42,7 @@ def lineage_tracer(start_time, end_time, basedir, exp_date, well_loc):
         print(cluster_lineage)
 
         # Find locations of clusters at time 30
-        df_step_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', '31', 'c2_post_processing', '.csv'
+        df_step_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', str(start_time).zfill(2), 'c2_post_processing', '.csv'
         df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
         df_step_interest = pd.read_csv(df_step_csv_name_list_2)
 
@@ -61,7 +61,7 @@ def lineage_tracer(start_time, end_time, basedir, exp_date, well_loc):
         # Read in array for given timestep
 
         # Locate indexes of clusters, print
-        index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', '31', 'c2', '_indexed', '.csv'
+        index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', str(start_time).zfill(2), 'c2', '_indexed', '.csv'
         index_csv_name_list_2  =''.join(index_csv_name_list)
         df_slice = pd.read_csv(index_csv_name_list_2, header=None)
         current_array = df_slice.to_numpy()
@@ -96,7 +96,7 @@ def lineage_tracer(start_time, end_time, basedir, exp_date, well_loc):
 
 
             # Find locations of clusters at time 30
-            df_end_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', '97', 'c2_post_processing', '.csv'
+            df_end_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', str(end_time).zfill(2), 'c2_post_processing', '.csv'
             df_end_csv_name_list_2  =''.join(df_end_csv_name_list)
             df_end_interest = pd.read_csv(df_end_csv_name_list_2)
 
@@ -110,7 +110,7 @@ def lineage_tracer(start_time, end_time, basedir, exp_date, well_loc):
             # Read in array for given timestep
 
             # Locate indexes of clusters, print
-            end_index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', '97', 'c2', '_indexed', '.csv'
+            end_index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', str(end_time).zfill(2), 'c2', '_indexed', '.csv'
             end_index_csv_name_list_2  =''.join(end_index_csv_name_list)
             df_end_slice = pd.read_csv(end_index_csv_name_list_2, header=None)
             current_array_end = df_end_slice.to_numpy()
@@ -138,6 +138,8 @@ def lineage_tracer(start_time, end_time, basedir, exp_date, well_loc):
             # use the created array to output your multiple images. In this case I have stacked 4 images vertically
             axarr[0].imshow(bool_descendents)
             axarr[1].imshow(bool_index)
+            axarr[0].axis([0, current_array.shape[1], 0, current_array.shape[0]])
+            axarr[1].axis([0, current_array.shape[1], 0, current_array.shape[0]])
             plt.show()
 
 
