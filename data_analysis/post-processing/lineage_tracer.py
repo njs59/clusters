@@ -145,15 +145,19 @@ if descendents_arr.shape[0] > 0:
     # use the created array to output your multiple images. In this case I have stacked 4 images vertically
     axarr[0].imshow(bool_descendents)
     axarr[1].imshow(bool_index)
+    axarr[0].axis([0, current_array.shape[1], 0, current_array.shape[0]])
+    axarr[1].axis([0, current_array.shape[1], 0, current_array.shape[0]])
     plt.show()
 
 
 
     plt.imshow(bool_index)
+    plt.axis([0, current_array.shape[1], 0, current_array.shape[0]])
     plt.show()
 
 
 
 
     plt.imshow(bool_descendents)
+    plt.axis([0, current_array.shape[1], 0, current_array.shape[0]])
     plt.show()
