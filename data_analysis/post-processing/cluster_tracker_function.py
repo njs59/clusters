@@ -47,4 +47,5 @@ def cluster_tracker(start_time, end_time, timestep, cluster_index_final_time, ba
 
 
             plt.imshow(bool_index)
+            plt.axis([0, current_array.shape[1], 0, current_array.shape[0]])
             plt.show()
