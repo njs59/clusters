@@ -17,7 +17,7 @@ from PIL import Image
 from pylab import *
 from scipy.ndimage import *
 
-import read_tif_file as tif
+import read_tif_file_operator as tif
 import pre_pro_operators as pre_oper
 
 t_before = time.time()
