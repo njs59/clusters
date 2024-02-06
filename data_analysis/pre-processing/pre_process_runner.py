@@ -23,12 +23,7 @@ import pre_pro_operators as pre_oper
 t_before = time.time()
 
 
-########### Input parameters ##################
-# basedir = '/Users/Nathan/Documents/Oxford/DPhil/clusters/'
-# experiment = 'synthetic_data_analysis/test_'
-# exp_date = ''
-# folder = ''
-# folder_3 = ''
+###    -----------   Input parameters   --------------     ###
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 experiment = '2017-02-03_sphere_timelapse/'
 exp_date = '2017-02-03_'
@@ -50,11 +45,12 @@ pixel_intensity_thresh = 440
 min_clus_size = 150
 use_existing_file = False
 
-#################################################
+###  ------------  End of input parameters  --------------  ###
+###############################################################
 
 
 # Function to update indexed array to array displaying areas
-def update_arr(arr):
+def calc_area_arr(arr):
     global area_new, index_keep
     index = np.where(index_keep == arr)
     if len(index[0]) != 0:        
@@ -63,13 +59,12 @@ def update_arr(arr):
         i = 0
     return i
 
+### -------------------   Module 1: Identification      ---------------------  ###
 
-################### Code from tif file to txt file ###########################
+    ##  ------ Code from tif file to txt file  -- ##
 
 if use_existing_file == False:
     # Convert tif file to 3D array with values between 0 and 1 (1 is maximum intensity point)
-    # ? Problem with thresholding, need constant value not constant proportion
-    # Might be ok as we're doing it over whole 3D array so probably ok
     raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID, max_val = pixel_intensity_thresh)
 
     # Threshold 3D array to boolean array
@@ -77,6 +72,9 @@ if use_existing_file == False:
 
     # print(tf_bool_3D)
     print(tf_bool_3D.shape)
+
+
+### ----------------- Code to skip Module 1 if previously run  --------------------- ###
 
 else:
     # retrieving data from file.
@@ -89,8 +87,10 @@ else:
     print("shape of arr: ", tf_bool_3D.shape)
 
 
+### -------------------   Module 2: Manipulation and storage      ---------------------  ###
+    
+    ## ------ Code from txt file to storage .csv files for area and index -- ##
 
-######### Adapt array ################
 t_mid = time.time()
 
 cluster_areas = np.array([])
@@ -98,77 +98,81 @@ fig_1 = plt.figure()
 num_clusters = []
 total_area = []
 mean_area = []
+
+# Loop over all timepoint to get outputs for each timepoint
 for i in range(len(time_array)):
 
     t_step_before = time.time()
 
-    current_array_holes = tf_bool_3D[:,:,i]
+    current_array_holes = tf_bool_3D[:,:,i]  # Get 2D boolean array for current time
 
-    current_array = binary_fill_holes(current_array_holes).astype(int)
+    # Fill any single pixel holes in clusters
+    current_array = binary_fill_holes(current_array_holes).astype(int) 
 
+    # Label the clusters of the boolean array
     label_arr, num_clus = label(current_array)
 
     # plt.imshow(label_arr, interpolation=None)
     # plt.show()
 
+    # Get a 1D list of areas of the clusters
     area_list = sum(current_array, label_arr, index=arange(label_arr.max() + 1))
 
     area_arr = label_arr
 
     global area_new, index_keep
+    # Remove fragments, that is clusters smaller than
+    # min_clus_size so we only consider clusters large enough
+    # to be a cell rather than a cell fragment
     area_new, index_keep = pre_oper.remove_fragments(area_list, num_clus, min_clus_size)
 
+    # Calculate and store total area now in clusters, number of clusters and mean cluster area 
     total_curr_area = np.sum(area_new)
     print('Total current area', total_curr_area)
-
     mean_curr_area = np.mean(area_new)
     print('Mean cluster area', mean_curr_area)
-
     num_clusters = np.append(num_clusters,len(area_new))
     total_area = np.append(total_area, np.sum(area_new))
     mean_area = np.append(mean_area, np.mean(area_new))
 
-    applyall = np.vectorize(update_arr)
+    # Calculate 2D cluster array with cluster areas rather than indeces
+    applyall = np.vectorize(calc_area_arr)
     area_slice = applyall(area_arr)
+
+    # Plot area array heatmap on a log scale and save figure
     my_cmap = mpl.colormaps['spring']
     my_cmap.set_under('k')
     plt.imshow(area_slice, cmap=my_cmap, vmin=1)
-    # plt.imshow(area_slice, cmap=my_cmap, norm=matplotlib.colors.LogNorm(vmin=100,vmax=25000))
     plt.axis([0, area_slice.shape[1], 0, area_slice.shape[0]])
     plt.colorbar()
     plt.savefig(f'{basedir}images/frame-{i:03d}.png', bbox_inches='tight', dpi=300)
     plt.clf()
 
     
-    # plt.show()
-    # animation_1 = animation.FuncAnimation(fig_1, pre_oper.update_heat_map, len(time_array), interval=500, fargs=(area_slice) )
 
-
-
-    ##### Re-binarize array
+    ##### Re-binarize (to boolean) and label array to output updated index array after fragments removed
     slice_binary = np.array(area_slice, dtype=bool).astype(int)
-
     output_label_arr, nc = label(slice_binary)
 
 
- 
+    # Save area array to csv file
     df_area = pd.DataFrame(area_slice)
     area_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_area', '.csv'
     area_csv_name_list_2  =''.join(area_csv_name_list)
     df_area.to_csv(area_csv_name_list_2, index=False, header=False)
 
+    # Save index array to csv file
     df_index = pd.DataFrame(output_label_arr)
     index_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_indexed', '.csv'
     index_csv_name_list_2  =''.join(index_csv_name_list)
     df_index.to_csv(index_csv_name_list_2, index=False, header=False)
 
+    # Add the cluster areas to 2D array of cluster sizes over time (for histogram plotting)
     cluster_areas = pre_oper.save_clus_areas(i, area_new, cluster_areas)
 
 
     t_step_after = time.time()
-
     t_step = t_step_after - t_step_before
-
     print('Time for step', i, t_step)
 
 
@@ -182,16 +186,22 @@ print('Time from 3D array to final output', t_arr_manip)
 
 print('Shapes', cluster_areas.shape, mean_area.shape, total_area.shape)
 
+
+### -----------------   Outputs and initial plots ------------------------- ###
+
+# Save 2D cluster areas array to csv
 df_cluster_areas = pd.DataFrame(cluster_areas)
 cluster_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_cluster_areas', '.csv'
 cluster_areas_csv_name_list_2  =''.join(cluster_areas_csv_name_list)
 df_cluster_areas.to_csv(cluster_areas_csv_name_list_2, index=False, header=False)
 
+# Save mean areas to csv
 df_mean_areas = pd.DataFrame(mean_area)
 mean_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_mean_areas', '.csv'
 mean_areas_csv_name_list_2  =''.join(mean_areas_csv_name_list)
 df_mean_areas.to_csv(mean_areas_csv_name_list_2, index=False, header=False)
 
+# Save total areas to csv
 df_total_areas = pd.DataFrame(total_area)
 total_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_total_areas', '.csv'
 total_areas_csv_name_list_2  =''.join(total_areas_csv_name_list)
