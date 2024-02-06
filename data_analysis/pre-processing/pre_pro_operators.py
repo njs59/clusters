@@ -3,6 +3,11 @@ import matplotlib as mpl
 import numpy as np
 
 def threshold_arr(tf_array, threshold):
+    '''
+    Thresholds 3D array to give a boolean array of values above and below threshold
+
+    
+    '''
     tf_ad = tf_array
     for p in range(tf_array.shape[0]):
       for q in range(tf_array.shape[1]):

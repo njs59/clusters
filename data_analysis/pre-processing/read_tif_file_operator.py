@@ -2,7 +2,7 @@ import numpy as np
 from osgeo import gdal as GD
 
 
-def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID, max_val):
+def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID):
   '''
   Reads in series of tif files and converts the pixel intensity to a single 3D array (3rd dimension is time)
 
@@ -16,7 +16,6 @@ def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID, max_val
     time_list: list of deisred timepoints to read in
     fileID, this will be '.tif'
 
-    max_val: eventual threshold value for pixel intensity, will be used here as a normalisation factor
 
   '''
   # Loop over timepoints
@@ -29,23 +28,14 @@ def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID, max_val
     band_2 = data_set_b.GetRasterBand(1) # green channel
     b2 = band_2.ReadAsArray()
     # img_1 = np.dstack((b2))
-
-    # Switch to portrait view of well
-    im_1_adapted = np.zeros((b2.shape[1],b2.shape[0]))
-
-    print('Normalisation val (maximum pixel intensity)', max_val)
-    # Normalise the pixel intensities
-    for l in range(b2.shape[1]):
-      for m in range(b2.shape[0]):
-        im_1_adapted[(l,m)] = b2[(m,l)]/max_val
     
     # Store normalised intensities in 3D array
     if i == 0:
-      main_array = im_1_adapted
+      main_array = b2
 
     else:
       print(i)
-      main_array = np.dstack((main_array, im_1_adapted))
+      main_array = np.dstack((main_array, b2))
       print(main_array.shape)
 
   # Output 3D normalised array

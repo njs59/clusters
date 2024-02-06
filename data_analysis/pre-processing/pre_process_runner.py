@@ -1,18 +1,7 @@
-import copy
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import time
-
-
-import matplotlib.animation as animation
-from IPython import display
-
-import glob
-import contextlib
-import os
-from PIL import Image
-
 
 from pylab import *
 from scipy.ndimage import *
@@ -39,9 +28,7 @@ time_list = [str(x).zfill(2) for x in time_array]
 
 well_loc = 's11'
 
-threshold = 1
-# pixel_intensity_thresh = 440
-pixel_intensity_thresh = 440
+threshold = 440
 min_clus_size = 150
 use_existing_file = False
 
@@ -65,7 +52,7 @@ def calc_area_arr(arr):
 
 if use_existing_file == False:
     # Convert tif file to 3D array with values between 0 and 1 (1 is maximum intensity point)
-    raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID, max_val = pixel_intensity_thresh)
+    raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID)
 
     # Threshold 3D array to boolean array
     tf_bool_3D = pre_oper.threshold_arr(raw_arr_3D, threshold)
@@ -207,5 +194,9 @@ total_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_
 total_areas_csv_name_list_2  =''.join(total_areas_csv_name_list)
 df_total_areas.to_csv(total_areas_csv_name_list_2, index=False, header=False)
 
-
+# Save number of clusters to csv
+df_number_clusters = pd.DataFrame(num_clusters)
+number_clusters_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_number_clusters', '.csv'
+number_clusters_csv_name_list_2  =''.join(number_clusters_csv_name_list)
+df_number_clusters.to_csv(number_clusters_csv_name_list_2, index=False, header=False)
     
