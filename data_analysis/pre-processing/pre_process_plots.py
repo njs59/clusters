@@ -114,27 +114,13 @@ plt.clf()
 # Create plot for each timepoint
 for i in range(len(time_array)):
 
-    # Read in array at current time
+    # Read in area array at current time
     area_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_area', '.csv'
     area_csv_name_list_2  =''.join(area_csv_name_list)
     df_slice = pd.read_csv(area_csv_name_list_2, header=None)
     current_array = df_slice.to_numpy()
 
-    # ##### Re-binarize array
-    # slice_binary = (current_array > 0).astype(np.int_)
-
-    # # Re-label array
-    # label_arr, num_clus = label(slice_binary)
-
-    # # plt.imshow(label_arr, interpolation=None)
-    # # plt.show()
-
-    # area_new = sum(slice_binary, label_arr, index=arange(label_arr.max() + 1))
-
-    # num_clusters = np.append(num_clusters,len(area_new))
-
-    # cluster_areas = pre_oper.save_clus_areas(i, area_new, cluster_areas)
-
+    # Plot a heatmap of the array on a log scale and savre the image for use in a gif
     my_cmap = mpl.colormaps['spring']
     my_cmap.set_under('w')
     plt.imshow(current_array, cmap=my_cmap, norm = LogNorm(vmin=150, vmax=25000))
@@ -145,8 +131,7 @@ for i in range(len(time_array)):
     plt.clf()
     
 
-##################################
-
+###   -----------------  Gif code  ----------------- ###
 
 # create an empty list called images
 images = []
@@ -174,16 +159,12 @@ images[0].save(basedir + 'images/cluster_sizes_log/cluster_sizes' + timestr + '.
 ## Code to remove constituent images if not wanting to store
 # for file in glob.glob(basedir + 'images/frame-*.png'):  # Delete images after use
 #         os.remove(file)
-print('Number of clusters:', num_clusters)
-plt.plot(num_clusters)
-plt.show()
-plt.clf()
 
 
-# Histogram plotting code
+
+###   ---------------   Histogram plotting code   --------------------   ###
 if plot_hist == True:
-    print('Shape', cluster_areas.shape)
-
+    # Plot and store histogram images at each timepoint for use in a gif
     for j in range(len(time_list)):
         plt.hist(cluster_2D_areas[j,:], bins=[0, 1000, 2000, 3000, 4000, 6000, 8000, 10000, 12000, 16000, 20000, 25000])
         plt.ylim(0, 100) 
@@ -207,7 +188,4 @@ if plot_hist == True:
     # save as a gif   
     images_hist[0].save(basedir + 'images/histogram/' + timestr + '.gif',
                 save_all=True, append_images=images_hist[1:], optimize=False, duration=500, loop=0)
-
-
-
 
