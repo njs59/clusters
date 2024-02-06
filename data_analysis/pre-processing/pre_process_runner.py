@@ -17,7 +17,7 @@ from PIL import Image
 from pylab import *
 from scipy.ndimage import *
 
-import read_tif_file as tif
+import read_tif_file_operator as tif
 import pre_pro_operators as pre_oper
 
 t_before = time.time()
@@ -207,56 +207,5 @@ total_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_
 total_areas_csv_name_list_2  =''.join(total_areas_csv_name_list)
 df_total_areas.to_csv(total_areas_csv_name_list_2, index=False, header=False)
 
-
-
-
-# create an empty list called images
-images = []
-
-# get the current time to use in the filename
-timestr = time.strftime("%Y%m%d-%H%M%S")
-
-# get all the images in the 'images for gif' folder
-for filename in sorted(glob.glob(basedir + 'images/frame-*.png')): # loop through all png files in the folder
-    im = Image.open(filename) # open the image
-    # im_small = im.resize((1200, 1500), resample=0) # resize them to make them a bit smaller
-    images.append(im) # add the image to the list
-
-# calculate the frame number of the last frame (ie the number of images)
-last_frame = (len(images)) 
-
-# create 10 extra copies of the last frame (to make the gif spend longer on the most recent data)
-for x in range(0, 9):
-    im = images[last_frame-1]
-    images.append(im)
-
-# save as a gif   
-images[0].save(basedir + 'images/cluster_sizes' + timestr + '.gif',
-               save_all=True, append_images=images[1:], optimize=False, duration=200, loop=0)
-
-# for file in glob.glob(basedir + 'images/frame-*.png'):  # Delete images after use
-#         os.remove(file)
-print('Number of clusters:', num_clusters)
-plt.plot(num_clusters)
-plt.show()
-
-
-number_of_frames = len(time_list)
-data = cluster_areas
-fig = plt.figure()
-hist = plt.hist(data[0,:])
-
-animation = animation.FuncAnimation(fig, pre_oper.update_hist, number_of_frames, interval=500, fargs=(data, ) )
-
-# converting to an html5 video
-video = animation.to_html5_video()
-
-# embedding for the video
-html = display.HTML(video)
-
-# draw the animation
-display.display(html)
-plt.show()
-# plt.close()
 
     
