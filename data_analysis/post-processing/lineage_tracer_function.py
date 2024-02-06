@@ -8,6 +8,21 @@ import matplotlib.pyplot as plt
 
 
 def lineage_tracer(start_time, end_time, basedir, exp_date, well_loc):
+    '''
+Lineage tracer traces each cluster in turn back in time using event to find contributing clusters
+
+Input arguments:
+    start_time: Timepoint to be traced back to and plotted
+    end_time: Timepoint to trace from and plot cluster 
+    basedir,
+    exp_date,
+    well_loc,
+
+Output:
+    Series of subplots of start_time and end_time 
+    for each cluster's lineage next to each other
+
+'''
     
     df_end_now_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', str(end_time).zfill(2), 'c2_post_processing', '.csv'
     df_end_now_csv_name_list_2  =''.join(df_end_now_csv_name_list)

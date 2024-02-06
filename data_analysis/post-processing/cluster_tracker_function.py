@@ -4,7 +4,21 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-def cluster_tracker(start_time, end_time, timestep, cluster_index_final_time, basedir, exp_date, well_loc):
+def cluster_tracker(start_time, end_time, timejump, cluster_index_final_time, basedir, exp_date, well_loc):
+    '''
+Cluster tracker tracks an individually taggged cluster over time
+Input arguments: 
+    start_time, first timepoint to plot
+    end_time, final timepoint to plot
+    timejump, number of timesteps between each plot
+    cluster_index_final_time, row in final time to select cluster ID tag from
+    basedir,
+    exp_date
+    well_loc
+
+Output:
+    Series of plots 
+'''
     df_end_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', str(end_time).zfill(2) , 'c2_post_processing', '.csv'
     df_end_csv_name_list_2  =''.join(df_end_csv_name_list)
     df_end = pd.read_csv(df_end_csv_name_list_2)
@@ -16,7 +30,7 @@ def cluster_tracker(start_time, end_time, timestep, cluster_index_final_time, ba
 
     cluster_tag_to_track = cluster_tags[cluster_index_final_time]
 
-    for i in range(start_time - 1, end_time, timestep):
+    for i in range(start_time - 1, end_time, timejump):
         # Read in csv
         time_i = str(i).zfill(2)
         index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', time_i, 'c2', '_indexed', '.csv'
