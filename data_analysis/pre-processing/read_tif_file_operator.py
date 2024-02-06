@@ -28,23 +28,15 @@ def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID, max_val
     # Only interested in green channel (R is band 0, G is band 1, B is band 2)
     band_2 = data_set_b.GetRasterBand(1) # green channel
     b2 = band_2.ReadAsArray()
-    # Stack on the 3rd dimension the pixel intensities
-    img_1 = np.dstack((b2))
+    # img_1 = np.dstack((b2))
+    print('Shape', b2.shape)
+    # Switch to portrait view of well
+    im_1_adapted = np.zeros((b2.shape[1],b2.shape[0]))
 
-    im_1_adapted = np.zeros((img_1.shape[1],img_1.shape[2]))
-    for j in range(img_1.shape[1]):
-      for k in range(img_1.shape[2]):
-        ## Main diffferences are in the green channel
-        value = img_1[(0,j,k)]
-        im_1_adapted[(j,k)] = value
-
-
-    # max_val = img_1.max()
-    # max_val = 330
     print('Normalisation val (maximum pixel intensity)', max_val)
-    for l in range(img_1.shape[1]):
-      for m in range(img_1.shape[2]):
-        im_1_adapted[(l,m)] = im_1_adapted[(l,m)]/max_val
+    for l in range(b2.shape[1]):
+      for m in range(b2.shape[0]):
+        im_1_adapted[(l,m)] = b2[(m,l)]/max_val
 
 
 
