@@ -29,17 +29,17 @@ def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID, max_val
     band_2 = data_set_b.GetRasterBand(1) # green channel
     b2 = band_2.ReadAsArray()
     # img_1 = np.dstack((b2))
-    print('Shape', b2.shape)
+
     # Switch to portrait view of well
     im_1_adapted = np.zeros((b2.shape[1],b2.shape[0]))
 
     print('Normalisation val (maximum pixel intensity)', max_val)
+    # Normalise the pixel intensities
     for l in range(b2.shape[1]):
       for m in range(b2.shape[0]):
         im_1_adapted[(l,m)] = b2[(m,l)]/max_val
-
-
-
+    
+    # Store normalised intensities in 3D array
     if i == 0:
       main_array = im_1_adapted
 
@@ -47,5 +47,6 @@ def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID, max_val
       print(i)
       main_array = np.dstack((main_array, im_1_adapted))
       print(main_array.shape)
-  
+
+  # Output 3D normalised array
   return main_array
