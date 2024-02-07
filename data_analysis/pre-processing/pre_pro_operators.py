@@ -6,19 +6,34 @@ def threshold_arr(tf_array, threshold):
     '''
     Thresholds 3D array to give a boolean array of values above and below threshold
 
-    
-    '''
-    tf_ad = tf_array
-    for p in range(tf_array.shape[0]):
-      for q in range(tf_array.shape[1]):
-        for r in range(tf_array.shape[2]):
-            if tf_array[(p,q,r)] > threshold:
-                tf_ad[(p,q,r)] = 1
-            else:
-                tf_ad[(p,q,r)] = 0
+    Inputs:
+      tf_array: 3D array to be thresholded
+      threshold: Value above which position is assigned a 1 in boolean array
 
+    Outputs:
+      tf_array_bool: 3D boolean array after thresholdeing has occured
+    '''
+    # tf_ad = tf_array
+    tf_ad_2 = tf_array
+
+    vfunc = np.vectorize(threshold_val)
+    tf_array_bool = vfunc(tf_ad_2, threshold)
+
+    # for p in range(tf_array.shape[0]):
+    #   for q in range(tf_array.shape[1]):
+    #     for r in range(tf_array.shape[2]):
+    #         if tf_array[(p,q,r)] > threshold:
+    #             tf_ad[(p,q,r)] = 1
+    #         else:
+    #             tf_ad[(p,q,r)] = 0
+
+    # # check if both arrays are same or not:
+    # if (tf_ad == tf_array_bool).all():
+    #     print("Yes, both methods for the arrays are same")
+    # else:
+    #     print("No, both methods for the arrays are not same")    
     # tf_array_bool = np.array(tf_ad, dtype = bool)
-    tf_array_bool = tf_ad
+    # tf_array_bool = tf_ad_2
 
     # reshaping the array from 3D
     # matrix to 2D matrix.
@@ -45,6 +60,13 @@ def threshold_arr(tf_array, threshold):
 
 
     return tf_array_bool
+
+def threshold_val(a, threshold):
+    "Return a-b if a>b, otherwise return a+b"
+    if a > threshold:
+        return 1
+    else:
+        return 0
 
 
 def remove_fragments(area, num_clus, min_clus_size):
