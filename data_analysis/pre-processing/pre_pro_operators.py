@@ -13,27 +13,10 @@ def threshold_arr(tf_array, threshold):
     Outputs:
       tf_array_bool: 3D boolean array after thresholdeing has occured
     '''
-    # tf_ad = tf_array
-    tf_ad_2 = tf_array
+    tf_ad = tf_array
 
-    vfunc = np.vectorize(threshold_val)
-    tf_array_bool = vfunc(tf_ad_2, threshold)
-
-    # for p in range(tf_array.shape[0]):
-    #   for q in range(tf_array.shape[1]):
-    #     for r in range(tf_array.shape[2]):
-    #         if tf_array[(p,q,r)] > threshold:
-    #             tf_ad[(p,q,r)] = 1
-    #         else:
-    #             tf_ad[(p,q,r)] = 0
-
-    # # check if both arrays are same or not:
-    # if (tf_ad == tf_array_bool).all():
-    #     print("Yes, both methods for the arrays are same")
-    # else:
-    #     print("No, both methods for the arrays are not same")    
-    # tf_array_bool = np.array(tf_ad, dtype = bool)
-    # tf_array_bool = tf_ad_2
+    vfunc = np.vectorize(bool_threshold_val)
+    tf_array_bool = vfunc(tf_ad, threshold)
 
     # reshaping the array from 3D
     # matrix to 2D matrix.
@@ -41,7 +24,10 @@ def threshold_arr(tf_array, threshold):
  
     # saving reshaped array to file.
     np.savetxt("/Users/Nathan/Documents/Oxford/DPhil/test_3D.txt", arr_reshaped)
- 
+
+
+
+    # Checks:
     # retrieving data from file.
     loaded_arr = np.loadtxt("/Users/Nathan/Documents/Oxford/DPhil/test_3D.txt")
  
@@ -61,8 +47,8 @@ def threshold_arr(tf_array, threshold):
 
     return tf_array_bool
 
-def threshold_val(a, threshold):
-    "Return a-b if a>b, otherwise return a+b"
+def bool_threshold_val(a, threshold):
+    '''Return 1 if a > threshold, otherwise return 0'''
     if a > threshold:
         return 1
     else:
@@ -70,75 +56,132 @@ def threshold_val(a, threshold):
 
 
 def remove_fragments(area, num_clus, min_clus_size):
-    ## Get a list of indexes for slice of array that correspond to large enough to be considered a cluster
+    '''
+    Removes clusters from list of areas that fall below a minimum size.
+    This is used to remove clusters that are smaller than a cell and so
+      are comprised only of cell fragments.
 
+    Inputs:
+      area:           1D array of current candidate cluster areas
+      num_clus:       Number of candidate clusters
+      min_clus_size:  Minimum area needed for a candidate cluster to be accepted
+
+    Outputs:
+      area_new:   1D array of accepted cluster areas
+      index_keep: List of indices to keep (by position in area input array)
+    '''
+
+    # Get a list of indexes for slice of array that are
+    # not large enough to be considered a cluster
     index_to_del = np.argwhere(area < min_clus_size)
+    # Delete the corresponding areas from area array
     area_new = np.delete(area, index_to_del)
 
-    # print(lw)
-    # print(area_new)
-
-
-    # print(index_to_del)
-
+    # Get list of possible indices
     index_keep = np.arange(num_clus+1)
+    # Delete indices corresponding to too small clusters
     for i in range(len(index_to_del)):
         index_keep = np.delete(index_keep, np.where(index_keep == index_to_del[i]))
 
-    # print(index_keep)
 
     return area_new, index_keep
 
+
 def save_clus_areas(i, area_new, cluster_areas):
+    '''
+    Add a new row of cluster sizes to the 2D array storing all cluster sizes over time.
+      Increasing the dimensions of the 2 arrays to match by adding 0's where necessary
+
+    Inputs:
+      i: timepoint
+      area_new: 1D array of areas at current timepoint
+      cluster_areas: 2D array of areas at previous timpoints
+
+    Outputs:
+      cluster_areas: 2D array updated with new areas at current time
+    '''
+    
+
     if i == 0:
+      # If we're at the initial time just update the empty array with new areas
       cluster_areas = np.append(cluster_areas, area_new, axis=0)
 
-
+    # Timestep 1 considered separately because we compare with 1D array for 
+      # previous cluster areas rather than 2D array
     elif i == 1:
-      print('Compare', len(area_new), cluster_areas.shape[0])
-      if len(area_new) < cluster_areas.shape[0]:
-        area_to_add = np.zeros((1,cluster_areas.shape[0]))
 
+      # Print 2 sizes to compare (number of new clusters, number of old clusters)
+      print('Compare', len(area_new), cluster_areas.shape[0])
+
+      # If less clusters than previously
+      if len(area_new) < cluster_areas.shape[0]: 
+        # Get array of 0's of same length as previous clusters
+        area_to_add = np.zeros((1,cluster_areas.shape[0]))
+        # Assign new areas to first n elements of array
         for n in range(len(area_new)):
           area_to_add[0,n] = area_new[n]
+        # Stack vertically into 2D array
         cluster_areas = np.vstack((cluster_areas, area_to_add))
+
+      # If more clusters than previously  
       else:
-        ## Add zeros to current array
+        # Calculate how many more clusters are present
         extra_clusters = len(area_new) - cluster_areas.shape[0]
         for v in range(extra_clusters):
+          # Add zeros to cluster_areas array to match array sizes
           cluster_areas = np.append(cluster_areas,0)
-        # # Now add the new data
+        # Now add the new data
         area_to_add = np.zeros((1,cluster_areas.shape[0]))
         for n in range(len(area_new)):
           area_to_add[0,n] = area_new[n]
+        # Stack vertically into 2D array
         cluster_areas = np.vstack((cluster_areas, area_to_add))
+      # Print current shape of 2D array
       print('Shape clus', cluster_areas.shape)
 
+    # Case where i > 1
     else:
+      # Print 2 sizes to compare (number of new clusters, max number of old clusters)
       print('Compare', len(area_new), cluster_areas.shape[1])
+
+      # If less clusters than previous max number of clusters
       if len(area_new) < cluster_areas.shape[1]:
+        # Get array of 0's of same length as previous clusters
         area_to_add = np.zeros((1,cluster_areas.shape[1]))
+        # Assign new areas to first n elements of array
         for n in range(len(area_new)):
           area_to_add[0,n] = area_new[n]
+        # Stack vertically in 2D array
         cluster_areas = np.vstack((cluster_areas, area_to_add))
+
+      # If more clusters than previous max number of clusters
       else:
-        ## Add zeros to current array
+        # Calculate how many more clusters are present
         extra_clusters = len(area_new) - cluster_areas.shape[1]
+        # Get array of zeros to add to current array to match array sizes
         extra_zeros = np.zeros((cluster_areas.shape[0], extra_clusters))
-        print('Extras', extra_clusters, cluster_areas.shape)
-        print('Shapes', extra_zeros.shape)
+        # Add zeros to 2D array by horizontally stacking
         cluster_areas = np.hstack((cluster_areas, extra_zeros))
         # Now add the new data
         area_to_add = np.zeros((1,cluster_areas.shape[1]))
         for n in range(len(area_new)):
           area_to_add[0,n] = area_new[n]
+        # Stack vertically into 2D array
         cluster_areas = np.vstack((cluster_areas, area_to_add))
+      # Print current shape of 2D array
       print('Shape clus', cluster_areas.shape)
 
     return cluster_areas
 
 
 def update_hist(num, data):
+    '''
+    Plots next histogram
+
+    Input:
+      num: row of data to plot
+      data: 2D array of data
+    '''
     plt.cla()
     plt.gca()
     # plt.set_ylim([0,60])
@@ -148,6 +191,13 @@ def update_hist(num, data):
 
 
 def update_heat_map(data):
+  '''
+  Plots next heat map figure
+
+  Input:
+  data: 2D array to be plotted in heat map form
+  '''
+
   my_cmap = mpl.colormaps['spring']
   my_cmap.set_under('k')
   plt.imshow(data, cmap=my_cmap, vmin = 1)
@@ -158,39 +208,21 @@ def update_heat_map(data):
 
 
 def threshold_arr_2D(tf_array, threshold):
+    '''
+    2D version of thresholding 
+
+    Inputs:
+      tf_array: 2D array
+      threshold: Value for thresholding
+
+    Outputs:
+      tf_array_bool: Boolean array post-thresholding
+    '''
+
     tf_ad = tf_array
-    for p in range(tf_array.shape[0]):
-      for q in range(tf_array.shape[1]):
-            if tf_array[(p,q)] > threshold:
-                tf_ad[(p,q)] = 1
-            else:
-                tf_ad[(p,q)] = 0
 
-    # tf_array_bool = np.array(tf_ad, dtype = bool)
-    tf_array_bool = tf_ad
-
-    # reshaping the array from 3D
-    # matrix to 2D matrix.
-    # arr_reshaped = tf_array_bool.reshape(tf_array_bool.shape[0], -1)
- 
-    # # saving reshaped array to file.
-    # np.savetxt("/Users/Nathan/Documents/Oxford/DPhil/test_2D.txt", tf_array_bool)
- 
-    # # retrieving data from file.
-    # loaded_arr = np.loadtxt("/Users/Nathan/Documents/Oxford/DPhil/test_2D.txt")
- 
-    # # load_original_arr = loaded_arr.reshape(
-    # #     loaded_arr.shape[0], loaded_arr.shape[1] // tf_array_bool.shape[2], tf_array_bool.shape[2])
-    
-    # # check the shapes:
-    # print("shape of arr: ", tf_array_bool.shape)
-    # print("shape of load_original_arr: ", loaded_arr.shape)
-    
-    # # check if both arrays are same or not:
-    # if (loaded_arr == tf_array_bool).all():
-    #     print("Yes, both the arrays are same")
-    # else:
-    #     print("No, both the arrays are not same")
+    vfunc = np.vectorize(bool_threshold_val)
+    tf_array_bool = vfunc(tf_ad, threshold)
 
 
     return tf_array_bool
