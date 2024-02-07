@@ -11,7 +11,7 @@ import post_pro_operators as post_oper
 
 t_before = time.time()
 
-
+###    -----------   Input parameters   --------------     ###
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 exp_date = '2017-02-03'
 time_array = range(1,98)
@@ -19,27 +19,29 @@ time_array = range(1,98)
 time_list = [str(x).zfill(2) for x in time_array]
 well_loc = 's11'
 
+# Column titles to be used in dataframes
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
            "Event", "Clusters in event", "Timestep", "Date", "Well ID"]
 
 
+# Variable to store next tag ID number
 next_available_tag = 1
+
+# Loop over each time
 for i in range(len(time_list)):
 
     t_before_step = time.time()
 
+    # Read in area array for given time
     csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', time_list[i], 'c2_area', '.csv'
     csv_name_list_2  =''.join(csv_name_list)
-
     df_area = pd.read_csv(csv_name_list_2, header=None)
-
     array_area_current_time = df_area.to_numpy()
 
+    # Read in index array for given time
     csv_name_list_index = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', time_list[i], 'c2_indexed', '.csv'
     csv_name_list_2_index  =''.join(csv_name_list_index)
-
     df_index = pd.read_csv(csv_name_list_2_index, header=None)
-
     array_index_current_time = df_index.to_numpy()
     
     # ##### Re-binarize array
@@ -47,27 +49,29 @@ for i in range(len(time_list)):
 
     # label_arr, num_clus = label(slice_binary)
 
+    # Initialise dataframe for given time
     df_step = pd.DataFrame(np.nan, index=range(array_index_current_time.max()), columns=cols)
     df_step["Event"] = ""
     df_step["Clusters in event"] = ""
 
+    # Calculate the centres of the clusters (to nearest integer value in x,y)
     centres_2D_current = post_oper.calc_clus_centre(array_index_current_time)
 
-
+    # Generate 1D array of cluster areas
     area_2D_current = []
     for j in range(1,array_index_current_time.max()+1):
+        # Find location for each cluster at current time
         loc_x = np.where(array_index_current_time==j)[0][0]
         loc_y = np.where(array_index_current_time==j)[1][0]
+        # Append the list of areas using the area array
         area_2D_current.append(array_area_current_time[loc_x,loc_y])
 
+    # Initial timestep treated differently
     if i == 0:
-        tag_number_current = []
-        for k in range(1,array_index_current_time.max()+1):
-            loc_x = np.where(array_index_current_time==k)[0][0]
-            loc_y = np.where(array_index_current_time==k)[1][0]
-            # Create list of tagged indices
-            tag_number_current.append(array_index_current_time[loc_x,loc_y])
+        # Create list of tagged indices
+        tag_number_current = range(1,array_index_current_time.max()+1)
 
+        # Store variables for use in next step
         centres_2D_old = centres_2D_current
         next_available_tag = array_index_current_time.max()+1
 
