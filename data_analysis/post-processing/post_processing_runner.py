@@ -71,7 +71,9 @@ for i in range(len(time_list)):
         next_available_tag = array_index_current_time.max()+1
 
     else:
+        
         tag_number_current = []
+        no_same_locs_index = []
         for k in range(1,array_index_current_time.max()+1):
             same_locs, same_locs_store = post_oper.previous_clusters_at_loc(array_index_current_time, centres_2D_old, k)
 
@@ -83,6 +85,7 @@ for i in range(len(time_list)):
 
                 cluster_tag_number = matching_row['Tag number'].tolist()[0]
                 tag_number_current.append(cluster_tag_number)
+                old_tags_list.remove(cluster_tag_number)
                 # print('Yay 2')
 
                 df_step.iloc[k-1,4] = 'Move'
@@ -91,38 +94,8 @@ for i in range(len(time_list)):
             elif same_locs == 0:
                 # Splitting
                 # print('Split')
-                search_radius = 50
-
-                x_cen = int(centres_2D_current[k-1][0])
-                y_cen = int(centres_2D_current[k-1][1])
-
-                # Compares with previous timestep array
-                near_clus, clus_distances = post_oper.nearby_clusters(x_cen, y_cen, search_radius, array_index_old)
-
-                if len(near_clus) == 0:
-                    print('No nearby clusters')
-                    df_step.iloc[k-1,4] = 'Appearance'
-                    # df_step.iloc[k-1,5] = str([0])
-                    tag_number_current.append(next_available_tag)
-                    next_available_tag += 1
-
-                else:
-                    cluster_index_split_from = post_oper.pick_cluster_inverse_dist(near_clus, clus_distances)
-                    cluster_ID = df_old.iloc[cluster_index_split_from - 1 , 0]
-                    old_cluster_size = df_old.iloc[cluster_index_split_from - 1 , 1]
-                    new_cluster_size = area_2D_current[k-1]
-                    percent_diff = 100*(abs(new_cluster_size - old_cluster_size))/((old_cluster_size+new_cluster_size)/2)
-                    if percent_diff < 20:
-                        # Keeps ID of old cluster
-                        tag_number_current.append(cluster_ID)
-                        df_step.iloc[k-1,4] = 'Move large'
-                        df_step.iloc[k-1,5] = str([cluster_ID])
-                    else:
-                        df_step.iloc[k-1,4] = 'Splitting'
-                        df_step.iloc[k-1,5] = str([cluster_ID])
-                        tag_number_current.append(next_available_tag)
-                        next_available_tag += 1
-                # print('Yay 3')
+                no_same_locs_index.append(k)
+                
 
 
             else:
@@ -136,6 +109,8 @@ for i in range(len(time_list)):
 
                 cluster_tag_number = min(clusters_coagulating['Tag number'])
                 clusters_in_event = clusters_coagulating['Tag number'].tolist()
+                for t in range(len(clusters_in_event)):
+                    old_tags_list.remove(clusters_in_event[t])
 
                 df_step.iloc[k-1,4] = 'Coagulation'
                 df_step.iloc[k-1,5] = str(clusters_in_event)
@@ -143,7 +118,152 @@ for i in range(len(time_list)):
                 tag_number_current.append(cluster_tag_number)
         
 
-        # Update centres_2D_old for use in next timestep
+
+        # same_locs = 0 case
+        # Splitting code
+        # print('Split')
+        non_assigned_cluster_array = np.zeros([array_index_old.shape[0], array_index_old.shape[1]])
+        locs_not_considered = 0
+        for m in range(len(old_tags_list)):
+            old_locs_of_arrs = np.where(array_index_old == old_tags_list[m]) 
+            if old_locs_of_arrs[0].shape[0] == 0:
+                print('Not interested in index, all assigned')
+                locs_not_considered += 1
+                # no_same_locs_index.remove(no_same_locs_index[m])
+                print('Locs not considered', locs_not_considered)
+            else:
+                for n in range(len(old_locs_of_arrs[0])):
+                    non_assigned_cluster_array[old_locs_of_arrs[0][n], old_locs_of_arrs[1][n]] = array_index_old[old_locs_of_arrs[0][n], old_locs_of_arrs[1][n]]
+            
+        
+        for l in range(len(no_same_locs_index)): 
+
+            index_of_interest = no_same_locs_index[l]           
+            search_radius = 50
+
+            x_cen = int(centres_2D_current[index_of_interest-1][0])
+            y_cen = int(centres_2D_current[index_of_interest-1][1])
+
+            # Compares with previous timestep array
+            near_clus, clus_distances = post_oper.nearby_clusters(x_cen, y_cen, search_radius, array_index_old)
+            near_non_assigned_clus, clus_distances_non_assigned = post_oper.nearby_clusters(x_cen, y_cen, search_radius, non_assigned_cluster_array)
+
+
+            if len(near_clus) == 0:
+                # Appearence code
+                print('No nearby clusters')
+                # Check if cluster at edge of field of view
+                if x_cen < 10 or x_cen > 1015 or y_cen < 10 or y_cen > 1334:
+                    #cluster at edge 
+                    df_step.iloc[index_of_interest-1,4] = 'Edge Appearance'
+                    tag_number_current.append(next_available_tag)
+                    next_available_tag += 1
+                else:
+                    df_step.iloc[index_of_interest-1,4] = 'Appearance'
+                    tag_number_current.append(next_available_tag)
+                    next_available_tag += 1
+
+            else:
+                # search for non-assigned clusters
+                if len(near_non_assigned_clus) == 1:
+                    # Solo non-assigned cluster
+                    # Large move event if close in size else split
+                    # Keeps ID of old cluster
+                    cluster_index_split_from = post_oper.pick_cluster_inverse_dist(near_non_assigned_clus, clus_distances_non_assigned)
+                    cluster_ID = df_old.iloc[cluster_index_split_from - 1 , 0]
+                    old_cluster_size = df_old.iloc[cluster_index_split_from - 1 , 1]
+                    new_cluster_size = area_2D_current[index_of_interest-1]
+                    percent_diff = 100*(abs(new_cluster_size - old_cluster_size))/((old_cluster_size+new_cluster_size)/2)
+                    if percent_diff < 20:
+                        # Keeps ID of old cluster
+                        tag_number_current.append(cluster_ID)
+                        df_step.iloc[index_of_interest-1,4] = 'Move large'
+                        df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                    elif old_cluster_size > new_cluster_size:
+                        df_step.iloc[index_of_interest-1,4] = 'Splitting'
+                        df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                        tag_number_current.append(next_available_tag)
+                        next_available_tag += 1
+                    else:
+                        df_step.iloc[index_of_interest-1,4] = 'Appearance'
+                        tag_number_current.append(next_available_tag)
+                        next_available_tag += 1
+                
+                elif len(near_non_assigned_clus) > 1:
+
+                    rows_to_save = []
+                    for s in range(len(near_non_assigned_clus)):
+                        mask = (df_old['Cluster Centre x'] == clus_distances_non_assigned[s,0]) &\
+                                (df_old['Cluster Centre y'] == clus_distances_non_assigned[s,1])
+                        rows_to_save.append(np.where(mask == True)[0][0])
+                    
+                    
+                    
+                    clusters_coagulating = df_old.iloc[rows_to_save]
+                    max_near_non_assigned_size = max(clusters_coagulating['Cluster size'])
+                    new_cluster_size = area_2D_current[index_of_interest-1]
+
+                    if max_near_non_assigned_size < new_cluster_size:                            
+                        cluster_tag_number = min(clusters_coagulating['Tag number'])
+                        clusters_in_event = clusters_coagulating['Tag number'].tolist()
+                        # for t in range(len(clusters_in_event)):
+                            # old_tags_list.remove(clusters_in_event[t])
+
+                        df_step.iloc[k-1,4] = 'Possible Coagulation'
+                        df_step.iloc[k-1,5] = str(clusters_in_event)
+
+                        tag_number_current.append(cluster_tag_number)
+
+                    else:
+                        # Pick random event with single cluster
+                        cluster_index_split_from = post_oper.pick_cluster_inverse_dist(near_non_assigned_clus, clus_distances_non_assigned)
+                        cluster_ID = df_old.iloc[cluster_index_split_from - 1 , 0]
+                        old_cluster_size = df_old.iloc[cluster_index_split_from - 1 , 1]
+                        new_cluster_size = area_2D_current[index_of_interest-1]
+                        percent_diff = 100*(abs(new_cluster_size - old_cluster_size))/((old_cluster_size+new_cluster_size)/2)
+                        if percent_diff < 20:
+                            # Keeps ID of old cluster
+                            tag_number_current.append(cluster_ID)
+                            df_step.iloc[index_of_interest-1,4] = 'Move large'
+                            df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                        elif old_cluster_size > new_cluster_size:
+                            df_step.iloc[index_of_interest-1,4] = 'Splitting'
+                            df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                            tag_number_current.append(next_available_tag)
+                            next_available_tag += 1
+                        else:
+                            df_step.iloc[index_of_interest-1,4] = 'Appearance'
+                            tag_number_current.append(next_available_tag)
+                            next_available_tag += 1
+
+
+                else:
+                    # Check if cluster at edge of field of view
+                    if x_cen < 10 or x_cen > 1015 or y_cen < 10 or y_cen > 1334:
+                        #cluster at edge 
+                        df_step.iloc[index_of_interest-1,4] = 'Edge Appearance'
+                        tag_number_current.append(next_available_tag)
+                        next_available_tag += 1
+
+                    else:
+                        # Search nearby clusters already assigned
+
+                        # Can only be splitting
+                         
+                        # (can't move large as that can only happen if there is an unassigned cluster)
+                        # Can't be appearence as that has been checked for at the very start
+
+
+                        cluster_index_split_from = post_oper.pick_cluster_inverse_dist(near_clus, clus_distances)
+                        cluster_ID = df_old.iloc[cluster_index_split_from - 1 , 0]
+                        df_step.iloc[index_of_interest-1,4] = 'Splitting'
+                        df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                        tag_number_current.append(next_available_tag)
+                        next_available_tag += 1
+            # print('Yay 3')
+        
+    
+    # Update centres_2D_old for use in next timestep
         centres_2D_old = centres_2D_current
         
 
@@ -164,12 +284,13 @@ for i in range(len(time_list)):
     # print(df_step)
 
     df_old = df_step
+    old_tags_list = tag_number_current
     array_index_old = array_index_current_time
 
     print('Yay step', i, ' finished')
 
     df_total_areas = pd.DataFrame(df_step)
-    df_step_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', time_list[i], 'c2', '_post_processing', '.csv'
+    df_step_csv_name_list = basedir, '0_post_processing_output/', '000_test_attempt', exp_date, '_', well_loc, 't', time_list[i], 'c2', '_post_processing', '.csv'
     total_areas_csv_name_list_2  =''.join(df_step_csv_name_list)
     df_total_areas.to_csv(total_areas_csv_name_list_2, index=False, header=True)
 

@@ -118,7 +118,7 @@ def pick_cluster_inverse_dist(clusters_index_output, distances):
         weights = weights / np.sum(weights)         # Normalize
         cluster_selected = np.random.choice(clusters_index_output, p=weights) # Sample
         # Return the cluster index randomly sampled with weight inverse to distance from site of interest
-        return cluster_selected
+        return int(cluster_selected)
 
 # def calc_clus_centre(labelled_arr, index_keep):
 # ## Returns a list of centres of clusters with desired indexes from a labelled array
