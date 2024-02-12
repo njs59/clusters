@@ -43,11 +43,6 @@ for i in range(len(time_list)):
     csv_name_list_2_index  =''.join(csv_name_list_index)
     df_index = pd.read_csv(csv_name_list_2_index, header=None)
     array_index_current_time = df_index.to_numpy()
-    
-    # ##### Re-binarize array
-    # slice_binary = (array_area_current_time > 0).astype(np.int_)
-
-    # label_arr, num_clus = label(slice_binary)
 
     # Initialise dataframe for given time
     df_step = pd.DataFrame(np.nan, index=range(array_index_current_time.max()), columns=cols)

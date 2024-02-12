@@ -8,12 +8,12 @@ def cluster_tracker(start_time, end_time, timejump, cluster_index_final_time, ba
     '''
 Cluster tracker tracks an individually taggged cluster over time
 Input arguments: 
-    start_time, first timepoint to plot
-    end_time, final timepoint to plot
-    timejump, number of timesteps between each plot
-    cluster_index_final_time, row in final time to select cluster ID tag from
+    start_time: first timepoint to plot
+    end_time: final timepoint to plot
+    timejump: number of timesteps between each plot
+    cluster_index_final_time: row in final time to select cluster ID tag from
     basedir,
-    exp_date
+    exp_date,
     well_loc
 
 Output:

@@ -3,35 +3,68 @@ import numpy as np
 
 ## Calculate centres of mass from arrays
 def calc_clus_centre(labelled_arr):
-## Returns a list of centres of clusters with desired indexes from a labelled array
+    '''
+    Calculate centres of clusters from a 2D index labelled array
+
+    Input:
+        labelled_arr: 2D indexed labelled array
+
+    Output:
+        centres_2D: 2D array of shape (n,2) storing the centres of the different clusters coordinates
+                        in x,y directions to the nearest integer
+    '''
+
     centres = np.array([])
+    # Loop over clusters
     for i in range(1,labelled_arr.max()+1):
+        # Find all locations of cluster with given index
         locs_of_size = np.transpose((labelled_arr==i).nonzero())
+        # Calculate mean
         centre_of_mass = locs_of_size.mean(axis=0)
+        # Round to nearest integer to store single location
         centre_of_mass = np.rint(centre_of_mass)
         centres = np.append(centres, centre_of_mass)
 
+    # Convert array to shape (n,2)
     centres_2D = np.reshape(centres, (-1, 2))
     return centres_2D
 
 
 def previous_clusters_at_loc(labelled_arr, centres_old, comparison_index):
+    '''
+    Compares current locations of a cluster with previous cluster centres to define 
+        cluster lineage and events
+
+    Inputs:
+        labelled_arr: Labelled 2D array at current time
+        centres_old: (n,2) array for cluster centres at previous timepoint
+        comparison_index: Index of labelled array for cluster of interest
+
+    Outputs:
+        same_locs: Number of cluster centres from previous timestep in same location as cluster
+        same_locs_centre: Cluster centres from previous timestep in same location as cluster
+    '''
 
     same_locs = 0
     same_locs_store = np.array([])
 
+    # Get list of coordinates corresponding to the comparison index
     d = np.argwhere(labelled_arr == comparison_index)
+
+    # Loop over all coordinates of the cluster
     for m in range(d.shape[0]):
+        # Loop over previous timestep cluster centres
         for n in range(centres_old.shape[0]):
-        # Time 1 is old timestep in this case
+            # Compare coordinate to cluster centres
             if d[m,0] == centres_old[n,0] and d[m,1] == centres_old[n,1]:
-                same_locs += 1
+                same_locs += 1 # Centre and coordinate match
+
+                # If centre and coordinate match then store the location
                 if same_locs == 1:
                     same_locs_store = np.append(same_locs_store, d[m,:])
                 else:
                     same_locs_store = np.vstack([same_locs_store, d[m,:]])
-    # print(same_locs)
-    # print(same_locs_store)
+
 
     return same_locs, same_locs_store
 
@@ -66,13 +99,25 @@ def nearby_clusters(x_loc, y_loc, search_radius, labelled_arr):
 
 
 def pick_cluster_inverse_dist(clusters_index_output, distances):
+    '''
+    Select a cluster index based on chance based in inverse distances
+
+    Input:
+        clusters_index_output:  List of possible clusters' indexes to select from
+        distances:              Distances from site of interest
+
+    Output:
+    cluster_selected: Cluster index randomly sampled with weight inverse to distance from site of interest
+    '''
     if 0 in distances:
+        # If a 0 appears in list select the corresponding index
         position = np.where(distances == 0)
         return clusters_index_output[position]
     else:
         weights = np.reciprocal(distances)     # Invert all distances
         weights = weights / np.sum(weights)         # Normalize
         cluster_selected = np.random.choice(clusters_index_output, p=weights) # Sample
+        # Return the cluster index randomly sampled with weight inverse to distance from site of interest
         return cluster_selected
 
 # def calc_clus_centre(labelled_arr, index_keep):

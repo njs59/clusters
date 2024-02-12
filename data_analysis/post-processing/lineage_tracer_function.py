@@ -37,7 +37,7 @@ Output:
                 "Event", "Clusters in event", "Timestep", "Date", "Well ID"]
 
         for i in range(end_time, start_time - 1, -1) :
-            print('i is', i)
+            # print('i is', i)
             time_i = str(i).zfill(2)
             df_step_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', time_i, 'c2_post_processing', '.csv'
             df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
