@@ -49,24 +49,73 @@ def previous_clusters_at_loc(labelled_arr, centres_old, comparison_index):
     same_locs_store = np.array([])
 
     # Get list of coordinates corresponding to the comparison index
-    d = np.argwhere(labelled_arr == comparison_index)
+    d = np.nonzero(labelled_arr == comparison_index)
+    d_x_min = d[0][0]
+    d_x_max = d[0][-1]
+    # Loop over previous timestep cluster centres
+    for n in range(centres_old.shape[0]):
+        # if centres_old[n,0] > d_x_max:
+        #     break
+        # # elif centres_old[n,0] < d_x_min:
+        # #     continue
+        # else:
+        # Loop over all coordinates of the cluster
+            for m in range(len(d[0])):
+                # Compare coordinate to cluster centres
+                if d[0][m] == centres_old[n,0] and d[1][m] == centres_old[n,1]:
+                    same_locs += 1 # Centre and coordinate match
 
-    # Loop over all coordinates of the cluster
-    for m in range(d.shape[0]):
-        # Loop over previous timestep cluster centres
-        for n in range(centres_old.shape[0]):
-            # Compare coordinate to cluster centres
-            if d[m,0] == centres_old[n,0] and d[m,1] == centres_old[n,1]:
-                same_locs += 1 # Centre and coordinate match
-
-                # If centre and coordinate match then store the location
-                if same_locs == 1:
-                    same_locs_store = np.append(same_locs_store, d[m,:])
-                else:
-                    same_locs_store = np.vstack([same_locs_store, d[m,:]])
+                    # If centre and coordinate match then store the location
+                    if same_locs == 1:
+                        same_locs_store = np.append(same_locs_store, centres_old[n,:])
+                    else:
+                        same_locs_store = np.vstack([same_locs_store, centres_old[n,:]])
 
 
     return same_locs, same_locs_store
+
+
+def previous_clusters_at_loc_2(labelled_arr, centres_old, comparison_index):
+    '''
+    Compares current locations of a cluster with previous cluster centres to define 
+        cluster lineage and events
+
+    Inputs:
+        labelled_arr: Labelled 2D array at current time
+        centres_old: (n,2) array for cluster centres at previous timepoint
+        comparison_index: Index of labelled array for cluster of interest
+
+    Outputs:
+        same_locs: Number of cluster centres from previous timestep in same location as cluster
+        same_locs_centre: Cluster centres from previous timestep in same location as cluster
+    '''
+
+    same_locs = 0
+    same_locs_store = np.array([])
+
+
+    applyall = np.vectorize(single_index_bool)
+    single_index_slice = applyall(labelled_arr, comparison_index)
+    for n in range(centres_old.shape[0]):
+        # Compare coordinate to cluster centres
+        if single_index_slice[int(centres_old[n,0])][int(centres_old[n,1])] == 1:
+            same_locs += 1 # Centre and coordinate match
+
+            # If centre and coordinate match then store the location
+            if same_locs == 1:
+                same_locs_store = np.append(same_locs_store, [int(centres_old[n,0]), int(centres_old[n,1])])
+            else:
+                same_locs_store = np.vstack([same_locs_store, [int(centres_old[n,0]), int(centres_old[n,1])]])
+
+    return same_locs, same_locs_store
+
+
+# Function to give bool array for single index
+def single_index_bool(arr, val):
+    if arr == val:
+        return 1
+    else:
+        return 0
 
 
 def nearby_clusters(x_loc, y_loc, search_radius, labelled_arr):
