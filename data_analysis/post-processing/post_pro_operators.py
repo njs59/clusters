@@ -54,11 +54,11 @@ def previous_clusters_at_loc(labelled_arr, centres_old, comparison_index):
     d_x_max = d[0][-1]
     # Loop over previous timestep cluster centres
     for n in range(centres_old.shape[0]):
-        # if centres_old[n,0] > d_x_max:
-        #     break
-        # # elif centres_old[n,0] < d_x_min:
-        # #     continue
-        # else:
+        if centres_old[n,0] > d_x_max:
+            continue
+        elif centres_old[n,0] < d_x_min:
+            continue
+        else:
         # Loop over all coordinates of the cluster
             for m in range(len(d[0])):
                 # Compare coordinate to cluster centres

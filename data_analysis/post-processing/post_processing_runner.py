@@ -129,7 +129,9 @@ for i in range(len(time_list)):
         non_assigned_cluster_array = np.zeros([array_index_old.shape[0], array_index_old.shape[1]])
         locs_not_considered = 0
         for m in range(len(old_tags_list)):
-            old_locs_of_arrs = np.where(array_index_old == old_tags_list[m]) 
+            row_corresponding_to_tag = df_old.loc[df_old['Tag number'] == old_tags_list[m]].index[0]
+            index_corresponding = row_corresponding_to_tag + 1
+            old_locs_of_arrs = np.where(array_index_old == index_corresponding) 
             if old_locs_of_arrs[0].shape[0] != 0:
                 for n in range(len(old_locs_of_arrs[0])):
                     non_assigned_cluster_array[old_locs_of_arrs[0][n], old_locs_of_arrs[1][n]] = array_index_old[old_locs_of_arrs[0][n], old_locs_of_arrs[1][n]]
@@ -176,35 +178,38 @@ for i in range(len(time_list)):
                         tag_number_current[no_same_locs_index[l]-1] = cluster_ID
                         df_step.iloc[index_of_interest-1,4] = 'Move large'
                         df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
-                    elif old_cluster_size > new_cluster_size:
+                    elif old_cluster_size > new_cluster_size and percent_diff >= 20:
                         df_step.iloc[index_of_interest-1,4] = 'Splitting'
                         df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
                     else:
-                        df_step.iloc[index_of_interest-1,4] = 'Appearance'
+                        # Keeps ID of old cluster
+                        tag_number_current[no_same_locs_index[l]-1] = cluster_ID
+                        df_step.iloc[index_of_interest-1,4] = 'Move large and grow'
+                        df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
                 
                 elif len(near_non_assigned_clus) > 1:
 
-                    rows_to_save = []
+                    # rows_to_save = []
                     for s in range(len(near_non_assigned_clus)):
-                        mask = (df_old['Tag number'] == near_non_assigned_clus[s])
-                        rows_to_save.append(np.where(mask == True)[0][0])
+                    #     mask = (df_old['Tag number'] == near_non_assigned_clus[s])
+                    #     rows_to_save = np.append(rows_to_save, np.where(mask == True)[0][0])
+                                        
+                        clusters_coagulating_df = df_old.iloc[near_non_assigned_clus + 1]
                     
-                    
-                    
-                    clusters_coagulating = df_old.iloc[rows_to_save]
-                    max_near_non_assigned_size = max(clusters_coagulating['Cluster size'])
+                    max_near_non_assigned_size = max(clusters_coagulating_df['Cluster size'])
                     new_cluster_size = area_2D_current[index_of_interest-1]
 
                     if max_near_non_assigned_size < new_cluster_size:                            
-                        cluster_tag_number = min(clusters_coagulating['Tag number'])
-                        clusters_in_event = clusters_coagulating['Tag number'].tolist()
+                        cluster_tag_number = min(clusters_coagulating_df['Tag number'])
+                        clusters_in_event = clusters_coagulating_df['Tag number'].tolist()
                         # for t in range(len(clusters_in_event)):
                             # old_tags_list.remove(clusters_in_event[t])
 
                         df_step.iloc[k-1,4] = 'Possible Coagulation'
                         df_step.iloc[k-1,5] = str(clusters_in_event)
 
-                        tag_number_current.append(cluster_tag_number)
+                        # Keeps ID of old cluster
+                        tag_number_current[no_same_locs_index[l]-1] = cluster_tag_number
 
                     else:
                         # Pick random event with single cluster
@@ -216,7 +221,7 @@ for i in range(len(time_list)):
                         if percent_diff < 20:
                             # Keeps ID of old cluster
                             # Overwrites cluster ID (so is possible for tag to be skipped but that's ok)
-                            tag_number_current.append(cluster_ID)
+                            tag_number_current[no_same_locs_index[l]-1] = cluster_ID
                             df_step.iloc[index_of_interest-1,4] = 'Move large'
                             df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
                         elif old_cluster_size > new_cluster_size:
