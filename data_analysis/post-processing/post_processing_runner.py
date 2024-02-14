@@ -171,7 +171,7 @@ for i in range(len(time_list)):
 
             if len(near_clus) == 0:
                 # Absolutely no nearby clusters
-                # Appearence code
+                # Appearance code
                 print('No nearby clusters')
                 # Check if cluster at edge of field of view
                 if x_cen < 10 or x_cen > 1015 or y_cen < 10 or y_cen > 1334:
@@ -305,7 +305,7 @@ for i in range(len(time_list)):
 
                         # Can't only be splitting (cluster is too big)                       
                         # (can't move large as that can only happen if there is an unassigned cluster)
-                        # Can't be appearence as that has been checked for at the very start
+                        # Can't be appearance as that has been checked for at the very start
                         df_step.iloc[index_of_interest-1,4] = 'Appearance Error'
         
     
