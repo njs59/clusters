@@ -80,6 +80,8 @@ def previous_clusters_at_loc_2(labelled_arr, centres_old, comparison_index):
     Compares current locations of a cluster with previous cluster centres to define 
         cluster lineage and events
 
+    Uses vectorised version for updating array to only have the comparison index
+
     Inputs:
         labelled_arr: Labelled 2D array at current time
         centres_old: (n,2) array for cluster centres at previous timepoint
