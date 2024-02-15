@@ -296,7 +296,7 @@ for i in range(len(time_list)):
                     # Check if cluster at edge of field of view
                     elif x_cen < 10 or x_cen > 1015 or y_cen < 10 or y_cen > 1334:
                         #cluster at edge (type 3 is nearby assigned cluster but no nearby unassigned clusters)
-                        df_step.iloc[index_of_interest-1,4] = 'Edge Appearance (type 3)'
+                        df_step.iloc[index_of_interest-1,4] = 'Edge Appearance type 3'
 
 
                     else:

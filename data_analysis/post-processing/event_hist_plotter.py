@@ -38,7 +38,32 @@ cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
         "Event", "Clusters in event", "Timestep", "Date", "Well ID"]
 
+# event_cols = ["Move", "Coagulation", "Move large", "Splitting", 
+#               "Move large and grow", "Possible Coagulation",
+#               "Edge Appearance type 1", "Appearance type 1",
+#               "Edge Appearance type 2", "Appearance type 2", 
+#               "Edge Appearance type 3", "Appearance type 3", "Appearance Error"]
+
+# event_cols_plot = ["Move", "Coag", "Move l", "Splitting", 
+#               "Move l & g", "Poss Coag",
+#               "Edge App 1", "App 1",
+#               "Edge App 2", "App 2", 
+#               "Edge App 3", "App 3", "App Error"]
+
+event_cols = ["Coagulation", "Move large", "Splitting", 
+              "Move large and grow", "Possible Coagulation",
+              "Edge Appearance type 1", "Appearance type 1",
+              "Edge Appearance type 2", "Appearance type 2", 
+              "Edge Appearance type 3", "Appearance type 3", "Appearance Error"]
+
+event_cols_plot = ["Coag", "Move l", "Splitting", 
+              "Move l & g", "Poss Coag",
+              "Edge App 1", "App 1",
+              "Edge App 2", "App 2", 
+              "Edge App 3", "App 3", "App Error"]
+
 cluster_appear_sizes = []
+number_event = np.zeros(len(event_cols))
 for i in range(end_time, start_time - 1, -1) :
     # print('i is', i)
     time_i = str(i).zfill(2)
@@ -48,10 +73,23 @@ for i in range(end_time, start_time - 1, -1) :
     # cluster_2D_areas = df_clus_areas.to_numpy()
 
     
-    # df_appear = df_step.loc[df_step['Event'] == 'Appearance type 1']
-    df_appear = df_step.loc[df_step['Event'] == 'Move']
+    df_appear = df_step.loc[df_step['Event'] == 'Appearance type 1']
+    # df_appear = df_step.loc[df_step['Event'] == 'Splitting']
     sizes_to_add = df_appear['Cluster size']
     cluster_appear_sizes = np.append(cluster_appear_sizes, sizes_to_add)
 
+    for j in range(len(event_cols)):
+        df_add = df_step.loc[df_step['Event'] == event_cols[j]]
+        # df_appear = df_step.loc[df_step['Event'] == 'Splitting']
+        number_events_adding = df_add.shape[0]
+        number_event[j] += number_events_adding
+
+
+
 plt.hist(cluster_appear_sizes)
 plt.show()
+
+plt.bar(event_cols_plot, number_event)
+plt.show()
+
+
