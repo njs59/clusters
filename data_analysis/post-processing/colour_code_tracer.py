@@ -1,10 +1,28 @@
+import math
 import numpy as np
 import pandas as pd
 from ast import literal_eval
 
 import matplotlib.pyplot as plt
 
-colors = iter([plt.cm.tab20(i) for i in range(20)])
+from matplotlib.colors import ListedColormap
+import matplotlib
+
+def generate_colormap(N):
+    arr = np.arange(N)/N
+    N_up = int(math.ceil(N/7)*7)
+    arr.resize(N_up)
+    arr = arr.reshape(7,N_up//7).T.reshape(-1)
+    ret = matplotlib.cm.hsv(arr)
+    n = ret[:,3].size
+    a = n//2
+    b = n-a
+    for i in range(3):
+        ret[0:n//2,i] *= np.arange(0.2,1,0.8/a)
+    ret[n//2:,3] *= np.arange(1,0.1,-0.9/b)
+#     print(ret)
+    return ret
+
 
 
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
@@ -176,8 +194,10 @@ plt.figure()
         #subplot(r,c) provide the no. of rows and columns
 f, axarr = plt.subplots(1,2) 
 
-my_map = 'nipy_spectral'
+# my_map = 'nipy_spectral'
+my_map = ListedColormap(generate_colormap(lineage_old_arr.max()))
 # use the created array to output your multiple images. In this case I have stacked 4 images vertically
+# axarr[0].imshow(lineage_old_arr, cmap=my_map)
 axarr[0].imshow(lineage_old_arr, cmap=my_map)
 axarr[1].imshow(shape_array, cmap=my_map)
 axarr[0].axis([0, current_array.shape[1], 0, current_array.shape[0]])
