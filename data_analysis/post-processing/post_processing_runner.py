@@ -69,6 +69,8 @@ for i in range(len(time_list)):
         # Append the list of areas using the area array
         area_2D_current.append(array_area_current_time[loc_x,loc_y])
 
+
+
     # Initial timestep treated differently
     if i == 0:
         # Create list of tagged indices
@@ -86,7 +88,6 @@ for i in range(len(time_list)):
         for k in range(1,array_index_current_time.max()+1):
             # Find how many cluster centres from previous timestep overlap with this cluster
             same_locs, same_locs_store = post_oper.previous_clusters_at_loc(array_index_current_time, centres_2D_old, k)
-
             if same_locs == 1:
                 # Simple, it's just movement case
 
@@ -222,7 +223,7 @@ for i in range(len(time_list)):
 
                     # Generate df of these clusters
                     for s in range(len(near_non_assigned_clus)):                                        
-                        clusters_coagulating_df = df_old.iloc[near_non_assigned_clus + 1]
+                        clusters_coagulating_df = df_old.iloc[near_non_assigned_clus - 1]
                     
                     # Find cluster sizes
                     max_near_non_assigned_size = max(clusters_coagulating_df['Cluster size'])
@@ -234,8 +235,8 @@ for i in range(len(time_list)):
                         # Keeps ID of lowest ID of the coagulating clusters                        
                         cluster_tag_number = min(clusters_coagulating_df['Tag number'])
                         clusters_in_event = clusters_coagulating_df['Tag number'].tolist()
-                        df_step.iloc[k-1,4] = 'Possible Coagulation'
-                        df_step.iloc[k-1,5] = str(clusters_in_event)
+                        df_step.iloc[index_of_interest-1,4] = 'Possible Coagulation'
+                        df_step.iloc[index_of_interest-1,5] = str(clusters_in_event)
                         # Overwrite cluster ID
                         tag_number_current[no_same_locs_index[l]-1] = cluster_tag_number
 

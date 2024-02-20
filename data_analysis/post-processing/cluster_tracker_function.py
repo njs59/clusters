@@ -19,7 +19,7 @@ Input arguments:
 Output:
     Series of plots 
 '''
-    df_end_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', str(end_time).zfill(2) , 'c2_post_processing', '.csv'
+    df_end_csv_name_list = basedir, '0_post_processing_output/','000_test_attempt' , exp_date, '_', well_loc, 't', str(end_time).zfill(2) , 'c2_post_processing', '.csv'
     df_end_csv_name_list_2  =''.join(df_end_csv_name_list)
     df_end = pd.read_csv(df_end_csv_name_list_2)
 
@@ -38,7 +38,7 @@ Output:
         df_slice = pd.read_csv(index_csv_name_list_2, header=None)
         current_array = df_slice.to_numpy()
 
-        df_storage_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', time_i , 'c2_post_processing', '.csv'
+        df_storage_csv_name_list = basedir, '0_post_processing_output/', '000_test_attempt', exp_date, '_', well_loc, 't', time_i , 'c2_post_processing', '.csv'
         df_storage_csv_name_list_2  =''.join(df_storage_csv_name_list)
         df_storage = pd.read_csv(df_storage_csv_name_list_2)
 
