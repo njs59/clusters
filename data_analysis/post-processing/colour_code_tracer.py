@@ -8,6 +8,11 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import matplotlib
 
+from cycler import cycler
+from pylab import *
+from scipy.ndimage import *
+
+
 def generate_colormap(N):
     arr = np.arange(N)/N
     N_up = int(math.ceil(N/7)*7)
@@ -53,9 +58,10 @@ lineage_old_arr = np.zeros(shape_array.shape)
 # cluster_lineage = [103]
 
 for h in range(len(cluster_tags)):
+    if h == 50:
+        print('Pause')
     cluster_lineage = [cluster_tags[h]]
     for i in range(97, 50, -1) :
-        print('i is', i)
         time_i = str(i).zfill(2)
         df_step_csv_name_list = basedir, '0_post_processing_output/' ,'000_test_attempt', exp_date, '_', well_loc, 't', time_i, 'c2_post_processing', '.csv'
         df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
@@ -74,7 +80,7 @@ for h in range(len(cluster_tags)):
 
     print(cluster_lineage)
 
-    # Find locations of clusters at time 30
+    # Find locations of clusters at time 51
     df_step_csv_name_list = basedir, '0_post_processing_output/' ,'000_test_attempt', exp_date, '_', well_loc, 't', '51', 'c2_post_processing', '.csv'
     df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
     df_step_interest = pd.read_csv(df_step_csv_name_list_2)
@@ -167,39 +173,32 @@ for h in range(len(cluster_tags)):
 
 
 plt.figure()
-        # #subplot(r,c) provide the no. of rows and columns
-        # f, axarr = plt.subplots(1,2) 
-
-        # # use the created array to output your multiple images. In this case I have stacked 4 images vertically
-        # axarr[0].imshow(bool_descendents)
-        # axarr[1].imshow(bool_index)
-        # axarr[0].axis([0, current_array.shape[1], 0, current_array.shape[0]])
-        # axarr[1].axis([0, current_array.shape[1], 0, current_array.shape[0]])
-        # plt.show()
-
-
-
-        # plt.imshow(bool_index)
-        # plt.axis([0, current_array.shape[1], 0, current_array.shape[0]])
-        # plt.show()
-
-
-
-
-        # plt.imshow(bool_descendents)
-        # plt.axis([0, current_array.shape[1], 0, current_array.shape[0]])
-        # plt.show()
-
-
-        #subplot(r,c) provide the no. of rows and columns
+#subplot(r,c) provide the no. of rows and columns
 f, axarr = plt.subplots(1,2) 
 
-# my_map = 'nipy_spectral'
-my_map = ListedColormap(generate_colormap(lineage_old_arr.max()))
-# use the created array to output your multiple images. In this case I have stacked 4 images vertically
-# axarr[0].imshow(lineage_old_arr, cmap=my_map)
-axarr[0].imshow(lineage_old_arr, cmap=my_map)
-axarr[1].imshow(shape_array, cmap=my_map)
+
+print('Maxes', lineage_old_arr.max(), shape_array.max())
+
+# For colour maps to line-up maximum values of the arrays must be the same 
+# So label a single pixel with max value
+if lineage_old_arr.max() != shape_array.max():
+    lineage_old_arr[-1][-1] = shape_array.max()
+
+
+
+df_lineage = pd.DataFrame(lineage_old_arr)
+df_step_csv_name_list = basedir, '0_post_processing_output/', '000_test_attempt', exp_date, '_', well_loc, 'c2', 'lineage_tracer_post_processing', '.csv'
+df_step_name_list_2  =''.join(df_step_csv_name_list)
+df_lineage.to_csv(df_step_name_list_2, index=False, header=True)
+
+df_final_step = pd.DataFrame(shape_array)
+df_step_csv_name_list = basedir, '0_post_processing_output/', '000_test_attempt', exp_date, '_', well_loc, 'c2', 'lineage_tracer_final_step_post_processing', '.csv'
+df_step_name_list_2  =''.join(df_step_csv_name_list)
+df_final_step.to_csv(df_step_name_list_2, index=False, header=True)
+
+
+axarr[0].imshow(lineage_old_arr, cmap='tab20')
+axarr[1].imshow(shape_array, cmap='tab20')
 axarr[0].axis([0, current_array.shape[1], 0, current_array.shape[0]])
 axarr[1].axis([0, current_array.shape[1], 0, current_array.shape[0]])
 plt.show()
@@ -211,3 +210,59 @@ plt.show()
 # end_last_10 = np.zeros(shape_array.shape)
 
 
+
+# bool_descendents
+
+df_step_bool = np.array(current_array, dtype=bool)
+df_step_bool = np.array(df_step_bool, dtype=int)
+bool_stored_ancestry = np.array(lineage_old_arr, dtype=bool)
+bool_stored_ancestry = np.array(bool_stored_ancestry, dtype=int)
+
+
+plt.imshow(df_step_bool)
+plt.show()
+plt.imshow(bool_stored_ancestry)
+plt.show()
+
+non_traced = df_step_bool - bool_stored_ancestry
+
+plt.imshow(non_traced)
+plt.show()
+
+
+for h in range(len(cluster_tags)):
+    for i in range(51, 98) :
+        time_i = str(i).zfill(2)
+        df_step_csv_name_list = basedir, '0_post_processing_output/' ,'000_test_attempt', exp_date, '_', well_loc, 't', time_i, 'c2_post_processing', '.csv'
+        df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
+        df_step = pd.read_csv(df_step_csv_name_list_2)
+
+        # Locate indexes of clusters, print
+        index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', time_i, 'c2', '_indexed', '.csv'
+        index_csv_name_list_2  =''.join(index_csv_name_list)
+        df_slice = pd.read_csv(index_csv_name_list_2, header=None)
+        current_step_array = df_slice.to_numpy()
+
+        descendents_arr = np.array([])
+
+        for q in range(len(indexes_lineage)):
+            descendents_locs = np.where(current_array == int(indexes_lineage[q]))
+            single_descendent_arr = np.asarray(descendents_locs)
+
+            if q == 0:
+                descendents_arr = single_descendent_arr
+            else:
+                descendents_arr = np.append(descendents_arr, single_descendent_arr, axis=1)
+
+
+
+        print('Yay')
+
+        bool_step_descendents = np.zeros(current_array.shape)
+
+        if descendents_arr.shape[0] > 0:
+            for r in range(descendents_arr.shape[1]):
+                bool_descendents[descendents_arr[0,r], descendents_arr[1,r]] = 1
+                lineage_old_arr[descendents_arr[0,r], descendents_arr[1,r]] = h+1
+
+        print("yay 2")

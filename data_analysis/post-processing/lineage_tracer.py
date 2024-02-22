@@ -24,6 +24,8 @@ cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
 # cluster_lineage = [56]
 # cluster_lineage = [125]
 cluster_lineage = [103]
+cluster_lineage_partial = []
+partial_ticker = 0
 # for h in range(len(cluster_tags)):
 #     cluster_lineage = [cluster_tags[h]]
 
