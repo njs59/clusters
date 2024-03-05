@@ -83,14 +83,19 @@ Output:
         # fig, ax = plt.subplots()
         for i in range(len(cluster_location_x)-1):
             r = i/len(cluster_location_x)
-            b = 1-r
-            g = 0
+            if i < len(cluster_location_x)/2:
+                b = i/ (len(cluster_location_x)/2)
+            else:
+                b = 2 - (i/ (len(cluster_location_x)/2))
+            print('B is', b)
+            g = 1-r
             color = (r, g, b)
             plt.plot(cluster_location_x[i:i+2], cluster_location_y[i:i+2], c=color, lw=2)
             # plt.plot(cluster_location_x, cluster_location_y)
     plt.show()
     plt.show()
     plt.show()
+    
 
         
     
