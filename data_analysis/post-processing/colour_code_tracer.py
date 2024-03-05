@@ -44,6 +44,7 @@ cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y",
 df_end_now_csv_name_list = basedir, '0_post_processing_output/' ,'000_test_attempt', exp_date, '_', well_loc, 't', '97', 'c2_post_processing', '.csv'
 df_end_now_csv_name_list_2  =''.join(df_end_now_csv_name_list)
 df_end_now = pd.read_csv(df_end_now_csv_name_list_2)
+centres_end_2D = df_end_now[['Cluster Centre x', 'Cluster Centre y']]
 cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
 
 index_shape_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', '97', 'c2', '_indexed', '.csv'
@@ -52,6 +53,9 @@ df_shape_slice = pd.read_csv(index_shape_csv_name_list_2, header=None)
 shape_array = df_shape_slice.to_numpy()
 
 lineage_old_arr = np.zeros(shape_array.shape)
+
+# centres_end_store = []
+centres_start_store = []
 
 # cluster_lineage = [56]
 # cluster_lineage = [125]
@@ -96,6 +100,7 @@ for h in range(len(cluster_tags)):
     # Store centres in array
     df1 = rows_of_interest[['Cluster Centre x', 'Cluster Centre y']]
     centres_2D_lineage = df1.to_numpy()
+    centres_start_store = np.append(centres_start_store,centres_2D_lineage)
 
     # Read in array for given timestep
 
@@ -147,6 +152,7 @@ for h in range(len(cluster_tags)):
         # Store centres in array
         df1_end = cluster_current_row_of_interest[['Cluster Centre x', 'Cluster Centre y']]
         centres_end_2D_lineage = df1_end.to_numpy()
+        
 
         # Read in array for given timestep
 
@@ -196,9 +202,30 @@ df_step_csv_name_list = basedir, '0_post_processing_output/', '000_test_attempt'
 df_step_name_list_2  =''.join(df_step_csv_name_list)
 df_final_step.to_csv(df_step_name_list_2, index=False, header=True)
 
+centres_start_2D = np.reshape(centres_start_store, (-1, 2))
 
-axarr[0].imshow(lineage_old_arr, cmap='tab20')
-axarr[1].imshow(shape_array, cmap='tab20')
+
+my_cmap = mpl.colormaps['tab20']
+my_cmap.set_under('w')
+axarr[0].imshow(lineage_old_arr, vmin=1, cmap=my_cmap)
+axarr[1].imshow(shape_array, vmin=1, cmap=my_cmap)
+# Loop over data dimensions and create text annotations.
+for i in range(centres_end_2D.shape[0]):
+        centre_coord = centres_end_2D.iloc[i]
+        x = int(centre_coord.iloc[0])
+        y = int(centre_coord.iloc[1])
+        axarr[1].text(y-1, x-1,
+                            shape_array[x-1, y-1],
+                       ha="center", va="center", color="k")
+        
+for j in range(centres_start_2D.shape[0]):
+        centre_coord = centres_start_2D[j]
+        x = int(centre_coord[0])
+        y = int(centre_coord[1])
+        axarr[0].text(y-1, x-1,
+                            int(lineage_old_arr[x-1, y-1]),
+                       ha="center", va="center", color="k")
+
 axarr[0].axis([0, current_array.shape[1], 0, current_array.shape[0]])
 axarr[1].axis([0, current_array.shape[1], 0, current_array.shape[0]])
 plt.show()
@@ -230,39 +257,3 @@ plt.imshow(non_traced)
 plt.show()
 
 
-for h in range(len(cluster_tags)):
-    for i in range(51, 98) :
-        time_i = str(i).zfill(2)
-        df_step_csv_name_list = basedir, '0_post_processing_output/' ,'000_test_attempt', exp_date, '_', well_loc, 't', time_i, 'c2_post_processing', '.csv'
-        df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
-        df_step = pd.read_csv(df_step_csv_name_list_2)
-
-        # Locate indexes of clusters, print
-        index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', time_i, 'c2', '_indexed', '.csv'
-        index_csv_name_list_2  =''.join(index_csv_name_list)
-        df_slice = pd.read_csv(index_csv_name_list_2, header=None)
-        current_step_array = df_slice.to_numpy()
-
-        descendents_arr = np.array([])
-
-        for q in range(len(indexes_lineage)):
-            descendents_locs = np.where(current_array == int(indexes_lineage[q]))
-            single_descendent_arr = np.asarray(descendents_locs)
-
-            if q == 0:
-                descendents_arr = single_descendent_arr
-            else:
-                descendents_arr = np.append(descendents_arr, single_descendent_arr, axis=1)
-
-
-
-        print('Yay')
-
-        bool_step_descendents = np.zeros(current_array.shape)
-
-        if descendents_arr.shape[0] > 0:
-            for r in range(descendents_arr.shape[1]):
-                bool_descendents[descendents_arr[0,r], descendents_arr[1,r]] = 1
-                lineage_old_arr[descendents_arr[0,r], descendents_arr[1,r]] = h+1
-
-        print("yay 2")

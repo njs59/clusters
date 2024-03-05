@@ -87,7 +87,7 @@ for h in range(len(cluster_tags)):
 
 
 
-
+###############################################################################
 
 
 print(cluster_lineage)
@@ -99,7 +99,7 @@ df_step_interest = pd.read_csv(df_step_csv_name_list_2)
 
 rows_of_interest = pd.DataFrame(columns=cols)
 for k in range(len(cluster_lineage)):
-    new_row_of_interest = df_step_interest.loc[df_step['Tag number'] == cluster_lineage[k]]
+    new_row_of_interest = df_step_interest.loc[df_step_interest['Tag number'] == cluster_lineage[k]]
 
     # to append df2 at the end of df1 dataframe
     rows_of_interest = pd.concat([rows_of_interest, new_row_of_interest])

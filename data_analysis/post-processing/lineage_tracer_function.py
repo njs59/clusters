@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 
-def lineage_tracer(start_time, end_time, basedir, exp_date, well_loc):
+def lineage_tracer(start_time, end_time, basedir, exp_date, well_loc, plots):
     '''
 Lineage tracer traces each cluster in turn back in time using event to find contributing clusters
 
@@ -30,7 +30,10 @@ Output:
     cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
 
     for h in range(len(cluster_tags)):
-        cluster_lineage = [cluster_tags[h]]    
+        cluster_lineage = [cluster_tags[h]] 
+
+        if cluster_lineage[0] == 104:
+            print('Hit')   
 
 
         cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
@@ -43,6 +46,7 @@ Output:
             df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
             df_step = pd.read_csv(df_step_csv_name_list_2)
             # cluster_2D_areas = df_clus_areas.to_numpy()
+            clusters_to_add = []
             for j in range(len(cluster_lineage)):
                 row_interest = df_step.loc[df_step['Tag number'] == cluster_lineage[j]]
                 if (row_interest['Event'] == 'Coagulation').any():
@@ -52,7 +56,9 @@ Output:
                     list_locs = literal_eval(str_locs)
                     arr_locs = np.array(list_locs)
                     res = [item for item in arr_locs if item not in cluster_lineage]
-                    cluster_lineage = np.append(cluster_lineage, res)
+                    clusters_to_add = np.append(clusters_to_add, res)
+            
+            cluster_lineage = np.append(cluster_lineage, clusters_to_add)
 
         print(cluster_lineage)
 
@@ -144,18 +150,21 @@ Output:
             for r in range(single_index_arr.shape[1]):
                 bool_index[single_index_arr[0,r], single_index_arr[1,r]] = 1
 
+            if plots == True:
 
-            plt.figure()
+                plt.figure()
 
-            #subplot(r,c) provide the no. of rows and columns
-            f, axarr = plt.subplots(1,2) 
+                #subplot(r,c) provide the no. of rows and columns
+                f, axarr = plt.subplots(1,2) 
 
-            # use the created array to output your multiple images. In this case I have stacked 4 images vertically
-            axarr[0].imshow(bool_descendents)
-            axarr[1].imshow(bool_index)
-            axarr[0].axis([0, current_array.shape[1], 0, current_array.shape[0]])
-            axarr[1].axis([0, current_array.shape[1], 0, current_array.shape[0]])
-            plt.show()
+                # use the created array to output your multiple images. In this case I have stacked 4 images vertically
+                axarr[0].imshow(bool_descendents)
+                axarr[1].imshow(bool_index)
+                axarr[0].axis([0, current_array.shape[1], 0, current_array.shape[0]])
+                axarr[1].axis([0, current_array.shape[1], 0, current_array.shape[0]])
+                plt.show()
+
+    return cluster_lineage
 
 
 

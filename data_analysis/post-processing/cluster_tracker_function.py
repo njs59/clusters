@@ -30,6 +30,10 @@ Output:
 
     cluster_tag_to_track = cluster_tags[cluster_index_final_time]
 
+    cluster_size = []
+    cluster_location_x = []
+    cluster_location_y = []
+
     for i in range(start_time - 1, end_time, timejump):
         # Read in csv
         time_i = str(i).zfill(2)
@@ -47,6 +51,10 @@ Output:
         df1_slice = cluster_current_row_of_interest[['Cluster Centre x', 'Cluster Centre y']]
         centres_end_2D_lineage = df1_slice.to_numpy()
 
+        cluster_size = np.append(cluster_size, cluster_current_row_of_interest['Cluster size'])
+        cluster_location_x = np.append(cluster_location_x, int(centres_end_2D_lineage[0][0]))
+        cluster_location_y = np.append(cluster_location_y, int(centres_end_2D_lineage[0][1]))
+
         end_index = current_array[int(centres_end_2D_lineage[0][0]),int(centres_end_2D_lineage[0][1])]
         if end_index == 0:
             print("Index is 0")
@@ -63,3 +71,10 @@ Output:
             plt.imshow(bool_index)
             plt.axis([0, current_array.shape[1], 0, current_array.shape[0]])
             plt.show()
+
+
+    plt.plot(cluster_size)
+    plt.show()
+
+    plt.plot(cluster_location_x, cluster_location_y)
+    plt.show()
