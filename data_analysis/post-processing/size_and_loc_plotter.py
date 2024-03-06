@@ -24,7 +24,7 @@ Output:
     if len(cluster_lineage) > 0:
         cluster_tags = cluster_lineage
     else:
-        df_end_csv_name_list = basedir, '0_post_processing_output/','000_test_attempt' , exp_date, '_', well_loc, 't', str(end_time).zfill(2) , 'c2_post_processing', '.csv'
+        df_end_csv_name_list = basedir, exp_type, 'post_processing_output/' , exp_date, '/', well_loc, 't', str(end_time).zfill(2) , 'c2_post_processing', '.csv'
         df_end_csv_name_list_2  =''.join(df_end_csv_name_list)
         df_end = pd.read_csv(df_end_csv_name_list_2)
 
@@ -45,12 +45,12 @@ Output:
             x = np.append(x, i)
             # Read in csv
             time_i = str(i).zfill(2)
-            index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', time_i, 'c2', '_indexed', '.csv'
+            index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', time_i, 'c2', '_indexed', '.csv'
             index_csv_name_list_2  =''.join(index_csv_name_list)
             df_slice = pd.read_csv(index_csv_name_list_2, header=None)
             current_array = df_slice.to_numpy()
 
-            df_storage_csv_name_list = basedir, '0_post_processing_output/', '000_test_attempt', exp_date, '_', well_loc, 't', time_i , 'c2_post_processing', '.csv'
+            df_storage_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', time_i , 'c2_post_processing', '.csv'
             df_storage_csv_name_list_2  =''.join(df_storage_csv_name_list)
             df_storage = pd.read_csv(df_storage_csv_name_list_2)
 

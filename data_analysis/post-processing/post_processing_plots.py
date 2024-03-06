@@ -4,12 +4,13 @@ import size_and_loc_plotter as slp
 
 # These three parameters are needed for accessing data and saving to files
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
+exp_type = 'In_vitro_homogeneous_data/'
 exp_date = '2017-02-03'
 well_loc = 's11'
 
 #cluster_lineage = ltf.lineage_tracer(51,97, basedir, exp_date, well_loc, plots = False)
 #slp.size_and_loc_tracker(37, 97, 10, basedir, exp_date, well_loc, cluster_lineage)
-slp.size_and_loc_tracker(37, 97, 5, basedir, exp_date, well_loc, [])
+slp.size_and_loc_tracker(37, 97, 5, basedir, exp_type, exp_date, well_loc, [])
 
 '''
 Cluster tracker tracks an individually taggged cluster over time
@@ -25,7 +26,7 @@ Input arguments:
 Output:
     Series of plots 
 '''
-ctf.cluster_tracker(37, 97, 5, 10, basedir, exp_date, well_loc)
+ctf.cluster_tracker(37, 97, 5, 10, basedir, exp_type, exp_date, well_loc)
 
 
 
@@ -44,7 +45,7 @@ Output:
     for each cluster's lineage next to each other
 
 '''
-cluster_lineage = ltf.lineage_tracer(51,97, basedir, exp_date, well_loc, plots = True)
+cluster_lineage = ltf.lineage_tracer(51,97, basedir, exp_type, exp_date, well_loc, plots = True)
 
 
 # Plot cluster size over time

@@ -31,6 +31,7 @@ def generate_colormap(N):
 
 
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
+exp_type = 'In_vitro_homogeneous_data/'
 exp_date = '2017-02-03'
 time_array = range(1,98)
 num_times = len(time_array)
@@ -41,13 +42,13 @@ well_loc = 's11'
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
            "Event", "Clusters in event", "Timestep", "Date", "Well ID"]
 
-df_end_now_csv_name_list = basedir, '0_post_processing_output/' ,'000_test_attempt', exp_date, '_', well_loc, 't', '97', 'c2_post_processing', '.csv'
+df_end_now_csv_name_list = basedir, exp_type, 'post_processing_output/' , exp_date, '/', well_loc, 't', '97', 'c2_post_processing', '.csv'
 df_end_now_csv_name_list_2  =''.join(df_end_now_csv_name_list)
 df_end_now = pd.read_csv(df_end_now_csv_name_list_2)
 centres_end_2D = df_end_now[['Cluster Centre x', 'Cluster Centre y']]
 cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
 
-index_shape_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', '97', 'c2', '_indexed', '.csv'
+index_shape_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', '97', 'c2', '_indexed', '.csv'
 index_shape_csv_name_list_2  =''.join(index_shape_csv_name_list)
 df_shape_slice = pd.read_csv(index_shape_csv_name_list_2, header=None)
 shape_array = df_shape_slice.to_numpy()
@@ -67,7 +68,7 @@ for h in range(len(cluster_tags)):
     cluster_lineage = [cluster_tags[h]]
     for i in range(97, 50, -1) :
         time_i = str(i).zfill(2)
-        df_step_csv_name_list = basedir, '0_post_processing_output/' ,'000_test_attempt', exp_date, '_', well_loc, 't', time_i, 'c2_post_processing', '.csv'
+        df_step_csv_name_list = basedir, exp_type, 'post_processing_output/' , exp_date, '/', well_loc, 't', time_i, 'c2_post_processing', '.csv'
         df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
         df_step = pd.read_csv(df_step_csv_name_list_2)
         # cluster_2D_areas = df_clus_areas.to_numpy()
@@ -85,7 +86,7 @@ for h in range(len(cluster_tags)):
     print(cluster_lineage)
 
     # Find locations of clusters at time 51
-    df_step_csv_name_list = basedir, '0_post_processing_output/' ,'000_test_attempt', exp_date, '_', well_loc, 't', '51', 'c2_post_processing', '.csv'
+    df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', '51', 'c2_post_processing', '.csv'
     df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
     df_step_interest = pd.read_csv(df_step_csv_name_list_2)
 
@@ -105,7 +106,7 @@ for h in range(len(cluster_tags)):
     # Read in array for given timestep
 
     # Locate indexes of clusters, print
-    index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', '51', 'c2', '_indexed', '.csv'
+    index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', '51', 'c2', '_indexed', '.csv'
     index_csv_name_list_2  =''.join(index_csv_name_list)
     df_slice = pd.read_csv(index_csv_name_list_2, header=None)
     current_array = df_slice.to_numpy()
@@ -142,7 +143,7 @@ for h in range(len(cluster_tags)):
 
 
         # Find locations of clusters at time 30
-        df_end_csv_name_list = basedir, '0_post_processing_output/' ,'000_test_attempt', exp_date, '_', well_loc, 't', '97', 'c2_post_processing', '.csv'
+        df_end_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', '97', 'c2_post_processing', '.csv'
         df_end_csv_name_list_2  =''.join(df_end_csv_name_list)
         df_end_interest = pd.read_csv(df_end_csv_name_list_2)
 
@@ -157,7 +158,7 @@ for h in range(len(cluster_tags)):
         # Read in array for given timestep
 
         # Locate indexes of clusters, print
-        end_index_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', '97', 'c2', '_indexed', '.csv'
+        end_index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', '97', 'c2', '_indexed', '.csv'
         end_index_csv_name_list_2  =''.join(end_index_csv_name_list)
         df_end_slice = pd.read_csv(end_index_csv_name_list_2, header=None)
         current_array_end = df_end_slice.to_numpy()
@@ -193,12 +194,12 @@ if lineage_old_arr.max() != shape_array.max():
 
 
 df_lineage = pd.DataFrame(lineage_old_arr)
-df_step_csv_name_list = basedir, '0_post_processing_output/', '000_test_attempt', exp_date, '_', well_loc, 'c2', 'lineage_tracer_post_processing', '.csv'
+df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 'c2', 'lineage_tracer_post_processing', '.csv'
 df_step_name_list_2  =''.join(df_step_csv_name_list)
 df_lineage.to_csv(df_step_name_list_2, index=False, header=True)
 
 df_final_step = pd.DataFrame(shape_array)
-df_step_csv_name_list = basedir, '0_post_processing_output/', '000_test_attempt', exp_date, '_', well_loc, 'c2', 'lineage_tracer_final_step_post_processing', '.csv'
+df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 'c2', 'lineage_tracer_final_step_post_processing', '.csv'
 df_step_name_list_2  =''.join(df_step_csv_name_list)
 df_final_step.to_csv(df_step_name_list_2, index=False, header=True)
 

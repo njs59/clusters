@@ -15,6 +15,7 @@ from scipy.ndimage import *
 
 
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
+exp_type = 'In_vitro_homogeneous_data/'
 exp_date = '2017-02-03'
 time_array = range(1,98)
 num_times = len(time_array)
@@ -31,7 +32,7 @@ coagulation_df = pd.DataFrame(columns = cols)
 for i in range(97, 50, -1) :
     print('i is', i)
     time_i = str(i).zfill(2)
-    df_step_csv_name_list = basedir, '0_post_processing_output/', '000_test_attempt', exp_date, '_', well_loc, 't', time_i, 'c2_post_processing', '.csv'
+    df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', time_i, 'c2_post_processing', '.csv'
     df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
     df_step = pd.read_csv(df_step_csv_name_list_2)
 
@@ -62,7 +63,7 @@ for j in range(coagulation_df.shape[0]):
         time_k = str(k).zfill(2)
 
         # Find index for tag
-        df_step_csv_name_list = basedir, '0_post_processing_output/', '000_test_attempt', exp_date, '_', well_loc, 't', time_k, 'c2_post_processing', '.csv'
+        df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', time_k, 'c2_post_processing', '.csv'
         df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
         df_step = pd.read_csv(df_step_csv_name_list_2)
 
@@ -72,7 +73,7 @@ for j in range(coagulation_df.shape[0]):
 
 
         # Read in indexed array at current time
-        area_csv_name_list = basedir, 'csv_folder/', exp_date, '_sphere_timelapse_', well_loc, 't', time_k, 'c2', '_indexed', '.csv'
+        area_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', time_k, 'c2', '_indexed', '.csv'
         area_csv_name_list_2  =''.join(area_csv_name_list)
         df_slice = pd.read_csv(area_csv_name_list_2, header=None)
         current_array = df_slice.to_numpy()
