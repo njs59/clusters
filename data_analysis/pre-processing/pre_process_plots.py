@@ -18,8 +18,9 @@ import pre_pro_operators as pre_oper
 
 ### ------------   Input parameters    -----------------  ###
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
+exp_type = 'In_vitro_homogeneous_data/'
 experiment = '2017-02-03_sphere_timelapse/'
-exp_date = '2017-02-03_'
+exp_date = '2017-02-03'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
@@ -37,26 +38,26 @@ cluster_areas = np.array([])
 
 
 # Read in 2D array of cluster areas over time
-cluster_2D_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_cluster_areas', '.csv'
+cluster_2D_areas_csv_name_list = basedir, exp_type, 'csv_folder/', exp_date, '/', well_loc, '_cluster_areas', '.csv'
 cluster_2D_areas_csv_name_list_2  =''.join(cluster_2D_areas_csv_name_list)
 df_clus_areas = pd.read_csv(cluster_2D_areas_csv_name_list_2, header=None)
 cluster_2D_areas = df_clus_areas.to_numpy()
 print('Shape', cluster_2D_areas.shape)
 
 # Read in mean area of cluster
-mean_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_mean_areas', '.csv'
+mean_areas_csv_name_list = basedir, exp_type, 'csv_folder/', exp_date, '/', well_loc, '_mean_areas', '.csv'
 mean_areas_csv_name_list_2  =''.join(mean_areas_csv_name_list)
 df_mean_areas = pd.read_csv(mean_areas_csv_name_list_2, header=None)
 mean_areas = df_mean_areas.to_numpy()
 
 # Read in total cluster coverage area
-total_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_total_areas', '.csv'
+total_areas_csv_name_list = basedir, exp_type, 'csv_folder/', exp_date, '/', well_loc, '_total_areas', '.csv'
 total_areas_csv_name_list_2  =''.join(total_areas_csv_name_list)
 df_total_areas = pd.read_csv(total_areas_csv_name_list_2, header=None)
 total_areas = df_total_areas.to_numpy()
 
 # Read in number of clusters
-number_clusters_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_number_clusters', '.csv'
+number_clusters_csv_name_list = basedir, exp_type, 'csv_folder/', exp_date, '/', well_loc, '_number_clusters', '.csv'
 number_clusters_csv_name_list_2  =''.join(number_clusters_csv_name_list)
 df_number_clusters = pd.read_csv(number_clusters_csv_name_list_2, header=None)
 number_clusters = df_number_clusters.to_numpy()
@@ -115,7 +116,7 @@ plt.clf()
 for i in range(len(time_array)):
 
     # Read in area array at current time
-    area_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_area', '.csv'
+    area_csv_name_list = basedir, exp_type, 'csv_folder/', exp_date, '/', well_loc, 't', time_list[i], 'c2', '_area', '.csv'
     area_csv_name_list_2  =''.join(area_csv_name_list)
     df_slice = pd.read_csv(area_csv_name_list_2, header=None)
     current_array = df_slice.to_numpy()

@@ -10,6 +10,7 @@ import pre_pro_operators as pre_oper
 
 ###   -----------   Input parameters   ----------   ###
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
+exp_type = 'In_vitro_homogeneous_data'
 experiment = '2017-02-03_sphere_timelapse/'
 exp_date = '2017-02-03_'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
@@ -25,7 +26,7 @@ well_loc = 's12'
 ###   --------------   Plotting code   ---------   ###
 
 # Read in cluster areas
-cluster_2D_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_cluster_areas', '.csv'
+cluster_2D_areas_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, 'sphere_timelapse_', well_loc, '_cluster_areas', '.csv'
 cluster_2D_areas_csv_name_list_2  =''.join(cluster_2D_areas_csv_name_list)
 df_clus_areas = pd.read_csv(cluster_2D_areas_csv_name_list_2, header=None)
 cluster_areas = df_clus_areas.to_numpy()

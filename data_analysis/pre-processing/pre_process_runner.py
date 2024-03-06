@@ -13,9 +13,9 @@ t_before = time.time()
 
 
 ###    -----------   Input parameters   --------------     ###
-basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
-experiment = '2017-02-03_sphere_timelapse/'
-exp_date = '2017-02-03_'
+basedir = '/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/'
+experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
+exp_date = '2017-02-03'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
@@ -65,7 +65,7 @@ if use_existing_file == False:
 
 else:
     # retrieving data from file.
-    loaded_arr = np.loadtxt("/Users/Nathan/Documents/Oxford/DPhil/test_3D.txt")
+    loaded_arr = np.loadtxt("/Users/Nathan/Documents/Oxford/DPhil/current_tiff.txt")
     
     tf_bool_3D = loaded_arr.reshape(
         loaded_arr.shape[0], loaded_arr.shape[1] // len(time_list), len(time_list))
@@ -144,13 +144,13 @@ for i in range(len(time_array)):
 
     # Save area array to csv file
     df_area = pd.DataFrame(area_slice)
-    area_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_area', '.csv'
+    area_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, 't', time_list[i], 'c2', '_area', '.csv'
     area_csv_name_list_2  =''.join(area_csv_name_list)
     df_area.to_csv(area_csv_name_list_2, index=False, header=False)
 
     # Save index array to csv file
     df_index = pd.DataFrame(output_label_arr)
-    index_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_indexed', '.csv'
+    index_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, 't', time_list[i], 'c2', '_indexed', '.csv'
     index_csv_name_list_2  =''.join(index_csv_name_list)
     df_index.to_csv(index_csv_name_list_2, index=False, header=False)
 
@@ -178,25 +178,25 @@ print('Shapes', cluster_areas.shape, mean_area.shape, total_area.shape)
 
 # Save 2D cluster areas array to csv
 df_cluster_areas = pd.DataFrame(cluster_areas)
-cluster_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_cluster_areas', '.csv'
+cluster_areas_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, '_cluster_areas', '.csv'
 cluster_areas_csv_name_list_2  =''.join(cluster_areas_csv_name_list)
 df_cluster_areas.to_csv(cluster_areas_csv_name_list_2, index=False, header=False)
 
 # Save mean areas to csv
 df_mean_areas = pd.DataFrame(mean_area)
-mean_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_mean_areas', '.csv'
+mean_areas_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, '_mean_areas', '.csv'
 mean_areas_csv_name_list_2  =''.join(mean_areas_csv_name_list)
 df_mean_areas.to_csv(mean_areas_csv_name_list_2, index=False, header=False)
 
 # Save total areas to csv
 df_total_areas = pd.DataFrame(total_area)
-total_areas_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_total_areas', '.csv'
+total_areas_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, '_total_areas', '.csv'
 total_areas_csv_name_list_2  =''.join(total_areas_csv_name_list)
 df_total_areas.to_csv(total_areas_csv_name_list_2, index=False, header=False)
 
 # Save number of clusters to csv
 df_number_clusters = pd.DataFrame(num_clusters)
-number_clusters_csv_name_list = basedir, 'csv_folder/', exp_date, 'sphere_timelapse_', well_loc, '_number_clusters', '.csv'
+number_clusters_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, '_number_clusters', '.csv'
 number_clusters_csv_name_list_2  =''.join(number_clusters_csv_name_list)
 df_number_clusters.to_csv(number_clusters_csv_name_list_2, index=False, header=False)
     

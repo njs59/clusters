@@ -23,13 +23,13 @@ def threshold_arr(tf_array, threshold):
     arr_reshaped = tf_array_bool.reshape(tf_array_bool.shape[0], -1)
  
     # saving reshaped array to file.
-    np.savetxt("/Users/Nathan/Documents/Oxford/DPhil/test_3D.txt", arr_reshaped)
+    np.savetxt("/Users/Nathan/Documents/Oxford/DPhil/current_tiff.txt", arr_reshaped)
 
 
 
     # Checks:
     # retrieving data from file.
-    loaded_arr = np.loadtxt("/Users/Nathan/Documents/Oxford/DPhil/test_3D.txt")
+    loaded_arr = np.loadtxt("/Users/Nathan/Documents/Oxford/DPhil/current_tiff.txt")
  
     load_original_arr = loaded_arr.reshape(
         loaded_arr.shape[0], loaded_arr.shape[1] // tf_array_bool.shape[2], tf_array_bool.shape[2])
