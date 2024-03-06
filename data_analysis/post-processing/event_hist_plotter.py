@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 # These three parameters are needed for accessing data and saving to files
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
+exp_type = 'In_vitro_homogeneous_data/'
 exp_date = '2017-02-03'
 well_loc = 's11'
 start_time = 51
@@ -27,7 +28,7 @@ for each cluster's lineage next to each other
 
 '''
 
-df_end_now_csv_name_list = basedir, '0_post_processing_output/', exp_date, '_', well_loc, 't', str(end_time).zfill(2), 'c2_post_processing', '.csv'
+df_end_now_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(end_time).zfill(2), 'c2_post_processing', '.csv'
 df_end_now_csv_name_list_2  =''.join(df_end_now_csv_name_list)
 df_end_now = pd.read_csv(df_end_now_csv_name_list_2)
 cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
@@ -67,7 +68,7 @@ number_event = np.zeros(len(event_cols))
 for i in range(end_time, start_time - 1, -1) :
     # print('i is', i)
     time_i = str(i).zfill(2)
-    df_step_csv_name_list = basedir, '0_post_processing_output/', '000_test_attempt', exp_date, '_', well_loc, 't', time_i, 'c2_post_processing', '.csv'
+    df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', time_i, 'c2_post_processing', '.csv'
     df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
     df_step = pd.read_csv(df_step_csv_name_list_2)
     # cluster_2D_areas = df_clus_areas.to_numpy()
