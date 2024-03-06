@@ -144,13 +144,13 @@ for i in range(len(time_array)):
 
     # Save area array to csv file
     df_area = pd.DataFrame(area_slice)
-    area_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, 't', time_list[i], 'c2', '_area', '.csv'
+    area_csv_name_list = basedir, 'pre_processing_output/', exp_date, '/', well_loc, 't', time_list[i], 'c2', '_area', '.csv'
     area_csv_name_list_2  =''.join(area_csv_name_list)
     df_area.to_csv(area_csv_name_list_2, index=False, header=False)
 
     # Save index array to csv file
     df_index = pd.DataFrame(output_label_arr)
-    index_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, 't', time_list[i], 'c2', '_indexed', '.csv'
+    index_csv_name_list = basedir, 'pre_processing_output/', exp_date, '/', well_loc, 't', time_list[i], 'c2', '_indexed', '.csv'
     index_csv_name_list_2  =''.join(index_csv_name_list)
     df_index.to_csv(index_csv_name_list_2, index=False, header=False)
 
@@ -178,25 +178,25 @@ print('Shapes', cluster_areas.shape, mean_area.shape, total_area.shape)
 
 # Save 2D cluster areas array to csv
 df_cluster_areas = pd.DataFrame(cluster_areas)
-cluster_areas_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, '_cluster_areas', '.csv'
+cluster_areas_csv_name_list = basedir, 'pre_processing_output/', exp_date, '/', well_loc, '_cluster_areas', '.csv'
 cluster_areas_csv_name_list_2  =''.join(cluster_areas_csv_name_list)
 df_cluster_areas.to_csv(cluster_areas_csv_name_list_2, index=False, header=False)
 
 # Save mean areas to csv
 df_mean_areas = pd.DataFrame(mean_area)
-mean_areas_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, '_mean_areas', '.csv'
+mean_areas_csv_name_list = basedir, 'pre_processing_output/', exp_date, '/', well_loc, '_mean_areas', '.csv'
 mean_areas_csv_name_list_2  =''.join(mean_areas_csv_name_list)
 df_mean_areas.to_csv(mean_areas_csv_name_list_2, index=False, header=False)
 
 # Save total areas to csv
 df_total_areas = pd.DataFrame(total_area)
-total_areas_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, '_total_areas', '.csv'
+total_areas_csv_name_list = basedir, 'pre_processing_output/', exp_date, '/', well_loc, '_total_areas', '.csv'
 total_areas_csv_name_list_2  =''.join(total_areas_csv_name_list)
 df_total_areas.to_csv(total_areas_csv_name_list_2, index=False, header=False)
 
 # Save number of clusters to csv
 df_number_clusters = pd.DataFrame(num_clusters)
-number_clusters_csv_name_list = basedir, 'csv_folder/', exp_date, '/', well_loc, '_number_clusters', '.csv'
+number_clusters_csv_name_list = basedir, 'pre_processing_output/', exp_date, '/', well_loc, '_number_clusters', '.csv'
 number_clusters_csv_name_list_2  =''.join(number_clusters_csv_name_list)
 df_number_clusters.to_csv(number_clusters_csv_name_list_2, index=False, header=False)
     

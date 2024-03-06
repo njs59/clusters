@@ -42,13 +42,13 @@ for i in range(len(time_list)):
 
     ###   ---------------   Step 0: Initialisation   --------------   ###
     # Read in area array for given time
-    csv_name_list = basedir, exp_type, 'csv_folder/', exp_date, '/', well_loc, 't', time_list[i], 'c2_area', '.csv'
+    csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', time_list[i], 'c2_area', '.csv'
     csv_name_list_2  =''.join(csv_name_list)
     df_area = pd.read_csv(csv_name_list_2, header=None)
     array_area_current_time = df_area.to_numpy()
 
     # Read in index array for given time
-    csv_name_list_index = basedir, exp_type, 'csv_folder/', exp_date, '/', well_loc, 't', time_list[i], 'c2_indexed', '.csv'
+    csv_name_list_index = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', time_list[i], 'c2_indexed', '.csv'
     csv_name_list_2_index  =''.join(csv_name_list_index)
     df_index = pd.read_csv(csv_name_list_2_index, header=None)
     array_index_current_time = df_index.to_numpy()
@@ -336,7 +336,7 @@ for i in range(len(time_list)):
 
     # Save dataframe output for current timepoint to .csv file
     df_total_areas = pd.DataFrame(df_step)
-    df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '_', well_loc, 't', time_list[i], 'c2', '_post_processing', '.csv'
+    df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', time_list[i], 'c2', '_post_processing', '.csv'
     df_step_name_list_2  =''.join(df_step_csv_name_list)
     df_total_areas.to_csv(df_step_name_list_2, index=False, header=True)
 

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 
 
-def size_and_loc_tracker(start_time, end_time, timejump,  basedir, exp_date, well_loc, cluster_lineage):
+def size_and_loc_tracker(start_time, end_time, timejump,  basedir, exp_type, exp_date, well_loc, cluster_lineage):
     '''
 Cluster tracker tracks an individually taggged cluster over time
 Input arguments: 
@@ -14,6 +14,7 @@ Input arguments:
     timejump: number of timesteps between each plot
     cluster_index_final_time: row in final time to select cluster ID tag from
     basedir,
+    exp_type,
     exp_date,
     well_loc
 
