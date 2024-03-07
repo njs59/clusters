@@ -42,7 +42,7 @@ time_array = range(1,98)
 num_times = len(time_array)
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
-well_loc = 's11'
+well_loc = 's12'
 
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
            "Event", "Clusters in event", "Timestep", "Date", "Well ID"]
@@ -76,10 +76,15 @@ for h in range(len(cluster_tags)):
         cluster_lineage_partial_new = np.delete(cluster_lineage_partial_new, index_of_init)
         for p in range(len(cluster_lineage_new)):
             cluster_lineage_splitting.append(cluster_lineage_new[p])
-        if len(cluster_lineage_partial_new) > 0 and len(cluster_lineage_partial_out) > 0:
+        if len(cluster_lineage_partial_new) > 0 and len(cluster_lineage_partial) > 0:
             cluster_lineage_partial.append(cluster_lineage_partial_new)
-        elif len(cluster_lineage_partial_new) > 0 and len(cluster_lineage_partial_out) == 0:
+        elif len(cluster_lineage_partial_new) > 0 and len(cluster_lineage_partial) == 0:
             cluster_lineage_partial = cluster_lineage_partial_new
+
+        if len(cluster_lineage_partial) > 1: 
+            cluster_lineage_partial = np.delete(cluster_lineage_partial, index_of_init) 
+            cluster_lineage_partial_out.append(cluster_lineage_partial)
+
             
 
     print(cluster_lineage_splitting)

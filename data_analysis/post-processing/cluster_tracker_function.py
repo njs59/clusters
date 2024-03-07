@@ -51,15 +51,17 @@ Output:
         # Store centres in array
         df1_slice = cluster_current_row_of_interest[['Cluster Centre x', 'Cluster Centre y']]
         centres_end_2D_lineage = df1_slice.to_numpy()
-
-        cluster_size = np.append(cluster_size, cluster_current_row_of_interest['Cluster size'])
-        cluster_location_x = np.append(cluster_location_x, int(centres_end_2D_lineage[0][0]))
-        cluster_location_y = np.append(cluster_location_y, int(centres_end_2D_lineage[0][1]))
-
-        end_index = current_array[int(centres_end_2D_lineage[0][0]),int(centres_end_2D_lineage[0][1])]
-        if end_index == 0:
-            print("Index is 0")
+        if cluster_current_row_of_interest.shape[0] == 0:
+            cluster_size = np.append(cluster_size, 0)
+            cluster_location_x = np.append(cluster_location_x, None)
+            cluster_location_y = np.append(cluster_location_y, None)
+            end_index = 0
         else:
+            cluster_size = np.append(cluster_size, cluster_current_row_of_interest['Cluster size'])
+            cluster_location_x = np.append(cluster_location_x, int(centres_end_2D_lineage[0][0]))
+            cluster_location_y = np.append(cluster_location_y, int(centres_end_2D_lineage[0][1]))
+            end_index = current_array[int(centres_end_2D_lineage[0][0]),int(centres_end_2D_lineage[0][1])]
+        if end_index > 0:
             index_locs = np.where(current_array == int(end_index))
             single_index_arr = np.asarray(index_locs)
 

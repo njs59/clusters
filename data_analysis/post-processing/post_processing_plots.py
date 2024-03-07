@@ -10,6 +10,8 @@ well_loc = 's11'
 
 #cluster_lineage = ltf.lineage_tracer(51,97, basedir, exp_date, well_loc, plots = False)
 #slp.size_and_loc_tracker(37, 97, 10, basedir, exp_date, well_loc, cluster_lineage)
+
+
 slp.size_and_loc_tracker(37, 97, 5, basedir, exp_type, exp_date, well_loc, [])
 
 '''

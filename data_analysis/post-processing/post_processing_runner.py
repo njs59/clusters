@@ -18,7 +18,7 @@ exp_date = '2017-02-03'
 time_array = range(1,98)
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
-well_loc = 's11'
+well_loc = 's12'
 
 # Column titles to be used in dataframes
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
