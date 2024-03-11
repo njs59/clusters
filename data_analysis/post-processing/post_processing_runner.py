@@ -130,15 +130,16 @@ for i in range(len(time_list)):
                     rows_to_save.append(np.where(mask == True)[0][0])
                 clusters_coagulating = df_old.iloc[rows_to_save]
 
-                # Keep lowest tag number of the coagulating clusters
-                cluster_tag_number = min(clusters_coagulating['Tag number'])
                 # Remove cluster IDs from list of non-assigned clusters
                 clusters_in_event = clusters_coagulating['Tag number'].tolist()
                 non_assigned_old_tags_list = list(non_assigned_old_tags_list)
                 for t in range(len(clusters_in_event)):
                     non_assigned_old_tags_list.remove(clusters_in_event[t])
+                # Keep lowest tag number of the coagulating clusters
+                cluster_tag_number = min(clusters_coagulating['Tag number'])
+                
 
-                # Event is move, store clusters involved and tag number
+                # Event is coagulation, store clusters involved and tag number
                 df_step.iloc[k-1,4] = 'Coagulation'
                 df_step.iloc[k-1,5] = str(clusters_in_event)
                 tag_number_current.append(cluster_tag_number)
@@ -310,7 +311,7 @@ for i in range(len(time_list)):
                         # Can't be appearance as that has been checked for at the very start
                         df_step.iloc[index_of_interest-1,4] = 'Appearance Error'
         
-    
+    ###   ------------------      Step 3: Save to dataframe file     ---------------  ###
     # Update centres_2D_old for use in next timestep
     centres_2D_old = centres_2D_current
         
