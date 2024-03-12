@@ -274,6 +274,7 @@ for i in range(len(time_list)):
                             else:
                                 # Cluster has just appeared (type 2 is nearby non-assigned clusters)
                                 df_step.iloc[index_of_interest-1,4] = 'Appearance type 2'
+                            # print('Error type 2 event')
 
 
 
@@ -296,24 +297,26 @@ for i in range(len(time_list)):
                         df_step.iloc[index_of_interest-1,5] = str([candidate_cluster_ID])
                     
                     
-                    # Check if cluster at edge of field of view
-                    elif x_cen < 10 or x_cen > 1015 or y_cen < 10 or y_cen > 1334:
-                        #cluster at edge (type 3 is nearby assigned cluster but no nearby unassigned clusters)
-                        df_step.iloc[index_of_interest-1,4] = 'Edge Appearance type 3'
-
-
                     else:
-                        print('Error in event assignment')
-                        # Search nearby clusters already assigned
+                        # Check if cluster at edge of field of view
+                        if x_cen < 10 or x_cen > 1015 or y_cen < 10 or y_cen > 1334:
+                            #cluster at edge (type 3 is nearby assigned cluster but no nearby unassigned clusters)
+                            df_step.iloc[index_of_interest-1,4] = 'Edge Appearance type 3'
+                        else:
+                            df_step.iloc[index_of_interest-1,4] = 'Appearance type 3'
 
-                        # Can't only be splitting (cluster is too big)                       
-                        # (can't move large as that can only happen if there is an unassigned cluster)
-                        # Can't be appearance as that has been checked for at the very start
-                        df_step.iloc[index_of_interest-1,4] = 'Appearance Error'
+
+                    # else:
+                    #     print('Error in event assignment')
+                    #     # Search nearby clusters already assigned
+
+                    #     # Can't only be splitting (cluster is too big)                       
+                    #     # (can't move large as that can only happen if there is an unassigned cluster)
+                    #     # Can't be appearance as that has been checked for at the very start
+                    #     df_step.iloc[index_of_interest-1,4] = 'Appearance Error'
         
     ###   ------------------      Step 3: Save to dataframe file     ---------------  ###
-    # Update centres_2D_old for use in next timestep
-    centres_2D_old = centres_2D_current
+
         
 
     print('Number of cluster at timepoint', centres_2D_current.shape[0])
@@ -332,6 +335,8 @@ for i in range(len(time_list)):
     df_old = df_step
     non_assigned_old_tags_list = tag_number_current
     array_index_old = array_index_current_time
+    # Update centres_2D_old for use in next timestep
+    centres_2D_old = centres_2D_current
 
     print('Yay step', i, ' finished')
 
