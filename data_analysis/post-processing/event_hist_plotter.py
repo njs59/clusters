@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 exp_type = 'In_vitro_homogeneous_data/'
 exp_date = '2017-02-03'
-well_loc = 's11'
+well_loc = 's09'
 start_time = 51
 end_time = 97
 

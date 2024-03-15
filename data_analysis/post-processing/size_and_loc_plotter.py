@@ -77,7 +77,8 @@ Output:
         # plt.show()
         
         plt.figure(2)
-        plt.plot(x, cluster_size)
+        # plt.plot(x, cluster_size)
+        plt.plot(cluster_size)
 
         
         plt.figure(3)

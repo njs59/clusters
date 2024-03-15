@@ -28,7 +28,7 @@ fileID = '.tif'
 time_array = range(1,98)
 
 time_list = [str(x).zfill(2) for x in time_array]
-well_loc = 's11'
+well_loc = 's09'
 
 # Does the histogram get plotted
 plot_hist = True

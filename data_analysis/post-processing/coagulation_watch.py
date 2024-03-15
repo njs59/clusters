@@ -21,7 +21,7 @@ time_array = range(1,98)
 num_times = len(time_array)
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
-well_loc = 's12'
+well_loc = 's09'
 
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
            "Event", "Clusters in event", "Timestep", "Date", "Well ID"]
