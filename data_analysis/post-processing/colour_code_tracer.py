@@ -34,28 +34,28 @@ def generate_colormap(N):
 
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 exp_type = 'In_vitro_homogeneous_data/'
-# experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
-experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
-# exp_date = '2017-02-03'
-exp_date = '2017-02-13'
+experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
+# experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
+exp_date = '2017-02-03'
+# exp_date = '2017-02-13'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
-# time_array = range(1,98)
-time_array = range(1,95)
+time_array = range(1,98)
+# time_array = range(1,95)
 
-# last_time = 97
-last_time = 94
+last_time = 97
+# last_time = 94
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
 
 # 2017-02-13 sphere timelapse 2_s13t01c2_ORG
 
-# well_loc = 's09'
-# well_loc = 's12'
-well_loc = 's27'
+well_loc = 's09'
+# well_loc = 's11'
+# well_loc = 's13'
 
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
            "Event", "Clusters in event", "Timestep", "Date", "Well ID"]

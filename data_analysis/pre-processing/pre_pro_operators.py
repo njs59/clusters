@@ -2,7 +2,9 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
 
-def threshold_arr(tf_array, threshold):
+from skimage import filters
+
+def threshold_arr_supervised(tf_array, threshold):
     '''
     Thresholds 3D array to give a boolean array of values above and below threshold
 
@@ -53,6 +55,60 @@ def bool_threshold_val(a, threshold):
         return 1
     else:
         return 0
+
+def threshold_arr_unsupervised(tf_array):
+    '''
+    Thresholds 3D array to give a boolean array of values above and below threshold
+
+    Inputs:
+      tf_array: 3D array to be thresholded
+      threshold: Value above which position is assigned a 1 in boolean array
+
+    Outputs:
+      tf_array_bool: 3D boolean array after thresholdeing has occured
+    '''
+    for i in range(tf_array.shape[2]):
+      tf_ad = tf_array[:,:,i]
+
+      text_threshold = filters.threshold_otsu  # Hit tab with the cursor after the underscore, try several methods
+      thresh = text_threshold(tf_ad)
+      array_i = tf_ad > thresh
+
+      if i == 0:
+         tf_array_bool = array_i
+      else:
+         tf_array_bool = np.dstack((tf_array_bool, array_i))
+
+    
+    # reshaping the array from 3D
+    # matrix to 2D matrix.
+    arr_reshaped = tf_array_bool.reshape(tf_array_bool.shape[0], -1)
+ 
+    # saving reshaped array to file.
+    np.savetxt("/Users/Nathan/Documents/Oxford/DPhil/current_tiff.txt", arr_reshaped)
+
+
+
+    # Checks:
+    # retrieving data from file.
+    loaded_arr = np.loadtxt("/Users/Nathan/Documents/Oxford/DPhil/current_tiff.txt")
+ 
+    load_original_arr = loaded_arr.reshape(
+        loaded_arr.shape[0], loaded_arr.shape[1] // tf_array_bool.shape[2], tf_array_bool.shape[2])
+    
+    # check the shapes:
+    print("shape of arr: ", tf_array_bool.shape)
+    print("shape of load_original_arr: ", load_original_arr.shape)
+    
+    # check if both arrays are same or not:
+    if (load_original_arr == tf_array_bool).all():
+        print("Yes, both the arrays are same")
+    else:
+        print("No, both the arrays are not same")
+
+
+    return tf_array_bool
+
 
 
 def remove_fragments(area, num_clus, min_clus_size):

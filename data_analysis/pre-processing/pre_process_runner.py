@@ -14,16 +14,16 @@ t_before = time.time()
 
 ###    -----------   Input parameters   --------------     ###
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/'
-# experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
-experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
-# exp_date = '2017-02-03'
-exp_date = '2017-02-13'
+experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
+# experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
+exp_date = '2017-02-03'
+# exp_date = '2017-02-13'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
-# time_array = range(1,98)
-time_array = range(1,95)
+time_array = range(1,98)
+# time_array = range(1,95)
 
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
@@ -31,12 +31,12 @@ time_list = [str(x).zfill(2) for x in time_array]
 
 # 2017-02-13 sphere timelapse 2_s13t01c2_ORG
 
-# well_loc = 's09'
+well_loc = 's09'
 # well_loc = 's12'
-well_loc = 's27'
+# well_loc = 's13'
 
-# threshold = 310
-threshold = 440
+# threshold = 320
+# threshold = 440
 min_clus_size = 150
 use_existing_file = False
 
@@ -63,7 +63,8 @@ if use_existing_file == False:
     raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID)
 
     # Threshold 3D array to boolean array
-    tf_bool_3D = pre_oper.threshold_arr(raw_arr_3D, threshold)
+    # tf_bool_3D = pre_oper.threshold_arr_supervised(raw_arr_3D, threshold)
+    tf_bool_3D = pre_oper.threshold_arr_unsupervised(raw_arr_3D)
 
     # print(tf_bool_3D)
     print(tf_bool_3D.shape)
