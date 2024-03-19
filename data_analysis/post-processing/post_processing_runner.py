@@ -14,16 +14,16 @@ t_before = time.time()
 ###    -----------   Input parameters   --------------     ###
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 exp_type = 'In_vitro_homogeneous_data/'
-experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
-# experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
-exp_date = '2017-02-03'
-# exp_date = '2017-02-13'
+# experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
+experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
+# exp_date = '2017-02-03'
+exp_date = '2017-02-13'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
-time_array = range(1,98)
-# time_array = range(1,95)
+# time_array = range(1,98)
+time_array = range(1,95)
 
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
@@ -31,9 +31,9 @@ time_list = [str(x).zfill(2) for x in time_array]
 
 # 2017-02-13 sphere timelapse 2_s13t01c2_ORG
 
-well_loc = 's09'
+# well_loc = 's10'
 # well_loc = 's11'
-# well_loc = 's13'
+well_loc = 's13'
 
 # Column titles to be used in dataframes
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
@@ -166,6 +166,7 @@ for i in range(len(time_list)):
         # Generate array of just non-assigned clusters
         non_assigned_cluster_array = np.zeros([array_index_old.shape[0], array_index_old.shape[1]])
         locs_not_considered = 0
+        move_large_indexes = []
         for m in range(len(non_assigned_old_tags_list)):
             row_corresponding_to_tag = df_old.loc[df_old['Tag number'] == non_assigned_old_tags_list[m]].index[0]
             index_corresponding = row_corresponding_to_tag + 1
@@ -220,9 +221,14 @@ for i in range(len(time_list)):
                     if percent_diff < percent_diff_max:
                         # If close in size then it's the same cluster but it has just
                         # Moved a large distance so we have 'Move large' event and the same cluster ID
-                        tag_number_current[no_same_locs_index[l]-1] = cluster_ID
-                        df_step.iloc[index_of_interest-1,4] = 'Move large'
-                        df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                        if cluster_ID in move_large_indexes:
+                            df_step.iloc[index_of_interest-1,4] = 'Move large'
+                            df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                        else:
+                            tag_number_current[no_same_locs_index[l]-1] = cluster_ID
+                            df_step.iloc[index_of_interest-1,4] = 'Move large'
+                            df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                            move_large_indexes = np.append(move_large_indexes, cluster_ID)
 
                     elif old_cluster_size > new_cluster_size and percent_diff >= 20:
                         # The new cluster is significantly smaller than the old nearby cluster so has split
@@ -231,9 +237,14 @@ for i in range(len(time_list)):
                     else:
                         # Cluster is significantly larger than nearby cluster so has both moved and 
                         # grown without coagulation
-                        tag_number_current[no_same_locs_index[l]-1] = cluster_ID
-                        df_step.iloc[index_of_interest-1,4] = 'Move large and grow'
-                        df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                        if cluster_ID in move_large_indexes:
+                            df_step.iloc[index_of_interest-1,4] = 'Move large and grow'
+                            df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                        else:
+                            tag_number_current[no_same_locs_index[l]-1] = cluster_ID
+                            df_step.iloc[index_of_interest-1,4] = 'Move large and grow'
+                            df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                            move_large_indexes = np.append(move_large_indexes, cluster_ID)
                 
                 elif len(near_non_assigned_clus) > 1:
                     # Multiple nearby non-assigned clusters
@@ -251,11 +262,17 @@ for i in range(len(time_list)):
                         # Possible Coagulation Event 
                         # Keeps ID of lowest ID of the coagulating clusters                        
                         cluster_tag_number = min(clusters_coagulating_df['Tag number'])
-                        clusters_in_event = clusters_coagulating_df['Tag number'].tolist()
-                        df_step.iloc[index_of_interest-1,4] = 'Possible Coagulation'
-                        df_step.iloc[index_of_interest-1,5] = str(clusters_in_event)
-                        # Overwrite cluster ID
-                        tag_number_current[no_same_locs_index[l]-1] = cluster_tag_number
+                        if cluster_tag_number in move_large_indexes:
+                            clusters_in_event = clusters_coagulating_df['Tag number'].tolist()
+                            df_step.iloc[index_of_interest-1,4] = 'Possible Coagulation'
+                            df_step.iloc[index_of_interest-1,5] = str(clusters_in_event)
+                        else:
+                            clusters_in_event = clusters_coagulating_df['Tag number'].tolist()
+                            df_step.iloc[index_of_interest-1,4] = 'Possible Coagulation'
+                            df_step.iloc[index_of_interest-1,5] = str(clusters_in_event)
+                            # Overwrite cluster ID
+                            tag_number_current[no_same_locs_index[l]-1] = cluster_tag_number
+                            move_large_indexes = np.append(move_large_indexes, cluster_tag_number)
 
                     else:
                         # Pick random event with single cluster inversely proportional to distance
@@ -273,9 +290,14 @@ for i in range(len(time_list)):
                             # Moved a large distance so we have 'Move large' event and the same cluster ID
                             # Keeps ID of old cluster
                             # Overwrites cluster ID (so is possible for tag to be skipped but that's ok)
-                            tag_number_current[no_same_locs_index[l]-1] = cluster_ID
-                            df_step.iloc[index_of_interest-1,4] = 'Move large'
-                            df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                            if cluster_ID in move_large_indexes:
+                                df_step.iloc[index_of_interest-1,4] = 'Move large'
+                                df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                            else:
+                                tag_number_current[no_same_locs_index[l]-1] = cluster_ID
+                                df_step.iloc[index_of_interest-1,4] = 'Move large'
+                                df_step.iloc[index_of_interest-1,5] = str([cluster_ID])
+                                move_large_indexes = np.append(move_large_indexes, cluster_ID)
                         elif old_cluster_size > new_cluster_size and percent_diff >= 20:
                             # The new cluster is significantly smaller than the old nearby cluster so has split                        
                             df_step.iloc[index_of_interest-1,4] = 'Splitting'
