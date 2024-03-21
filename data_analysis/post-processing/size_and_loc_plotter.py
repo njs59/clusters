@@ -22,7 +22,7 @@ Input arguments:
 Output:
     Series of plots 
 '''
-    # cluster_lineage = ltf.lineage_tracer(start_time, end_time, basedir, exp_type, exp_date, well_loc, plots = False)
+    cluster_lineage = ltf.lineage_tracer(start_time, end_time, basedir, exp_type, exp_date, well_loc, plots = False)
 
     if len(cluster_lineage) > 0:
         cluster_tags = cluster_lineage
