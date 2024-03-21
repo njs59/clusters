@@ -4,6 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
 
+import lineage_tracer_function as ltf
 
 def size_and_loc_tracker(start_time, end_time, timejump,  basedir, exp_type, exp_date, well_loc, cluster_lineage):
     '''
@@ -21,6 +22,8 @@ Input arguments:
 Output:
     Series of plots 
 '''
+    # cluster_lineage = ltf.lineage_tracer(start_time, end_time, basedir, exp_type, exp_date, well_loc, plots = False)
+
     if len(cluster_lineage) > 0:
         cluster_tags = cluster_lineage
     else:
@@ -41,7 +44,7 @@ Output:
         cluster_location_x = []
         cluster_location_y = []
 
-        for i in range(start_time - 1, end_time, timejump):
+        for i in range(start_time, end_time + 1, timejump):
             x = np.append(x, i)
             # Read in csv
             time_i = str(i).zfill(2)
@@ -84,13 +87,13 @@ Output:
         plt.figure(3)
         # fig, ax = plt.subplots()
         for i in range(len(cluster_location_x)-1):
-            r = i/len(cluster_location_x)
+            g = i/len(cluster_location_x)
             if i < len(cluster_location_x)/2:
                 b = i/ (len(cluster_location_x)/2)
             else:
                 b = 2 - (i/ (len(cluster_location_x)/2))
             print('B is', b)
-            g = 1-r
+            r = 1-g
             color = (r, g, b)
             plt.plot(cluster_location_x[i:i+2], cluster_location_y[i:i+2], c=color, lw=2)
             # plt.plot(cluster_location_x, cluster_location_y)

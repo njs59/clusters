@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 exp_type = 'In_vitro_homogeneous_data/'
 exp_date = '2017-02-03'
-well_loc = 's09'
+well_loc = 's11'
 start_time = 51
 end_time = 97
 
@@ -39,29 +39,29 @@ cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
         "Event", "Clusters in event", "Timestep", "Date", "Well ID"]
 
-# event_cols = ["Move", "Coagulation", "Move large", "Splitting", 
-#               "Move large and grow", "Possible Coagulation",
-#               "Edge Appearance type 1", "Appearance type 1",
-#               "Edge Appearance type 2", "Appearance type 2", 
-#               "Edge Appearance type 3", "Appearance type 3", "Appearance Error"]
-
-# event_cols_plot = ["Move", "Coag", "Move l", "Splitting", 
-#               "Move l & g", "Poss Coag",
-#               "Edge App 1", "App 1",
-#               "Edge App 2", "App 2", 
-#               "Edge App 3", "App 3", "App Error"]
-
-event_cols = ["Coagulation", "Move large", "Splitting", 
+event_cols = ["Move", "Coagulation", "Move large", "Splitting", 
               "Move large and grow", "Possible Coagulation",
               "Edge Appearance type 1", "Appearance type 1",
               "Edge Appearance type 2", "Appearance type 2", 
               "Edge Appearance type 3", "Appearance type 3", "Appearance Error"]
 
-event_cols_plot = ["Coag", "Move l", "Splitting", 
+event_cols_plot = ["Move", "Coag", "Move l", "Splitting", 
               "Move l & g", "Poss Coag",
               "Edge App 1", "App 1",
               "Edge App 2", "App 2", 
               "Edge App 3", "App 3", "App Error"]
+
+# event_cols = ["Coagulation", "Move large", "Splitting", 
+#               "Move large and grow", "Possible Coagulation",
+#               "Edge Appearance type 1", "Appearance type 1",
+#               "Edge Appearance type 2", "Appearance type 2", 
+#               "Edge Appearance type 3", "Appearance type 3", "Appearance Error"]
+
+# event_cols_plot = ["Coag", "Move l", "Splitting", 
+#               "Move l & g", "Poss Coag",
+#               "Edge App 1", "App 1",
+#               "Edge App 2", "App 2", 
+#               "Edge App 3", "App 3", "App Error"]
 
 cluster_appear_sizes = []
 number_event = np.zeros(len(event_cols))

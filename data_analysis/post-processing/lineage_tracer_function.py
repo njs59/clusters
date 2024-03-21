@@ -30,6 +30,7 @@ Output:
     df_end_now = pd.read_csv(df_end_now_csv_name_list_2)
     cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
 
+    all_cluster_lineage = []
     for h in range(len(cluster_tags)):
         cluster_lineage = [cluster_tags[h]] 
 
@@ -164,8 +165,11 @@ Output:
                 axarr[0].axis([0, current_array.shape[1], 0, current_array.shape[0]])
                 axarr[1].axis([0, current_array.shape[1], 0, current_array.shape[0]])
                 plt.show()
-
-    return cluster_lineage
+        if h == 0:
+            all_cluster_lineage = cluster_lineage
+        else:
+            all_cluster_lineage = np.append(all_cluster_lineage, cluster_lineage)
+    return all_cluster_lineage
 
 
 

@@ -35,7 +35,7 @@ time_list = [str(x).zfill(2) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
 
 
-well_loc = 's10'
+well_loc = 's11'
 # well_loc = 's12'
 # well_loc = 's27'
 
