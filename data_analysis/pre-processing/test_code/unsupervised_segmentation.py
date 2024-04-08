@@ -7,7 +7,9 @@ from skimage import filters
 from skimage import draw
 from skimage import color
 from skimage import exposure
+from scipy.ndimage.filters import median_filter
 
+from PIL import Image, ImageFilter
 import read_tif_file_operator as tif
 
 
@@ -76,9 +78,55 @@ image_show_save(raw_arr_2D)
 
 # raw_arr_2D = np.multiply(raw_arr_2D, 10)
 
+
+original= raw_arr_2D
+# plt.imshow(cv2.cvtColor(original, cv2.COLOR_BGR2RGB))
+# plt.axis('off')  # Remove axis labels
+# plt.show()
+# print("Blur Image")
+
+# # create a sharpening kernel
+# sharpen_filter=np.array([[-1, -1, -1, -1, -1, -1, -1],
+#                    [-1, -1, -1, -1, -1, -1, -1],
+#                    [-1, -1, -1, -1, -1, -1, -1],
+#                    [-1, -1, -1, 49, -1, -1, -1],
+#                    [-1, -1, -1, -1, -1, -1, -1],
+#                    [-1, -1, -1, -1, -1, -1, -1],
+#                    [-1, -1, -1, -1, -1, -1, -1]])
+# # applying kernels to the input image to get the sharpened image
+
+# sharp_image=cv2.filter2D(original,-1,sharpen_filter)
+# image_show_save(sharp_image)
+
+# print("Sharpened Image")
+
+# original_image = raw_arr_2D
+
+blur_image = cv2.blur(raw_arr_2D,(10,10)) 
+
+image_show_save(blur_image)
+
+blur_2_image = cv2.blur(blur_image,(10,10)) 
+
+image_show_save(blur_2_image)
+
+
+
+
 image_show_save(raw_arr_2D)
 
 text_threshold = filters.threshold_yen  # Hit tab with the cursor after the underscore, try several methods
 thresh = text_threshold(raw_arr_2D)
+array = raw_arr_2D > thresh
+image_show(raw_arr_2D > thresh)
+
+
+text_threshold = filters.threshold_yen  # Hit tab with the cursor after the underscore, try several methods
+thresh = text_threshold(blur_image)
+array = raw_arr_2D > thresh
+image_show(raw_arr_2D > thresh)
+
+text_threshold = filters.threshold_yen  # Hit tab with the cursor after the underscore, try several methods
+thresh = text_threshold(blur_2_image)
 array = raw_arr_2D > thresh
 image_show(raw_arr_2D > thresh)
