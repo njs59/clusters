@@ -9,8 +9,8 @@ from ast import literal_eval
 import matplotlib.pyplot as plt
 
 def single_tracer(cluster_lineage):
-    cluster_lineage_partial = []
-    for i in range(97, 50, -1) :
+    cluster_lineage_partial = np.array([])
+    for i in range(end_time, 50, -1) :
         time_i = str(i).zfill(2)
         df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', time_i, 'c2_post_processing', '.csv'
         df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
@@ -29,7 +29,13 @@ def single_tracer(cluster_lineage):
 
             elif (row_interest['Event'] == 'Splitting').any():
                 print('i is:', i)
-                res_spl = row_interest.iloc[:,0]
+                locs_spl = row_interest.iloc[:, [5]]
+                str_locs_spl = locs_spl.iloc[0]['Clusters in event']
+                list_locs_spl = literal_eval(str_locs_spl)
+                arr_locs_spl = np.array(list_locs_spl)
+                res_spl = [item for item in arr_locs_spl if item not in cluster_lineage_partial]
+                # cluster_lineage = np.append(cluster_lineage, res)
+                # res_spl = row_interest.iloc[:,0]
                 cluster_lineage_partial = np.append(cluster_lineage_partial, res_spl)
 
     return cluster_lineage, cluster_lineage_partial
@@ -37,17 +43,21 @@ def single_tracer(cluster_lineage):
 
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 exp_type = 'In_vitro_homogeneous_data/'
-exp_date = '2017-02-03'
-time_array = range(1,98)
+# exp_date = '2017-02-03'
+# time_array = range(1,98)
+exp_date = '2017-02-13'
+time_array = range(1,95)
 num_times = len(time_array)
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
-well_loc = 's12'
+# well_loc = 's12'
+well_loc = 's27'
+end_time = 94
 
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
            "Event", "Clusters in event", "Timestep", "Date", "Well ID"]
 
-df_end_now_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', '97', 'c2_post_processing', '.csv'
+df_end_now_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(end_time), 'c2_post_processing', '.csv'
 df_end_now_csv_name_list_2  =''.join(df_end_now_csv_name_list)
 df_end_now = pd.read_csv(df_end_now_csv_name_list_2)
 cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
@@ -72,24 +82,28 @@ for h in range(len(cluster_tags)):
         cluster_lineage_partial = np.delete(cluster_lineage_partial, 0)
 
         cluster_lineage_new, cluster_lineage_partial_new = single_tracer([cluster_lineage_init])
-        index_of_init = np.where(cluster_lineage_partial_new == cluster_lineage_init)[0][0]
-        cluster_lineage_partial_new = np.delete(cluster_lineage_partial_new, index_of_init)
+        # index_of_init = np.where(cluster_lineage_partial_new == cluster_lineage_init)[0][0]
+        # cluster_lineage_partial_new = np.delete(cluster_lineage_partial_new, index_of_init)
         for p in range(len(cluster_lineage_new)):
             cluster_lineage_splitting.append(cluster_lineage_new[p])
-        if len(cluster_lineage_partial_new) > 0 and len(cluster_lineage_partial) > 0:
-            cluster_lineage_partial.append(cluster_lineage_partial_new)
-        elif len(cluster_lineage_partial_new) > 0 and len(cluster_lineage_partial) == 0:
-            cluster_lineage_partial = cluster_lineage_partial_new
+        
+        for q in range(len(cluster_lineage_partial_new)):
+            test_partial_index = cluster_lineage_partial_new[q]
+            if  test_partial_index not in cluster_lineage_partial:
+                np.append(cluster_lineage_partial, test_partial_index)
+
 
         if len(cluster_lineage_partial) > 1: 
-            cluster_lineage_partial = np.delete(cluster_lineage_partial, index_of_init) 
-            cluster_lineage_partial_out.append(cluster_lineage_partial)
+            for r in range(len(cluster_lineage_partial)):
+                test_index = cluster_lineage_partial[r]
+                if test_index not in cluster_lineage_partial_out:
+                    cluster_lineage_partial_out.append(test_index)
 
             
 
     print(cluster_lineage_splitting)
-    print(cluster_lineage_partial_out)
-    print(cluster_lineage)
+    print('Partials', cluster_lineage_partial_out)
+    print('Fulls', cluster_lineage)
 
 
 
@@ -154,7 +168,7 @@ if descendents_arr.shape[0] > 0:
 
 
     # Find locations of clusters at time 30
-    df_end_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', '97', 'c2_post_processing', '.csv'
+    df_end_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(end_time), 'c2_post_processing', '.csv'
     df_end_csv_name_list_2  =''.join(df_end_csv_name_list)
     df_end_interest = pd.read_csv(df_end_csv_name_list_2)
 
@@ -168,7 +182,7 @@ if descendents_arr.shape[0] > 0:
     # Read in array for given timestep
 
     # Locate indexes of clusters, print
-    end_index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', '97', 'c2', '_indexed', '.csv'
+    end_index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', str(end_time), 'c2', '_indexed', '.csv'
     end_index_csv_name_list_2  =''.join(end_index_csv_name_list)
     df_end_slice = pd.read_csv(end_index_csv_name_list_2, header=None)
     current_array_end = df_end_slice.to_numpy()

@@ -33,7 +33,7 @@ time_list = [str(x).zfill(2) for x in time_array]
 
 # well_loc = 's10'
 # well_loc = 's11'
-well_loc = 's13'
+well_loc = 's28'
 
 # Column titles to be used in dataframes
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 

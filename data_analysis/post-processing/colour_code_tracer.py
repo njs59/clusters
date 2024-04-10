@@ -34,19 +34,19 @@ def generate_colormap(N):
 
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 exp_type = 'In_vitro_homogeneous_data/'
-experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
-# experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
-exp_date = '2017-02-03'
-# exp_date = '2017-02-13'
+# experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
+experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
+# exp_date = '2017-02-03'
+exp_date = '2017-02-13'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
-time_array = range(1,98)
-# time_array = range(1,95)
+# time_array = range(1,98)
+time_array = range(1,95)
 
-last_time = 97
-# last_time = 94
+# last_time = 97
+last_time = 94
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
@@ -54,8 +54,9 @@ time_list = [str(x).zfill(2) for x in time_array]
 # 2017-02-13 sphere timelapse 2_s13t01c2_ORG
 
 # well_loc = 's10'
-well_loc = 's11'
+# well_loc = 's11'
 # well_loc = 's13'
+well_loc = 's27'
 
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
            "Event", "Clusters in event", "Timestep", "Date", "Well ID"]
@@ -249,8 +250,13 @@ for j in range(centres_start_2D.shape[0]):
         centre_coord = centres_start_2D[j]
         x = int(centre_coord[0])
         y = int(centre_coord[1])
+        index_print = int(lineage_old_arr[x-1, y-1])
+        if index_print == 0:
+            near_clus, clus_distances = post_oper.nearby_clusters(x-1, y-1, 50, lineage_old_arr)
+            index_dist_min = np.argmin(clus_distances)  
+            index_print = int(near_clus[index_dist_min])
         axarr[0].text(y-1, x-1,
-                            int(lineage_old_arr[x-1, y-1]),
+                            index_print,
                        ha="center", va="center", color="k")
 
 axarr[0].axis([0, current_array.shape[1], 0, current_array.shape[0]])
