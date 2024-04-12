@@ -5,12 +5,12 @@ import matplotlib.pyplot as plt
 
 import functions as fns
 
-x_len = 200
-y_len = 200
+x_len = 100
+y_len = 100
 next_available_ID = 1
-initial_size = 25
-initial_number = 100
-timesteps = 1000
+initial_size = 40
+initial_number = 5
+timesteps = 10000
 
 cols = ["ID", "Radius", "Centre x", "Centre y"]
 cell_df = pd.DataFrame(columns=cols)
@@ -36,7 +36,7 @@ for i in range(timesteps):
 
     visual_arr = fns.visualise_arr(cell_df, x_len, y_len)
 
-    if i % 100 == 0:
+    if i % 1000 == 0:
         print('Current df', cell_df)
 
         plt.imshow(visual_arr)

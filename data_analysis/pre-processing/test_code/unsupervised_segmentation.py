@@ -18,6 +18,8 @@ import cv2
 import matplotlib.pyplot as plt 
 import numpy as np 
 
+from squidpy import ImageContainer, segment
+
 
 def image_show_save(image):
     plt.imshow(image, cmap='gray')
@@ -43,7 +45,7 @@ time_list = range(42,98,5)
 well_loc = 's09'
 
 
-for i in range(42,98,5):
+for i in range(65,66,1):
     time = i
 
     raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time, fileID)
@@ -55,13 +57,19 @@ for i in range(42,98,5):
     text_threshold = filters.threshold_yen  # Hit tab with the cursor after the underscore, try several methods
     thresh = text_threshold(raw_arr_2D)
     array = raw_arr_2D > thresh
-    image_show(raw_arr_2D > thresh)
+    # image_show(raw_arr_2D > thresh)
     print("Threshold is", thresh)
 
-    plt.hist(raw_arr_2D)
-    plt.show()
+    # plt.hist(raw_arr_2D)
+    # plt.show()
 
-    
+to_segment = ImageContainer(raw_arr_2D)
+segmented = segment(img  = to_segment, channel = 0, method = 'watershed', geq = True)
+
+plt.imshow(segmented)
+plt.show()
+
+
 
 
 # # Load the image 
