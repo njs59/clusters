@@ -142,13 +142,16 @@ def sweep(cell_df, x_len, y_len, next_ID):
 
     # vfunc = np.vectorize(test_dist)
     # out1 = vfunc(centres[:,0], centres[:,1], centres[:,0], centres[:,1], radii, radii)
+    
+    # Get unique list of coag indices pairs
     coag_pairs_indices = np.unique(coag_pairs_indices, axis=0)
+    print('Pairs Ind', coag_pairs_indices)
 
     for d in range(coag_pairs_indices.shape[0]):
         coag_ID_pair = [int(cell_df.iloc[coag_pairs_indices[d,0],0]),
                         int(cell_df.iloc[coag_pairs_indices[d,1],0])]
         if coag_ID_pair[0] in coag_list and coag_ID_pair[1] in coag_list:
-            # print('Both match')
+            print('Both match')
             coag_list_more_once = np.append(coag_list_more_once, [coag_ID_pair])
             for m in range(coag_lists_df.shape[0]):
                 if coag_ID_pair[0] in coag_lists_df.iloc[m,0]:
@@ -171,9 +174,10 @@ def sweep(cell_df, x_len, y_len, next_ID):
                 coag_lists_df = coag_lists_df.reset_index()
                 del coag_lists_df['index']
                 # Drop 2nd row
-                coag_lists_df.drop(matching_2)
+                coag_lists_df = coag_lists_df.drop(matching_2)
             
         elif coag_ID_pair[0] in coag_list:
+            print('1st match')
             coag_list_more_once = np.append(coag_list_more_once, coag_ID_pair[0])
             coag_list = np.append(coag_list, coag_ID_pair[1])
             for m in range(coag_lists_df.shape[0]):
@@ -184,6 +188,7 @@ def sweep(cell_df, x_len, y_len, next_ID):
                     continue
 
         elif coag_ID_pair[1] in coag_list:
+            print('2nd match')
             coag_list_more_once = np.append(coag_list_more_once, coag_ID_pair[1])
             coag_list = np.append(coag_list, coag_ID_pair[0])
             for n in range(coag_lists_df.shape[0]):
@@ -334,7 +339,8 @@ def sweep(cell_df, x_len, y_len, next_ID):
 
             # ? Add Coagulation for neighbours here
 
-    # print('Sweep complete')
+    print('Sweep complete')
+    print('Carried over IDs', cell_df['ID'].to_numpy())
     return cell_df, next_ID
 
 
@@ -353,20 +359,20 @@ def move_clusters(cell_df, x_len, y_len):
             r2 = random.random()
             if r2 < 0.25:
                 x_cen, y_cen = move_left(x_cen, y_cen)
-                if x_cen < 0:
-                    x_cen += x_len
+                # if x_cen < 0:
+                #     x_cen += x_len
             elif r2 < 0.5:
                 x_cen, y_cen = move_up(x_cen, y_cen)
-                if y_cen >= y_len:
-                    y_cen -= y_len
+                # if y_cen > y_len:
+                #     y_cen -= y_len
             elif r2 < 0.75:
                 x_cen, y_cen = move_right(x_cen, y_cen)
-                if x_cen >= x_len:
-                    x_cen -= x_len
+                # if x_cen > x_len:
+                #     x_cen -= x_len
             else:
                 x_cen, y_cen = move_down(x_cen, y_cen)
-                if y_cen < 0:
-                    y_cen += y_cen
+                # if y_cen < 0:
+                #     y_cen += y_cen
 
             cell_df['Centre x'][i] = x_cen
             cell_df['Centre y'][i] = y_cen
@@ -399,10 +405,11 @@ def visualise_arr(cell_df, x_len, y_len):
     # for l in range(all_pts.shape[0]):
     #     visual_arr[int(all_pts[l,0])-1,int(all_pts[l,1])-1] += 1
 
-    # Just print locs
+    # # Just print locs
     visual_arr = np.zeros((x_len,y_len))
     for l in range(all_pts.shape[0]):
-        visual_arr[int(all_pts[l,0])-1,int(all_pts[l,1])-1] = 1
+        if visual_arr[int(all_pts[l,0])-1,int(all_pts[l,1])-1] == 0:
+            visual_arr[int(all_pts[l,0])-1,int(all_pts[l,1])-1] = 1
 
     return visual_arr
 
@@ -463,34 +470,36 @@ def Brownian_Move():
 
 def Coagulation_overlap(cell_df, coag_IDs, next_available_tag, x_len, y_len):
     coag_IDs = np.sort(coag_IDs)
+    print("IDs", coag_IDs)
     cols = ["ID", "Area", "Centre x", "Centre y", "Radius"]
     coag_df = pd.DataFrame(columns=cols)
     for i in range(len(coag_IDs)):
         index_drop = cell_df.index[cell_df['ID'] == coag_IDs[i]][0]
+        print('Index drop', index_drop)
         if i == 0:
             coag_df = cell_df.loc[cell_df['ID'] == coag_IDs[i]]
         else:
             coag_df = pd.concat([coag_df, cell_df.loc[cell_df['ID'] == coag_IDs[i]]])
         cell_df = cell_df.drop(index_drop)
-    # Add check if centres are on opposite sides of periodic BCs
-    for j in range(len(coag_IDs) - 1):
-        for k in range(len(coag_IDs) - j - 1):
-            index_1 = j
-            index_2 = j + k + 1
-    # if len(coag_IDs) == 2:
-        if abs(coag_df.iloc[index_1,2] - coag_df.iloc[index_2,2]) > x_len/2:
-            # Move centre from left to out right
-            if coag_df.iloc[index_1,2] < coag_df.iloc[index_2,2]:
-                coag_df.iloc[index_1,2] = coag_df.iloc[index_1,2] + x_len
-            else:
-                coag_df.iloc[index_2,2] = coag_df.iloc[index_2,2] + x_len
+    # # Add check if centres are on opposite sides of periodic BCs
+    # for j in range(len(coag_IDs) - 1):
+    #     for k in range(len(coag_IDs) - j - 1):
+    #         index_1 = j
+    #         index_2 = j + k + 1
+    # # if len(coag_IDs) == 2:
+    #     if abs(coag_df.iloc[index_1,2] - coag_df.iloc[index_2,2]) > x_len/2:
+    #         # Move centre from left to out right
+    #         if coag_df.iloc[index_1,2] < coag_df.iloc[index_2,2]:
+    #             coag_df.iloc[index_1,2] = coag_df.iloc[index_1,2] + x_len
+    #         else:
+    #             coag_df.iloc[index_2,2] = coag_df.iloc[index_2,2] + x_len
 
-        if abs(coag_df.iloc[index_1,3] - coag_df.iloc[index_2,3]) > y_len/2:
-            # Move centre from low to outside high value
-            if coag_df.iloc[index_1,3] < coag_df.iloc[index_2,3]:
-                coag_df.iloc[index_1,3] = coag_df.iloc[index_1,3] + y_len
-            else:
-                coag_df.iloc[index_2,3] = coag_df.iloc[index_2,3] + y_len
+    #     if abs(coag_df.iloc[index_1,3] - coag_df.iloc[index_2,3]) > y_len/2:
+    #         # Move centre from low to outside high value
+    #         if coag_df.iloc[index_1,3] < coag_df.iloc[index_2,3]:
+    #             coag_df.iloc[index_1,3] = coag_df.iloc[index_1,3] + y_len
+    #         else:
+    #             coag_df.iloc[index_2,3] = coag_df.iloc[index_2,3] + y_len
     # # Add check if centres are on opposite sides of periodic BCs
     # elif len(coag_IDs) > 2:
     #     print('Multi coag')
