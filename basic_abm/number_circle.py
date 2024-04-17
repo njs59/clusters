@@ -70,13 +70,16 @@ def order_segment(area_circle):
     else:
         needed_of_final = 8 - extras
 
-    return out, needed_of_final
+    radius = math.dist(out[-1:][0], [0,0])
+
+    return out, needed_of_final, radius
 
 
 
 def get_pixels(x_cen, y_cen, out_list, needed_of_final, clus_ID):
     complete_path = out_list[:-1]
     final_path = out_list[-1]
+    needed_of_final = int(needed_of_final)
 
     pixels_in_clus = np.array([])
 
@@ -143,7 +146,7 @@ def get_pixels(x_cen, y_cen, out_list, needed_of_final, clus_ID):
 
     return pixels_in_clus
 
-# out_list, needed_of_final = order_segment(1000)
+# out_list, needed_of_final, radius = order_segment(1000)
 # print(out_list)
 # print(needed_of_final)
 

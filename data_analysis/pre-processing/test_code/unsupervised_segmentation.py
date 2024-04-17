@@ -18,7 +18,7 @@ import cv2
 import matplotlib.pyplot as plt 
 import numpy as np 
 
-from squidpy import ImageContainer, segment
+# from squidpy import ImageContainer, segment
 
 
 def image_show_save(image):
@@ -50,24 +50,27 @@ for i in range(65,66,1):
 
     raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time, fileID)
 
+    raw_arr_2D = raw_arr_2D[:,1:]
+    # raw_arr_2D -= raw_arr_2D.min()
+    # raw_arr_2D *= 10
 
     # text = data.page()
     image_show_save(raw_arr_2D)
 
-    text_threshold = filters.threshold_yen  # Hit tab with the cursor after the underscore, try several methods
+    text_threshold = filters.threshold_otsu  # Hit tab with the cursor after the underscore, try several methods
     thresh = text_threshold(raw_arr_2D)
     array = raw_arr_2D > thresh
-    # image_show(raw_arr_2D > thresh)
+    image_show(raw_arr_2D > thresh)
     print("Threshold is", thresh)
 
     # plt.hist(raw_arr_2D)
     # plt.show()
 
-to_segment = ImageContainer(raw_arr_2D)
-segmented = segment(img  = to_segment, channel = 0, method = 'watershed', geq = True)
+# to_segment = ImageContainer(raw_arr_2D)
+# segmented = segment(img  = to_segment, channel = 0, method = 'watershed', geq = True)
 
-plt.imshow(segmented)
-plt.show()
+# plt.imshow(segmented)
+# plt.show()
 
 
 
