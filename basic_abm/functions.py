@@ -145,13 +145,13 @@ def sweep(cell_df, x_len, y_len, next_ID):
     
     # Get unique list of coag indices pairs
     coag_pairs_indices = np.unique(coag_pairs_indices, axis=0)
-    print('Pairs Ind', coag_pairs_indices)
+    # print('Pairs Ind', coag_pairs_indices)
 
     for d in range(coag_pairs_indices.shape[0]):
         coag_ID_pair = [int(cell_df.iloc[coag_pairs_indices[d,0],0]),
                         int(cell_df.iloc[coag_pairs_indices[d,1],0])]
         if coag_ID_pair[0] in coag_list and coag_ID_pair[1] in coag_list:
-            print('Both match')
+            # print('Both match')
             coag_list_more_once = np.append(coag_list_more_once, [coag_ID_pair])
             for m in range(coag_lists_df.shape[0]):
                 if coag_ID_pair[0] in coag_lists_df.iloc[m,0]:
@@ -177,7 +177,7 @@ def sweep(cell_df, x_len, y_len, next_ID):
                 coag_lists_df = coag_lists_df.drop(matching_2)
             
         elif coag_ID_pair[0] in coag_list:
-            print('1st match')
+            # print('1st match')
             coag_list_more_once = np.append(coag_list_more_once, coag_ID_pair[0])
             coag_list = np.append(coag_list, coag_ID_pair[1])
             for m in range(coag_lists_df.shape[0]):
@@ -188,7 +188,7 @@ def sweep(cell_df, x_len, y_len, next_ID):
                     continue
 
         elif coag_ID_pair[1] in coag_list:
-            print('2nd match')
+            # print('2nd match')
             coag_list_more_once = np.append(coag_list_more_once, coag_ID_pair[1])
             coag_list = np.append(coag_list, coag_ID_pair[0])
             for n in range(coag_lists_df.shape[0]):
@@ -339,8 +339,8 @@ def sweep(cell_df, x_len, y_len, next_ID):
 
             # ? Add Coagulation for neighbours here
 
-    print('Sweep complete')
-    print('Carried over IDs', cell_df['ID'].to_numpy())
+    # print('Sweep complete')
+    # print('Carried over IDs', cell_df['ID'].to_numpy())
     return cell_df, next_ID
 
 
@@ -470,12 +470,12 @@ def Brownian_Move():
 
 def Coagulation_overlap(cell_df, coag_IDs, next_available_tag, x_len, y_len):
     coag_IDs = np.sort(coag_IDs)
-    print("IDs", coag_IDs)
+    # print("IDs", coag_IDs)
     cols = ["ID", "Area", "Centre x", "Centre y", "Radius"]
     coag_df = pd.DataFrame(columns=cols)
     for i in range(len(coag_IDs)):
         index_drop = cell_df.index[cell_df['ID'] == coag_IDs[i]][0]
-        print('Index drop', index_drop)
+        # print('Index drop', index_drop)
         if i == 0:
             coag_df = cell_df.loc[cell_df['ID'] == coag_IDs[i]]
         else:

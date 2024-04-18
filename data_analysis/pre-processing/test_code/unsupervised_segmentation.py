@@ -45,10 +45,10 @@ time_list = range(42,98,5)
 well_loc = 's09'
 
 
-for i in range(65,66,1):
+for i in range(67,68,1):
     time = i
 
-    raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time, fileID)
+    raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, str(time), fileID)
 
     raw_arr_2D = raw_arr_2D[:,1:]
     # raw_arr_2D -= raw_arr_2D.min()

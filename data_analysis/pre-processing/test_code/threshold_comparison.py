@@ -25,21 +25,22 @@ t_before = time.time()
 
 ########### Input parameters ##################
 
-basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
+basedir = '/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/RAW_data/'
+basedir_2 = '/Users/Nathan/Documents/Oxford/DPhil/'
 experiment = '2017-02-03_sphere_timelapse/'
 exp_date = '2017-02-03_'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
-time_array = range(82,83)
+time_array = range(67,68)
 
 # Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(2) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
 
 well_loc = 's09'
-threshold_pixel = [300, 310, 320]
+threshold_pixel = [250, 297, 300, 310, 320, 350]
 thresholds = 1
 min_clus_size = 150
 use_existing_file = False
@@ -65,11 +66,16 @@ def update_arr(arr):
 
 
 for i in range(len(threshold_pixel)):
+    # time_step = 67
 
-    raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID, threshold_pixel[i])
-
-        # Threshold 3D array to boolean array
-    tf_bool_3D = pre_oper.threshold_arr_2D(raw_arr_3D, thresholds)
+    raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, str(time_array[0]), fileID)
+    print('Shape:', raw_arr_3D.shape)
+    if i == 0:
+        plt.imshow(raw_arr_3D, cmap='gray')
+        plt.axis('off')
+        plt.show()
+    # Threshold 3D array to boolean array
+    tf_bool_3D = pre_oper.threshold_arr_supervised(raw_arr_3D, threshold_pixel[i], 2)
 
         # print(tf_bool_3D)
     print(tf_bool_3D.shape)
@@ -115,7 +121,7 @@ for i in range(len(threshold_pixel)):
     # plt.imshow(area_slice, cmap=my_cmap, norm=matplotlib.colors.LogNorm(vmin=100,vmax=25000))
     plt.axis([0, area_slice.shape[1], 0, area_slice.shape[0]])
     plt.colorbar()
-    plt.savefig(f'{basedir}images/threshold_PRO_t_82_pixel-' + str(threshold_pixel[i]) + '.png', bbox_inches='tight', dpi=300)
+    plt.savefig(f'{basedir_2}clusters/data_analysis/pre-processing/test_code/images/threshold_PRO_t_67_pixel-' + str(threshold_pixel[i]) + '.png', bbox_inches='tight', dpi=300)
     plt.clf()
 
     
