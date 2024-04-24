@@ -16,17 +16,17 @@ exp_date = '2017-02-03'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 fileID = '.tif'
 time_list = range(42,98,5)
-well_loc = 's09'
+well_loc = 's11'
 
 # get the current time to use in the filename
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
 # Plot and store histogram images at each timepoint for use in a gif
 for j in range(len(time_list)):
-    raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list[j], fileID)
+    raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, str(time_list[j]), fileID)
 
     plt.hist(raw_arr_2D)
-    plt.xlim(150, 500) 
+    plt.xlim(300, 600) 
     plt.savefig(f'/Users/Nathan/Documents/Oxford/DPhil/clusters/data_analysis/pre-processing/test_code/histogram/frame-{j:03d}.png', bbox_inches='tight', dpi=300)
     plt.clf()
 

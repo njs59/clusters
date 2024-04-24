@@ -1,6 +1,7 @@
 import lineage_tracer_function as ltf
 import cluster_tracker_function as ctf
 import size_and_loc_plotter as slp
+import hist_size_gif as hsg
 
 # These three parameters are needed for accessing data and saving to files
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
@@ -8,11 +9,14 @@ exp_type = 'In_vitro_homogeneous_data/'
 exp_date = '2017-02-03'
 # exp_date = '2017-02-13'
 
-well_loc = 's11'
+well_loc = 's12'
+
+multi_loc = ['s11', 's12']
 
 #cluster_lineage = ltf.lineage_tracer(51,97, basedir, exp_date, well_loc, plots = False)
 #slp.size_and_loc_tracker(37, 97, 10, basedir, exp_date, well_loc, cluster_lineage)
 
+hsg.hist_size_plotter(basedir, exp_type, exp_date, multi_loc, 37, 97, 5)
 
 slp.size_and_loc_tracker(37, 94, 5, basedir, exp_type, exp_date, well_loc, [])
 

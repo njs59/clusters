@@ -46,15 +46,16 @@ if include_coagulation == True:
 
 if include_shedding ==True:
     for i in range(2500,2599,1):
-        c_v = np.append(c_v, s_cst[i])
+        c_v = np.append(c_v, s_cst[i - 2500])
+        # c_v = np.append(c_v, s_cst)
 
 if include_mitosis ==True:
-    for i in range(2500,2599,1):
+    for i in range(2599,2698,1):
         c_v = np.append(c_v, m_cst)
 
 if include_death ==True:
-    for i in range(2599,2698,1):
-        c_v = np.append(c_v, d_cst[i - 2599])
+    for i in range(2698,2797,1):
+        c_v = np.append(c_v, d_cst[i - 2698])
 
 # if include_splitting ==True:
 #     for i in range(2698,5198,1):
@@ -67,7 +68,7 @@ print(min(c_v))
 print(c_v[0])
 
 
-M = 100
+M = 500
 IC = initial_conditions.set_initial_conditions(N,2,M)
 print(IC)
 print(sum(IC))
@@ -75,15 +76,19 @@ print(sum(IC))
 t_init = 0
 simulation_counter = 0
 simulation_max = 1000
+t_max = 48
 
-psi_output = np.zeros((simulation_max + 1, N))
+# psi_output = np.zeros((simulation_max + 1, 1))
 t_output = np.zeros(simulation_max + 1)
 
-psi_output[0,:] = IC
+# psi_output[0,:] = IC
+psi_output = IC
 psi_old = IC
 t_old = t_init
 t_output[0] = t_old
-while simulation_counter < simulation_max:
+# while simulation_counter < simulation_max:
+while t_old < t_max:
+    psi_output = np.vstack([psi_output,IC])
     psi_new, t_new = step_fns.single_step(c_v, psi_old, t_old, N)
     simulation_counter += 1
     if math.floor(simulation_counter/1000) == simulation_counter/1000:

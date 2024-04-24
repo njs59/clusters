@@ -16,7 +16,8 @@ def final_step_plot(psi, t, simulation_max):
     plt.bar(x,y)
     plt.xlabel('Cluster size')
     plt.ylabel('Average number of clusters')
-    plt.savefig("plots_to_gif/final_plot" + ".jpg")
+    plt.show()
+    # plt.savefig("plots_to_gif/final_plot" + ".jpg")
     plt.clf()
 
 def final_step_normalise_plot(psi, t, simulation_max):
@@ -49,7 +50,8 @@ def final_step_mass_plot(psi, t, simulation_max):
     plt.bar(x,y)
     plt.xlabel('Cluster size')
     plt.ylabel('Chance cell is in cluster')
-    plt.savefig("plots_to_gif/final_plot_mass" + ".jpg")
+    # plt.savefig("plots_to_gif/final_plot_mass" + ".jpg")
+    plt.savefig("final_plot_mass" + ".jpg")
     plt.clf()   
 
 def final_step_mass_hist(psi, t, simulation_max, sim_num):

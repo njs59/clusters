@@ -11,6 +11,7 @@ import constant_functions as cst_fns
 ###################
 # Global constants
 N = 100 # The maximal cluster size
+M = 500 # The number of cells
 sim_num = 1000 # The number of simulations
 ###################
 
@@ -72,46 +73,88 @@ print('Length of c_v', len(c_v))
 print(min(c_v))
 print(c_v[0])
 
-
 ##############################
-M = 200
 IC = initial_conditions.set_initial_conditions(N, 2, M)
 print(IC)
 print(sum(IC))
 
 t_init = 0
-simulation_counter = 0
-simulation_max = 300
+# simulation_counter = 0
+simulation_max = 30000
+t_max = 96
 ############################
 
-psi_output = np.zeros((simulation_max + 1, N))
+# psi_output = np.zeros((simulation_max + 1, N))
+psi_output = IC
+psi_output_kept = IC
 t_output = np.zeros(simulation_max + 1)
+
+# t_arr = [t_init]
 
 start_time = time.time()
 
 for i in range(sim_num):
-    IC = initial_conditions.set_initial_conditions(N,2,M)
-    psi_single_sim = np.zeros((simulation_max + 1, N))
-    psi_single_sim[0,:] = IC
+    # IC = initial_conditions.set_initial_conditions(N,2,M)
+    # psi_single_sim = np.zeros((simulation_max + 1, N))
+    # psi_single_sim[0,:] = IC
+    simulation_counter = 0
+    t_arr = [t_init]
+    psi_single_sim = IC
     psi_single_sim_old = IC
+    psi_single_sim = IC
     t_old = t_init
     t_output[0] = t_old
-    while simulation_counter < simulation_max:
+    # while simulation_counter < simulation_max:
+    while t_old < t_max:
+        psi_single_sim = np.vstack([psi_single_sim,np.zeros((N))])
         psi_new, t_new = step_fns.single_step(c_v, psi_single_sim_old, t_old, N)
+        IC = psi_single_sim[0,:]
         simulation_counter += 1
         if math.floor(simulation_counter/1000) == simulation_counter/1000:
             print('counter is: ', simulation_counter)
         t_output[simulation_counter] = t_new
+        t_arr = np.append(t_arr, t_new)
         t_old = t_new
         psi_single_sim[simulation_counter,:] = psi_new
-        psi__single_sim_old = psi_new
-    for j in range(N):
-        for k in range(simulation_max + 1):
-            psi_output[k,j] += psi_single_sim[k,j]
+        psi_single_sim_old = psi_new
+    
+    # print(t_arr)
+    index_required = []
+    psi_out_kept = IC
+    for p in range(1, t_max + 1):
+        index_p = next(x for x, val in enumerate(t_arr) if val > p)
+        index_required = np.append(index_required, index_p)
+        psi_out_kept = np.vstack((psi_out_kept, psi_single_sim[index_p - 1,:]))
+
+    if i == 0:
+        psi_output_kept = psi_out_kept
+    else:
+        for j in range(N):
+        #     # for k in range(simulation_counter + 1):
+            for k in range(t_max + 1):
+                psi_output_kept[k,j] += psi_out_kept[k,j]
+
+    # if i == 0:
+    #     psi_output = np.zeros((simulation_counter + 1, N))
+    #     simulation_1_max = simulation_counter
+    # else:
+    #     if simulation_counter + 1 > psi_output.shape[0]:
+    #         # Need to add zeros
+    #         # Times could be different ???!!!
+    #         # Somehow need to save times
+    #         # Then plot at regular intervals
+    #         print('AHH')
+    #     else:
+    #         # psi_output = np.vstack([psi_output,np.zeros(N,1)])
+    #         print('Add here')
+    # for j in range(N):
+    #     # for k in range(simulation_counter + 1):
+    #     for k in range(simulation_1_max + 1):
+    #         psi_output[k,j] += psi_single_sim[k,j]
     print('Simulation', i, ' complete')
     simulation_counter = 0
 
-
+psi_output = psi_output_kept
 psi_output = psi_output/sim_num
 end_time = time.time()
 
@@ -129,12 +172,14 @@ end_time_plot = time.time()
 plotting_time = end_time_plot - start_time_plot
 print('Plotting time', plotting_time)
 
+np.savetxt("gill_out_time.csv", psi_output, delimiter=",", fmt='%f', header='')
+
 # gill_plt.animate_plot_mass(psi_output, t_output, simulation_max)
 
 gill_plt.final_step_plot(psi_output, t_output, simulation_max)
 
-gill_plt.final_step_normalise_plot(psi_output, t_output, simulation_max)
+# gill_plt.final_step_normalise_plot(psi_output, t_output, simulation_max)
 
-gill_plt.final_step_mass_plot(psi_output, t_output, simulation_max)
+# gill_plt.final_step_mass_plot(psi_output, t_output, simulation_max)
 
-gill_plt.final_step_mass_hist(psi_output, t_output, simulation_max, sim_num)
+# gill_plt.final_step_mass_hist(psi_output, t_output, simulation_max, sim_num)
