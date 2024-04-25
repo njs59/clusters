@@ -13,27 +13,44 @@ t_before = time.time()
 
 
 ###    -----------   Input parameters   --------------     ###
+basedir_data = '/Volumes/Elements/Nate thesis data/Thesis Data/'
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/'
 # experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
 experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
+# experiment_data = '2017-02-03 sphere timelapse/'
+# experiment_data = '2017-03-16 sphere TL 6/'
+experiment_data = '2017-03-10 sphere TL 3pt 4/'
 # exp_date = '2017-02-03'
-exp_date = '2017-02-13'
+# exp_date = '2017-02-13'
+exp_date = '2017-03-10'
+# exp_date = '2017-03-16'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
+# folder_data = 'RAW/Timelapse/sphere_timelapse/'
+# folder_data = 'RAW/2017-03-16 sphere TL 6/2017-03-13 sphere TL 6-03/'
+folder_data = 'RAW/2017-03-10 sphere TL 3pt/2017-03-10 sphere TL 3pt/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
 # time_array = range(1,98)
-time_array = range(1,95)
+# time_array = range(1,95)
+time_array = range(1,143)
 
 # Rename single digit values with 0 eg 1 to 01 for consistency
-time_list = [str(x).zfill(2) for x in time_array]
+# time_list = [str(x).zfill(2) for x in time_array]
+time_list = [str(x).zfill(3) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
 
 # 2017-02-13 sphere timelapse 2_s13t01c2_ORG
 
 # well_loc = 's10'
 # well_loc = 's12'
-well_loc = 's28'
+# well_loc = 's28'
+
+# well_loc = 's037'
+# well_loc = 's074'
+
+well_loc = 's25'
+# 25,26,27
 
 # threshold = 320
 # threshold = 440
@@ -60,7 +77,8 @@ def calc_area_arr(arr):
 
 if use_existing_file == False:
     # Convert tif file to 3D array with values between 0 and 1 (1 is maximum intensity point)
-    raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID)
+    # raw_arr_3D = tif.tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID)
+    raw_arr_3D = tif.tif_to_arr(basedir_data, experiment_data, folder_data, well_loc, time_list, fileID)
 
     # Threshold 3D array to boolean array
     # tf_bool_3D = pre_oper.threshold_arr_supervised(raw_arr_3D, threshold)
