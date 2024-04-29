@@ -26,7 +26,8 @@ fileID = '.tif'
 
 # time_array = range(1,98)
 # time_array = range(1,95)
-time_array = range(1,146)
+# time_array = range(1,146)
+time_array = range(1,143)
 
 # Rename single digit values with 0 eg 1 to 01 for consistency
 # time_list = [str(x).zfill(2) for x in time_array]

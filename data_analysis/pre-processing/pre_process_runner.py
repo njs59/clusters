@@ -49,7 +49,7 @@ time_list = [str(x).zfill(3) for x in time_array]
 # well_loc = 's037'
 # well_loc = 's074'
 
-well_loc = 's25'
+well_loc = 's27'
 # 25,26,27
 
 # threshold = 320

@@ -43,6 +43,8 @@ Output:
         cluster_size = []
         cluster_location_x = []
         cluster_location_y = []
+        cluster_change_from_init_x = []
+        cluster_change_from_init_y = []
 
         for i in range(start_time, end_time + 1, timejump):
             x = np.append(x, i)
@@ -64,6 +66,10 @@ Output:
                 cluster_size = np.append(cluster_size, 0)
                 cluster_location_x = np.append(cluster_location_x, None)
                 cluster_location_y = np.append(cluster_location_y, None)
+                # cluster_change_from_init_x = np.append(cluster_change_from_init_x,0)
+                # init_x = cluster_location_x
+                # cluster_change_from_init_y = np.append(cluster_change_from_init_y, 0)
+                # init_y = cluster_location_y
                 continue
             df1_slice = cluster_current_row_of_interest[['Cluster Centre x', 'Cluster Centre y']]
             centres_end_2D_lineage = df1_slice.to_numpy()
@@ -74,9 +80,19 @@ Output:
             cluster_location_x = np.append(cluster_location_x, int(centres_end_2D_lineage[0][0]))
             cluster_location_y = np.append(cluster_location_y, int(centres_end_2D_lineage[0][1]))
 
+            init_x = next(item for item in cluster_location_x if item is not None)
+            init_y = next(item for item in cluster_location_y if item is not None)
+
+            cluster_change_from_init_x = np.append(cluster_change_from_init_x, int(centres_end_2D_lineage[0][0]) - init_x)
+            cluster_change_from_init_y = np.append(cluster_change_from_init_y, int(centres_end_2D_lineage[0][1]) - init_y)
+
+
 
         plt.figure(1)
-        plt.plot(cluster_location_x, cluster_location_y)
+        # Location plot
+        # plt.plot(cluster_location_x, cluster_location_y)
+        # Spider plot
+        plt.plot(cluster_change_from_init_x, cluster_change_from_init_y, lw=2)
         # plt.show()
         
         plt.figure(2)
@@ -95,7 +111,10 @@ Output:
             print('B is', b)
             r = 1-g
             color = (r, g, b)
+            # Location plot
             plt.plot(cluster_location_x[i:i+2], cluster_location_y[i:i+2], c=color, lw=2)
+            # Spider plot
+            # plt.plot(cluster_change_from_init_x[i:i+2], cluster_change_from_init_y[i:i+2], c=color, lw=2)
             # plt.plot(cluster_location_x, cluster_location_y)
     plt.show()
     plt.show()
