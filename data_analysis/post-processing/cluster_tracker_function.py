@@ -37,7 +37,7 @@ Output:
 
     for i in range(start_time - 1, end_time, timejump):
         # Read in csv
-        time_i = str(i).zfill(2)
+        time_i = str(i).zfill(3)
         index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', time_i, 'c2', '_indexed', '.csv'
         index_csv_name_list_2  =''.join(index_csv_name_list)
         df_slice = pd.read_csv(index_csv_name_list_2, header=None)

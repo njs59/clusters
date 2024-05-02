@@ -38,18 +38,19 @@ exp_type = 'In_vitro_homogeneous_data/'
 experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
 # exp_date = '2017-02-03'
 # exp_date = '2017-02-13'
-exp_date = '2017-03-16'
+exp_date = '2017-03-10'
+# exp_date = '2017-03-16'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
 # time_array = range(1,98)
 # time_array = range(1,95)
-time_array = range(1,146)
+time_array = range(1,143)
 
 # last_time = 97
 # last_time = 94
-last_time = 145
+last_time = 142
 # Rename single digit values with 0 eg 1 to 01 for consistency
 # time_list = [str(x).zfill(2) for x in time_array]
 time_list = [str(x).zfill(3) for x in time_array]
@@ -62,7 +63,9 @@ time_list = [str(x).zfill(3) for x in time_array]
 # well_loc = 's13'
 # well_loc = 's27'
 
-well_loc = 's073'
+# well_loc = 's073'
+
+well_loc = 's04'
 
 cols = ["Tag number", "Cluster size", "Cluster Centre x", "Cluster Centre y", 
            "Event", "Clusters in event", "Timestep", "Date", "Well ID"]

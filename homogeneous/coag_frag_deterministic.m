@@ -25,11 +25,11 @@ n0(1) = M;
 
 %% Running of solver
 tmin = 0;
-tmax = 100000;
+tmax = 97;
 tstep = 1;
 tspan = [tmin tmax];
 
-%[t,n] = ode45(@ext_smol, tspan, n0);
+[t,n] = ode45(@ext_smol, tspan, n0);
 n = zeros(tmax+1, N);
 t = tmin:tmax;
 t_num_steps = tmax - tmin;
@@ -50,12 +50,12 @@ end
 
 
 %% Outputs
-%derivatives = zeros(length(t),N);
-%derivative_l2_norm = zeros(length(t),1);
-%for i = 1:length(t)
-%    derivatives = ext_smol(t(i), n(i,1:N));
-%    derivative_l2_norm(i) = norm(derivatives,2);
-%end
+derivatives = zeros(length(t),N);
+derivative_l2_norm = zeros(length(t),1);
+for i = 1:length(t)
+    derivatives = ext_smol(t(i), n(i,1:N));
+    derivative_l2_norm(i) = norm(derivatives,2);
+end
 
 
 %save('array_n.mat','n')
@@ -180,4 +180,6 @@ N_t = round(N_t_before);
     %dni_dt = coagulation +  shed_split - metastatic;
 %    meta = metastatic;
 end
+
+
 

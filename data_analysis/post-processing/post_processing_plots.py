@@ -6,12 +6,14 @@ import hist_size_gif as hsg
 # These three parameters are needed for accessing data and saving to files
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 exp_type = 'In_vitro_homogeneous_data/'
-exp_date = '2017-02-03'
+# exp_date = '2017-02-03'
 # exp_date = '2017-02-13'
+exp_date = '2017-03-10'
 
-well_loc = 's11'
+# well_loc = 's11'
+well_loc = 's04'
 
-multi_loc = ['s11', 's12']
+# multi_loc = ['s11', 's12']
 
 #cluster_lineage = ltf.lineage_tracer(51,97, basedir, exp_date, well_loc, plots = False)
 #slp.size_and_loc_tracker(37, 97, 10, basedir, exp_date, well_loc, cluster_lineage)
