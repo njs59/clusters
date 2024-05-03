@@ -23,7 +23,8 @@ def tif_to_arr(basedir, experiment, folder, well_loc, time_list, fileID):
     # Read in tif file
     # name_list_b = basedir, experiment, folder, '2017-03-13 sphere TL 6-03_', well_loc, 't', time_list[i], 'c2', '_ORG', fileID
     # name_list_b = basedir, experiment, folder, '2017-03-10 sphere TL 3pt_', well_loc, 't', time_list[i], 'c2', '_ORG', fileID
-    name_list_b = basedir, experiment, folder, '2017-03-13 sphere TL 5_', well_loc, 't', time_list[i], 'c2', '_ORG', fileID
+    # name_list_b = basedir, experiment, folder, '2017-03-13 sphere TL 5_', well_loc, 't', time_list[i], 'c2', '_ORG', fileID
+    name_list_b = basedir, experiment, folder, '2017-03-24 sphere 9-2_', well_loc, 't', time_list[i], 'c2', '_ORG', fileID
     # name_list_b = basedir, experiment, folder, 'sphere_timelapse_', well_loc, 't', time_list[i], 'c2', '_ORG', fileID
     # name_list_b = basedir, experiment, folder, '2017-02-13 sphere timelapse 2_', well_loc, 't', time_list[i], 'c2', '_ORG', fileID
     name_list_b_2  =''.join(name_list_b)
