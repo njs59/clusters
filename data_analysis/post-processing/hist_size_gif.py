@@ -14,7 +14,7 @@ def hist_size_plotter(basedir, exp_type, exp_date, multi_loc, start_time, end_ti
         cluster_number = []
         for j in range(len(multi_loc)):
             well_loc = multi_loc[j]
-            df_step_csv_name_list = basedir, exp_type, 'post_processing_output/' , exp_date, '/', well_loc, 't', str(i).zfill(2) , 'c2_post_processing', '.csv'
+            df_step_csv_name_list = basedir, exp_type, 'post_processing_output/' , exp_date, '/', well_loc, 't', str(i).zfill(3) , 'c2_post_processing', '.csv'
             df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
             df_step = pd.read_csv(df_step_csv_name_list_2)
 
@@ -27,7 +27,7 @@ def hist_size_plotter(basedir, exp_type, exp_date, multi_loc, start_time, end_ti
 
         plt.hist(cluster_number, bins=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 120])
         # plt.xlim(0,120)
-        plt.ylim(0,350)
+        plt.ylim(0,600)
         plt.xlabel('Cluster size')
         plt.ylabel('Number of clusters')        
         # plt.show()

@@ -1,10 +1,16 @@
 %% Set-up
 global N
-N = 100;
+N = 500;
 
-global b_test 
-%b_test = [0.00010, 0.00015, 0.00020, 0.00030];
-b_test = [0.0010, 0.0015, 0.0020, 0.0030];
+global b_test
+global m_test
+
+%b_test = [0.0010, 0.0015, 0.0020, 0.0030];
+b_test = [0.0004, 0.0004, 0.0005, 0.0005];
+%b_test = [0.0005];
+
+m_test = [0, 0.1, 0, 0.1];
+%m_test = [0.01];
 
 %global q
 %q = 0.01;
@@ -47,7 +53,8 @@ shed_or_split = 0;
 
 %% IC 
 % (set to allow for metastatic invasion)
-n0 = zeros(1,2*N);
+%n0 = zeros(1,2*N);
+n0 = zeros(1,N);
 %n0(1:N) = 1;
 n0(1) = 500;
 
@@ -85,6 +92,20 @@ for runs = 1:length(b_test)
         end
     end
     
+
+    %% Summary statistics
+    num_clus = sum(n,2);
+    tot_2D = zeros(length(t), 1);
+    for i = 1:length(t)
+        for j = 1:N
+            tot_2D(i) = tot_2D(i) + j*n(i,j);
+        end
+    end
+
+    mean_2D_size = tot_2D./num_clus;
+
+
+    %% Plots
     
     x_plot = 0:10:100;
     figure(1)
@@ -94,9 +115,27 @@ for runs = 1:length(b_test)
     hold on
     histogram('BinEdges',x_plot,'BinCounts',final_row_10, FaceAlpha=0.5)
     hold off
-    
-    legendStrings = "b = " + string(b_test);
+    legendStrings = "b = " + string(b_test) + "  m = " + string(m_test);
     legend(legendStrings)
+  
+    figure(3)
+    hold on
+    plot(t,num_clus)
+    hold off
+    legendStrings = "b = " + string(b_test) + "  m = " + string(m_test);
+    legend(legendStrings)
+
+    figure(4)
+    hold on
+    plot(t,tot_2D)
+    hold off
+
+    figure(5)
+    hold on
+    plot(t,mean_2D_size)
+    hold off
+    
+    
     % population_plots2(n,t,tspan)
 end
 
@@ -105,6 +144,7 @@ function [dni_dt, meta] = rhs_i(i,n,t)
 global N
 global run_number
 global b_test
+global m_test
 % global m
 % global d
 % global q
@@ -149,12 +189,14 @@ global shed_or_split
     coagulation = cell_coagulation(n,i,b,t,N_t,N);
     
     % lifespan term is mitosis + death
-    m = 0;
+    % m = 0.01;
+    m = m_test(run_number);
     d = 0;
     if m == 0 && d == 0 
         lifespan = 0;
     else
-        lifespan = cell_lifespan(n,i,N,m);
+        % lifespan = cell_lifespan(n,i,N,m);
+        lifespan = cell_proliferation(n,i,N,m);
     end
     %fprintf('Lifespan is');  % Method 1
     %disp(lifespan)
@@ -202,17 +244,17 @@ global run_number
 
 mu = 0.0001;
 % Evaluates the RHS of all N equations that form the RHS of the system
-dn_dt = zeros(N+1,1);
+dn_dt = zeros(N,1);
 
 %n = zeros(N,length(tspan));
 %n(0,:) = n0;
     sum_dn_dt = 0;
     %tau = 0;
     for i = 1:N
-        % dn_dt(i) = rhs_i(i,n(i,:),t);
-        [dn_dt(i), metastatic] = rhs_i(i,n0,t);
-        dn_dt(N+i) = metastatic;
-        sum_dn_dt = sum_dn_dt + dn_dt(i);
+        dn_dt(i) = rhs_i(i,n0,t);
+        %[dn_dt(i), metastatic] = rhs_i(i,n0,t);
+        %dn_dt(N+i) = metastatic;
+        %sum_dn_dt = sum_dn_dt + dn_dt(i);
     end
     if sum_dn_dt < 1e-6
         return

@@ -25,8 +25,8 @@ experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
 # exp_date = '2017-02-13'
 # exp_date = '2017-03-10'
 # exp_date = '2017-03-16'
-# multi_dates = ['2017-02-03', '2017-02-13', '2017-03-16', '2017-03-10', '2017-03-13']
-multi_dates = ['2017-02-03', '2017-02-13', '2017-03-16', '2017-03-10']
+multi_dates = ['2017-02-03', '2017-02-13', '2017-03-16', '2017-03-10', '2017-03-13']
+# multi_dates = ['2017-02-03', '2017-02-13', '2017-03-16', '2017-03-10']
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
@@ -50,8 +50,8 @@ time_list = [str(x).zfill(3) for x in time_array]
 well_loc = 's06'
 
 multi_well = ['s073', 's074']
-# multi_well_multi_dates = [['s11', 's12'], ['s27', 's28'], ['s073', 's074'], ['s04', 's05'], ['s001', 's002', 's003']]
-multi_well_multi_dates = [['s11', 's12'], ['s27', 's28'], ['s073', 's074'], ['s04', 's05']]
+multi_well_multi_dates = [['s11', 's12'], ['s27', 's28'], ['s073', 's074'], ['s04', 's05'], ['s001', 's003']]
+# multi_well_multi_dates = [['s11', 's12'], ['s27', 's28'], ['s073', 's074'], ['s04', 's05']]
 
 plt_num = 0
 for j in range(len(multi_dates)):
@@ -93,9 +93,11 @@ for j in range(len(multi_dates)):
         # Plot mean size of cluster
         plt.figure(1)
         # plt.colormaps('tab20')
+        plt.xlim(20,145)
         plt.plot(mean_areas/189, color = cm.colors[plt_num])
         plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
-                   '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
+                   '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10',
+                   '2017-03-13', '2017-03-13', '2017-03-13'))
         plt.title("Mean Areas")
         plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Mean_areas_' + 'multi' + '.png', dpi=300)
         # plt.show()
@@ -103,9 +105,11 @@ for j in range(len(multi_dates)):
 
         # Plot total coverage of clusters over array
         plt.figure(2)
+        plt.xlim(20,145)
         plt.plot(total_areas/189, color = cm.colors[plt_num])
         plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
-                   '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
+                   '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10',
+                   '2017-03-13', '2017-03-13', '2017-03-13'))
         plt.title("Total 2D area")
         plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Total_2D_cell_area_' + 'multi' + '.png', dpi=300)
         # plt.show()
@@ -113,9 +117,11 @@ for j in range(len(multi_dates)):
 
         # Plot number of clusters
         plt.figure(3)
+        plt.xlim(20,145)
         plt.plot(number_clusters, color = cm.colors[plt_num])
         plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
-                   '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
+                   '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10',
+                   '2017-03-13', '2017-03-13', '2017-03-13'))
         plt.title("Number of clusters over time")
         plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Number_clusters_' + 'multi' + '.png', dpi=300)
         # plt.show()
@@ -136,9 +142,12 @@ for j in range(len(multi_dates)):
 
         # Plot total 3D
         plt.figure(4)
+        plt.xlim(20,145)
         plt.plot(tot_3D_volume, color = cm.colors[plt_num])
         plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
-                   '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
+                   '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10',
+                   '2017-03-13', '2017-03-13', '2017-03-13'))
+        plt.ylim(0,10000)
         plt.title("Total 3D Volume")
         plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Total_3D_Number_cells_' + 'multi' + '.png', dpi=300)
         # plt.show()
@@ -146,9 +155,11 @@ for j in range(len(multi_dates)):
 
         # Plot mean 3D volume of cluster
         plt.figure(5)
+        plt.xlim(20,145)
         plt.plot(mean_3D_volume, color = cm.colors[plt_num])
         plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
-                   '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
+                   '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10',
+                   '2017-03-13', '2017-03-13', '2017-03-13'))
         plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Mean_volume_cluster_' + 'multi' + '.png', dpi=300)
         # plt.show()
         # plt.clf()

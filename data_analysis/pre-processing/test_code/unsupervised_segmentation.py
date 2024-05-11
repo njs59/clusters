@@ -45,7 +45,7 @@ time_list = range(42,98,5)
 well_loc = 's09'
 
 
-for i in range(67,68,1):
+for i in range(82,83,1):
     time = i
 
     raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, str(time), fileID)

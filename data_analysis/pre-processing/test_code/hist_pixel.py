@@ -1,22 +1,28 @@
 import glob
 from PIL import Image
 import time
+import numpy as np
 
 import matplotlib.pyplot as plt
 
 import read_tif_file_operator as tif
 
+from skimage import filters
+
 
 ###    -----------   Input parameters   --------------     ###
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/'
-experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
-exp_date = '2017-02-03'
+# experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
+# exp_date = '2017-02-03'
 # experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
 # exp_date = '2017-02-13'
+experiment = 'RAW_data/2017-03-16_sphere_timelapse/'
+exp_date = '2017-03-16'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 fileID = '.tif'
 time_list = range(42,98,5)
-well_loc = 's11'
+# well_loc = 's11'
+well_loc = 's073'
 
 # get the current time to use in the filename
 timestr = time.strftime("%Y%m%d-%H%M%S")
@@ -25,8 +31,25 @@ timestr = time.strftime("%Y%m%d-%H%M%S")
 for j in range(len(time_list)):
     raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, str(time_list[j]), fileID)
 
+    # raw_arr_2D = raw_arr_2D[:,1:]
+    # raw_arr_2D -= raw_arr_2D.min()
+    # raw_arr_2D *= 10
+
+
+
+    text_threshold = filters.threshold_otsu  # Hit tab with the cursor after the underscore, try several methods
+    thresh_otsu = text_threshold(raw_arr_2D)
+    print('Ostu thresh:', thresh_otsu)
+
+    text_threshold = filters.threshold_yen  # Hit tab with the cursor after the underscore, try several methods
+    thresh_yen = text_threshold(raw_arr_2D)
+    print('Yen thresh:', thresh_yen)
+
+    # plt.stairs(*np.histogram(raw_arr_2D, 1000), fill=True, color='skyblue')
     plt.hist(raw_arr_2D)
-    plt.xlim(150, 600) 
+    plt.axvline(thresh_otsu, color='b', linestyle='dashed', linewidth=1)
+    plt.axvline(thresh_yen, color='g', linestyle='dashed', linewidth=1)
+    # plt.xlim(150, 600) 
     plt.savefig(f'/Users/Nathan/Documents/Oxford/DPhil/clusters/data_analysis/pre-processing/test_code/histogram/frame-{j:03d}.png', bbox_inches='tight', dpi=300)
     plt.clf()
 
