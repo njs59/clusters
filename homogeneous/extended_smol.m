@@ -6,11 +6,11 @@ global b_test
 global m_test
 
 %b_test = [0.0010, 0.0015, 0.0020, 0.0030];
-b_test = [0.0004, 0.0004, 0.0005, 0.0005];
-%b_test = [0.0005];
+%b_test = [0.0004, 0.0004, 0.0005, 0.0005];
+b_test = [0.0004];
 
-m_test = [0, 0.1, 0, 0.1];
-%m_test = [0.01];
+%m_test = [0, 0.1, 0, 0.1];
+m_test = [0];
 
 %global q
 %q = 0.01;
@@ -24,10 +24,10 @@ else
     global alpha
     global V
     global beta
-    gamma = 0;
-    alpha = 1;
-    V = 1;
-    beta = 100000; % Large beta reduces exit from region
+    %gamma = 0;
+    %alpha = 1;
+    %V = 1;
+    %beta = 100000; % Large beta reduces exit from region
 end
 
 global include_flux

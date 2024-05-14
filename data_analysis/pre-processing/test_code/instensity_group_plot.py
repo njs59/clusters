@@ -14,29 +14,30 @@ exp_date = '2017-02-03'
 
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 fileID = '.tif'
-timestep = '67'
+timestep = '87'
 
-thresh_1 = 250
-thresh_2 = 300
-thresh_3 = 350
-well_loc = 's09'
+# thresh_1 = 250
+# thresh_2 = 300
+# thresh_3 = 350
+# well_loc = 's09'
 
-# thresh_1 = 330
-# thresh_2 = 440
-# thresh_3 = 550
-# well_loc = 's11'
+thresh_0 = 300
+thresh_1 = 408
+thresh_2 = 440
+thresh_3 = 600
+well_loc = 's11'
 
 
 
 # Plot and store histogram images at each timepoint for use in a gif
 raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, timestep, fileID)
 
-
+array_0 = raw_arr_2D > thresh_0
 array_1 = raw_arr_2D > thresh_1
 array_2 = raw_arr_2D > thresh_2
 array_3 = raw_arr_2D > thresh_3
 
-array = 1*array_1 + 1*array_2 + 1*array_3
+array = 1*array_0 + 1*array_1 + 1*array_2 + 1*array_3
 
 top = cm.get_cmap('Oranges_r', 128)
 bottom = cm.get_cmap('Blues', 128)
@@ -45,8 +46,8 @@ newcolors = np.vstack((top(np.linspace(0, 1, 128)),
                        bottom(np.linspace(0, 1, 128))))
 newcmp = ListedColormap(newcolors, name='OrangeBlue')
 
-colors = [(1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 1)]  # R -> G -> B
-n_bins = 4  # Discretizes the interpolation into bins
+colors = [(0,0,0), (1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 1)]  # R -> G -> B
+n_bins = 5  # Discretizes the interpolation into bins
 cmap_name = 'my_list'
 
     # Create the colormap

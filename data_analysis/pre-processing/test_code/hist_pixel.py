@@ -12,17 +12,17 @@ from skimage import filters
 
 ###    -----------   Input parameters   --------------     ###
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/'
-# experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
-# exp_date = '2017-02-03'
+experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
+exp_date = '2017-02-03'
 # experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
 # exp_date = '2017-02-13'
-experiment = 'RAW_data/2017-03-16_sphere_timelapse/'
-exp_date = '2017-03-16'
+# experiment = 'RAW_data/2017-03-16_sphere_timelapse/'
+# exp_date = '2017-03-16'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 fileID = '.tif'
 time_list = range(42,98,5)
-# well_loc = 's11'
-well_loc = 's073'
+well_loc = 's11'
+# well_loc = 's073'
 
 # get the current time to use in the filename
 timestr = time.strftime("%Y%m%d-%H%M%S")
