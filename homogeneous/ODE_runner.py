@@ -45,6 +45,22 @@ for i in range(len(final_time)):
 
 print('Mass', N_t)
 
-plt.plot(result[-1,:],label='R0=0')
-# plt.plot(tspan,result[:,1],label='R0=1')
+# plt.plot(result[-1,:],label='R0=0')
+# # plt.plot(tspan,result[:,1],label='R0=1')
+# plt.show()
+
+
+
+noise = 0.1
+values = result + np.random.normal(0, noise, result.shape)
+
+
+plt.figure(figsize=(12,4.5))
+plt.xlabel('Time')
+plt.ylabel('Values')
+plt.plot(values[-1,:], label='Noisy data')
+plt.plot(result[-1,:], lw=2, label='Noise-free data')
+plt.legend()
 plt.show()
+
+
