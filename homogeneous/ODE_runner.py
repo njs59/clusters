@@ -3,6 +3,8 @@ from scipy.integrate import odeint
 
 import matplotlib.pyplot as plt
 
+import pints
+
 import smol_ODE
 
 N = 500
@@ -64,3 +66,9 @@ plt.legend()
 plt.show()
 
 
+problem = pints.SingleOutputProblem(smol_ODE.ext_smol, tspan, values)
+
+log_likelihood = pints.GaussianLogLikelihood(problem)
+
+print('Original problem dimension: ' + str(problem.n_parameters()))
+print('New dimension: ' + str(log_likelihood.n_parameters()))
