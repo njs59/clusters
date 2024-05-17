@@ -6,13 +6,13 @@ import hist_size_gif as hsg
 # These three parameters are needed for accessing data and saving to files
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 exp_type = 'In_vitro_homogeneous_data/'
-# exp_date = '2017-02-03'
+exp_date = '2017-02-03'
 # exp_date = '2017-02-13'
 # exp_date = '2017-03-10'
-exp_date = '2017-03-16'
+# exp_date = '2017-03-16'
 
-# well_loc = 's11'
-well_loc = 's04'
+well_loc = 's11'
+# well_loc = 's04'
 
 # multi_loc = ['s11', 's12']
 multi_loc = ['s073', 's074']
@@ -20,9 +20,9 @@ multi_loc = ['s073', 's074']
 #cluster_lineage = ltf.lineage_tracer(51,97, basedir, exp_date, well_loc, plots = False)
 #slp.size_and_loc_tracker(37, 97, 10, basedir, exp_date, well_loc, cluster_lineage)
 
-hsg.hist_size_plotter(basedir, exp_type, exp_date, multi_loc, 37, 142, 5)
+# hsg.hist_size_plotter(basedir, exp_type, exp_date, multi_loc, 37, 142, 5)
 
-slp.size_and_loc_tracker(37, 94, 5, basedir, exp_type, exp_date, well_loc, [])
+slp.size_and_loc_tracker(37, 97, 1, basedir, exp_type, exp_date, well_loc, [])
 
 '''
 Cluster tracker tracks an individually taggged cluster over time

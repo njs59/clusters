@@ -34,7 +34,7 @@ Output:
         cluster_tags = df_end["Tag number"].to_numpy().astype(int)
 
 
-
+    colour_ticker = -1
     for h in range(len(cluster_tags)):
 
         cluster_tag_to_track = cluster_tags[h]
@@ -50,12 +50,12 @@ Output:
             x = np.append(x, i)
             # Read in csv
             time_i = str(i).zfill(2)
-            index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', str(time_i).zfill(3), 'c2', '_indexed', '.csv'
+            index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', str(time_i).zfill(2), 'c2', '_indexed', '.csv'
             index_csv_name_list_2  =''.join(index_csv_name_list)
             df_slice = pd.read_csv(index_csv_name_list_2, header=None)
             current_array = df_slice.to_numpy()
 
-            df_storage_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(time_i).zfill(3) , 'c2_post_processing', '.csv'
+            df_storage_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(time_i).zfill(2) , 'c2_post_processing', '.csv'
             df_storage_csv_name_list_2  =''.join(df_storage_csv_name_list)
             df_storage = pd.read_csv(df_storage_csv_name_list_2)
 
@@ -108,7 +108,7 @@ Output:
                 b = i/ (len(cluster_location_x)/2)
             else:
                 b = 2 - (i/ (len(cluster_location_x)/2))
-            print('B is', b)
+            # print('B is', b)
             r = 1-g
             color = (r, g, b)
             # Location plot
@@ -116,6 +116,29 @@ Output:
             # Spider plot
             # plt.plot(cluster_change_from_init_x[i:i+2], cluster_change_from_init_y[i:i+2], c=color, lw=2)
             # plt.plot(cluster_location_x, cluster_location_y)
+
+        plt.figure(4)
+        # if colour_ticker == 11:
+        #     colour_ticker = 0
+        # else:
+        colour_ticker+=1        
+        cmap = plt.colormaps['hsv']
+        # Take colors at regular intervals spanning the colormap.
+        colors = cmap(np.linspace(0, 1, len(cluster_tags)))
+        # colors = plt.colormaps['Set3'].colors
+        for i in range(len(cluster_change_from_init_x)-1):
+            plt.plot(cluster_change_from_init_x[i:i+2], cluster_change_from_init_y[i:i+2],
+                     color=colors[colour_ticker],linewidth=((cluster_size[i+1]/189)/20))
+    
+        # plt.figure(5)
+        # points = np.array([cluster_change_from_init_x, cluster_change_from_init_y]).T.reshape(-1, 1, 2)
+        # segments = np.concatenate([points[:-1], points[1:]], axis=1)
+        # lc = LineCollection(segments, linewidths=cluster_size,color='blue')
+        # # fig,a = plt.subplots()
+        # plt.add_collection(lc)
+
+    plt.show()
+    plt.show()
     plt.show()
     plt.show()
     plt.show()

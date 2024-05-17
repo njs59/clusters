@@ -32,30 +32,30 @@ class SmolModel(pints.ForwardModel):
 
         # Check initial values
         if N is None:
-            self._n0 = np.zeros((500))
+            self._n0 = np.zeros((100))
             self._n0[0] = 500
         #     # self._y0 = np.array([38, 1, 0])
         else:
-            self._n0 = np.array((N))
+            self._n0 = np.array((100))
             self._n0[0] = N
 
-    def n_outputs(self, N):
+    def n_outputs(self):
         """ See :meth:`pints.ForwardModel.n_outputs()`. """
-        return N
+        return 100
 
     def n_parameters(self):
         """ See :meth:`pints.ForwardModel.n_parameters()`. """
         # IN time change this to N + 1 parameters (one b for each size)
         return 2
 
-    def _rhs(self, y, t, gamma, v):
-        """
-        Calculates the model RHS.
-        """
-        dS = -gamma * y[0] * y[1]
-        dI = gamma * y[0] * y[1] - v * y[1]
-        dR = v * y[1]
-        return np.array([dS, dI, dR])
+    # def _rhs(self, y, t, gamma, v):
+    #     """
+    #     Calculates the model RHS.
+    #     """
+    #     dS = -gamma * y[0] * y[1]
+    #     dI = gamma * y[0] * y[1] - v * y[1]
+    #     dR = v * y[1]
+    #     return np.array([dS, dI, dR])
     
     def cell_coagulation(self,n,i,b,t,N_t,N):
 
@@ -71,7 +71,7 @@ class SmolModel(pints.ForwardModel):
             if i == 0:
                 sum1 = 0
 
-            elif i <= N-1:
+            elif i <= 100-1:
                 for j in range(0,i):
                     sum1 += self.B_ij((i-j),j,b,scaling,t)*n[i-j-1]*n[j]
 
@@ -80,7 +80,7 @@ class SmolModel(pints.ForwardModel):
             else:
                 # 2nd sum of coagulation term calculation
                 sum2 = 0
-                for j in range(0,min(N-i,N_t-i)):
+                for j in range(0,min(100-i,N_t-i)):
                     sum2 += self.B_ij(i,j,b,scaling,t)*n[i]*n[j]
             
             coagulation_sum = (1/2)*sum1 - sum2
@@ -107,7 +107,7 @@ class SmolModel(pints.ForwardModel):
         N_t = 0
         N_t_before = 0
 
-        for l in range(0,N):
+        for l in range(0,100):
             N_t_before = (l+1)*n[l]+ N_t_before
         N_t = round(N_t_before)
 
@@ -122,8 +122,9 @@ class SmolModel(pints.ForwardModel):
 
 
     def _rhs(self,n0,t_curr,b,N):
-        dn_dt = np.zeros(N)
-        for i in range(0,N):
+        N = int(N)
+        dn_dt = np.zeros(100)
+        for i in range(0,100):
             dn_dt[i] = self.rhs_i(i,n0,t_curr,b,N)
 
         return dn_dt
@@ -141,7 +142,7 @@ class SmolModel(pints.ForwardModel):
     def suggested_parameters(self):
         """ See :meth:`pints.toy.ToyModel.suggested_parameters()`. """
 
-        return np.array([0.0004, 500])
+        return np.array([0.0004, 100])
 
     def suggested_times(self):
         """ See :meth:`pints.toy.ToyModel.suggested_times()`. """

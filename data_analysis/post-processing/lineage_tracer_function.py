@@ -25,7 +25,7 @@ Output:
 
 '''
     
-    df_end_now_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(end_time).zfill(3), 'c2_post_processing', '.csv'
+    df_end_now_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(end_time).zfill(2), 'c2_post_processing', '.csv'
     df_end_now_csv_name_list_2  =''.join(df_end_now_csv_name_list)
     df_end_now = pd.read_csv(df_end_now_csv_name_list_2)
     cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
@@ -44,7 +44,7 @@ Output:
         for i in range(end_time, start_time - 1, -1) :
             # print('i is', i)
             time_i = str(i).zfill(2)
-            df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(time_i).zfill(3), 'c2_post_processing', '.csv'
+            df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(time_i).zfill(2), 'c2_post_processing', '.csv'
             df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
             df_step = pd.read_csv(df_step_csv_name_list_2)
             # cluster_2D_areas = df_clus_areas.to_numpy()
@@ -65,7 +65,7 @@ Output:
         print(cluster_lineage)
 
         # Find locations of clusters at time 30
-        df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(start_time).zfill(3), 'c2_post_processing', '.csv'
+        df_step_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(start_time).zfill(2), 'c2_post_processing', '.csv'
         df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
         df_step_interest = pd.read_csv(df_step_csv_name_list_2)
 
@@ -84,7 +84,7 @@ Output:
         # Read in array for given timestep
 
         # Locate indexes of clusters, print
-        index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', str(start_time).zfill(3), 'c2', '_indexed', '.csv'
+        index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', str(start_time).zfill(2), 'c2', '_indexed', '.csv'
         index_csv_name_list_2  =''.join(index_csv_name_list)
         df_slice = pd.read_csv(index_csv_name_list_2, header=None)
         current_array = df_slice.to_numpy()
@@ -119,7 +119,7 @@ Output:
 
 
             # Find locations of clusters at time 30
-            df_end_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(end_time).zfill(3), 'c2_post_processing', '.csv'
+            df_end_csv_name_list = basedir, exp_type, 'post_processing_output/', exp_date, '/', well_loc, 't', str(end_time).zfill(2), 'c2_post_processing', '.csv'
             df_end_csv_name_list_2  =''.join(df_end_csv_name_list)
             df_end_interest = pd.read_csv(df_end_csv_name_list_2)
 
@@ -133,7 +133,7 @@ Output:
             # Read in array for given timestep
 
             # Locate indexes of clusters, print
-            end_index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', str(end_time).zfill(3), 'c2', '_indexed', '.csv'
+            end_index_csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', str(end_time).zfill(2), 'c2', '_indexed', '.csv'
             end_index_csv_name_list_2  =''.join(end_index_csv_name_list)
             df_end_slice = pd.read_csv(end_index_csv_name_list_2, header=None)
             current_array_end = df_end_slice.to_numpy()

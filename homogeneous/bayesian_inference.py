@@ -31,3 +31,9 @@ plt.plot(times, values, label='Noisy data')
 plt.plot(times, org_values, lw=2, label='Noise-free data')
 plt.legend()
 plt.show()
+
+
+problem = pints.SingleOutputProblem(model, times, values)
+
+
+log_likelihood = pints.GaussianLogLikelihood(problem)
