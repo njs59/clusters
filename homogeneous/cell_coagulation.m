@@ -23,8 +23,8 @@ function coagulation = cell_coagulation(n,i,b,t,N_t,N)
         sum1 = 0;
         if i == 1
             sum1 = 0;
-
-        elseif i <= N
+        %elseif i <= 100
+        elseif i <= 100
             for j = 1:i-1
                 sum1 = sum1 + B_ij((i-j),j,b,scaling,t)*n(i-j)*n(j);
             end
@@ -44,7 +44,8 @@ function coagulation = cell_coagulation(n,i,b,t,N_t,N)
             %for j = i+1:N-i
             %    sum2 = sum2 + B_ij(i,j,t)*n(i)*n(j);
             %end
-            for j = 1:min(N-i,N_t-i)
+            %for j = 1:min(N-i,N_t-i)
+            for j = 1:min(100-i,N_t-i)
                 sum2 = sum2 + B_ij(i,j,b,scaling,t)*n(i)*n(j);
             end
         end

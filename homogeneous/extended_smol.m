@@ -7,10 +7,12 @@ global m_test
 
 %b_test = [0.0010, 0.0015, 0.0020, 0.0030];
 %b_test = [0.0004, 0.0004, 0.0005, 0.0005];
-b_test = [0.0004];
+%b_test = [0.0004];
+b_test = [0.000433477336187832]
 
 %m_test = [0, 0.1, 0, 0.1];
-m_test = [0];
+%m_test = [0];
+m_test = [0.0280573030331480];
 
 %global q
 %q = 0.01;
@@ -53,13 +55,18 @@ shed_or_split = 0;
 
 %% IC 
 % (set to allow for metastatic invasion)
-%n0 = zeros(1,2*N);
-n0 = zeros(1,N);
-%n0(1:N) = 1;
-n0(1) = 500;
+%n0 = zeros(1,N);
+%n0(1) = 500;
+
+n_st = load('s11_inference_input.csv');
+
+n_chop = n_st(:,3:61);
+n_out = n_chop.';
+n0 = n_out(1,:);
+final_data_point = tail(n_out,1)
 
 %% Running of solver
-tmin = 0;
+tmin = 39;
 tmax = 97;
 % tmax = 1000;
 tspan = [tmin tmax];
@@ -72,7 +79,8 @@ for runs = 1:length(b_test)
     derivatives = zeros(length(t),N);
     derivative_l2_norm = zeros(length(t),1);
     for i = 1:length(t)
-        derivatives = ext_smol(t(i), n(i,1:N));
+        derivatives = ext_smol(t(i), n(i,1:100));
+        %derivatives = ext_smol(t(i), n(i,1:N));
         derivative_l2_norm(i) = norm(derivatives,2);
     end
     
@@ -81,7 +89,7 @@ for runs = 1:length(b_test)
     %save('array_t_0.0001.mat','t')
     %save('array_norms_0.0001.mat', 'derivative_l2_norm')
     
-    output_statistics = sum_totals(n,t);
+    %output_statistics = sum_totals(n,t);
     
     % population_plots(n,t,tspan, derivative_l2_norm)
     final_row = tail(n,1);
@@ -97,7 +105,7 @@ for runs = 1:length(b_test)
     num_clus = sum(n,2);
     tot_2D = zeros(length(t), 1);
     for i = 1:length(t)
-        for j = 1:N
+        for j = 1:100
             tot_2D(i) = tot_2D(i) + j*n(i,j);
         end
     end
@@ -114,6 +122,7 @@ for runs = 1:length(b_test)
     figure(2)
     hold on
     histogram('BinEdges',x_plot,'BinCounts',final_row_10, FaceAlpha=0.5)
+    histogram('BinEdges',x_plot,'BinCounts',final_data_point, FaceAlpha=0.5)
     hold off
     legendStrings = "b = " + string(b_test) + "  m = " + string(m_test);
     legend(legendStrings)
@@ -159,8 +168,8 @@ q = lambda*b;
 
 N_t = 0;
 N_t_before = 0;
-
-for l = 1:N
+%for l = 1:N
+for l = 1:100
     N_t_before = l*n(l)+ N_t_before;
 end
 N_t = round(N_t_before);
@@ -244,13 +253,13 @@ global run_number
 
 mu = 0.0001;
 % Evaluates the RHS of all N equations that form the RHS of the system
-dn_dt = zeros(N,1);
+dn_dt = zeros(100,1);
 
 %n = zeros(N,length(tspan));
 %n(0,:) = n0;
     sum_dn_dt = 0;
     %tau = 0;
-    for i = 1:N
+    for i = 1:100
         dn_dt(i) = rhs_i(i,n0,t);
         %[dn_dt(i), metastatic] = rhs_i(i,n0,t);
         %dn_dt(N+i) = metastatic;

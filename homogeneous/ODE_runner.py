@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.integrate import odeint
+from numpy.linalg import norm
 
 import matplotlib.pyplot as plt
 
@@ -7,13 +8,16 @@ import pints
 
 import smol_ODE
 
+import scipy.io
+matlab_mat = scipy.io.loadmat('homogeneous/b_0.0005_m_0_n_arr.mat')
+matlab_mat = matlab_mat['n'] 
 N = 500
 
-b_test = [0.0004, 0.0004, 0.0005, 0.0005]
-# b_test = [0.0005]
+# b_test = [0.0004, 0.0004, 0.0005, 0.0005]
+b_test = [0.05]
 
-m_test = [0, 0.1, 0, 0.1]
-# m_test = [0.01]
+# m_test = [0, 0.1, 0, 0.1]
+m_test = [0]
 # m = 0
 # d = 0
 
@@ -52,6 +56,11 @@ print('Mass', N_t)
 # plt.show()
 
 
+final_time_matlab = matlab_mat[-1,:]
+
+difference_final = norm(final_time-final_time_matlab)
+
+print('l2 norm', difference_final)
 
 noise = 0.1
 values = result + np.random.normal(0, noise, result.shape)
@@ -66,9 +75,9 @@ plt.legend()
 plt.show()
 
 
-problem = pints.SingleOutputProblem(smol_ODE.ext_smol, tspan, values)
+# problem = pints.SingleOutputProblem(smol_ODE.ext_smol, tspan, values)
 
-log_likelihood = pints.GaussianLogLikelihood(problem)
+# log_likelihood = pints.GaussianLogLikelihood(problem)
 
-print('Original problem dimension: ' + str(problem.n_parameters()))
-print('New dimension: ' + str(log_likelihood.n_parameters()))
+# print('Original problem dimension: ' + str(problem.n_parameters()))
+# print('New dimension: ' + str(log_likelihood.n_parameters()))

@@ -48,15 +48,7 @@ class SmolModel(pints.ForwardModel):
         # IN time change this to N + 1 parameters (one b for each size)
         return 2
 
-    # def _rhs(self, y, t, gamma, v):
-    #     """
-    #     Calculates the model RHS.
-    #     """
-    #     dS = -gamma * y[0] * y[1]
-    #     dI = gamma * y[0] * y[1] - v * y[1]
-    #     dR = v * y[1]
-    #     return np.array([dS, dI, dR])
-    
+
     def cell_coagulation(self,n,i,b,t,N_t,N):
 
         ## Coagulation term calculation
@@ -104,12 +96,13 @@ class SmolModel(pints.ForwardModel):
     def rhs_i(self,i,n,t,b,N):
         # b = b_test[run_number]
 
-        N_t = 0
-        N_t_before = 0
+        # N_t = 0
+        # N_t_before = 0
 
-        for l in range(0,100):
-            N_t_before = (l+1)*n[l]+ N_t_before
-        N_t = round(N_t_before)
+        # for l in range(0,100):
+        #     N_t_before = (l+1)*n[l]+ N_t_before
+        # N_t = round(N_t_before)
+        N_t = 500
 
 
 

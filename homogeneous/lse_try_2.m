@@ -24,11 +24,25 @@ prob = optimproblem("Objective",obj);
 
 b0.b = 0.0001;
 [bsol,sumsq] = solve(prob,b0)
-
 disp(bsol.b)
 
-obj2 = @(b)ext_smol(t,n,b,t_span,n0);
-results = bayesopt(obj,[a,b])
+noise = 25;
+n_noisy = n_out + normrnd(0,25,size(n_out));
+
+
+obj_noisy = sum(sum((myfcn - n_noisy).^2));
+prob_noisy = optimproblem("Objective",obj_noisy);
+
+
+final_row = tail(n_noisy.',1);
+plot(final_row(1:100))
+
+b0_noisy.b = 0.0001;
+[bsol_noisy,sumsq_noisy] = solve(prob_noisy,b0_noisy)
+disp(bsol_noisy.b)
+
+% obj2 = @(b)ext_smol(t,n,b,t_span,n0);
+% results = bayesopt(obj,[b,n0])
 
 
 function solpts = btoODE(t_span,n0,b)

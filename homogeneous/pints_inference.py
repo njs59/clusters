@@ -11,7 +11,7 @@ model = toy.SmolModel(None,None)
 true_parameters = [0.0004, 500]
 
 
-times = np.linspace(0, 97, 97000)
+times = np.linspace(0, 97, 9700)
 
 org_values = model.simulate(true_parameters, times)
 
@@ -41,14 +41,14 @@ print(true_parameters)
 # Define the size of the list
 size = 102
 placeholder_lower_value = 1
-placeholder_upper_value = 100
+placeholder_upper_value = 50
  
 # Create a list with the specified size filled with a placeholder value
 prior_arr_lower = [placeholder_lower_value for _ in range(size)]
 prior_arr_upper = [placeholder_upper_value for _ in range(size)]
-prior_arr_lower[0] = 0.00001
-prior_arr_upper[0] = 0.01
-prior_arr_lower[1] = 1
+prior_arr_lower[0] = 0.0001
+prior_arr_upper[0] = 0.001
+prior_arr_lower[1] = 100
 prior_arr_upper[1] = 1000
 
 # log_prior = pints.UniformLogPrior(
@@ -75,4 +75,5 @@ print(chains)
 
 
 pints.plot.trace(chains)
+plt.savefig("mcmc.png")
 plt.show()

@@ -11,17 +11,19 @@ def cell_coagulation(n,i,b,t,N_t,N):
         sum1 = 0
         if i == 0:
             sum1 = 0
-
+        # Is this and line 21 N or N_t?
         elif i <= N-1:
+        # elif i <= N:
             for j in range(0,i):
                 sum1 += B_ij((i-j),j,b,scaling,t)*n[i-j-1]*n[j]
+                # sum1 += B_ij((i-j),j,b,scaling,t)*n[i-j]*n[j]
 
         if i == N_t:
             sum2 = 0
         else:
             # 2nd sum of coagulation term calculation
             sum2 = 0
-            for j in range(0,min(N-i,N_t-i)):
+            for j in range(0,min(N-i,N_t-i)-1):
                 sum2 += B_ij(i,j,b,scaling,t)*n[i]*n[j]
         
         coagulation_sum = (1/2)*sum1 - sum2

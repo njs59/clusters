@@ -23,6 +23,8 @@ global M
 M = 120;
 n0(1) = M;
 
+
+
 %% Running of solver
 tmin = 0;
 tmax = 97;
