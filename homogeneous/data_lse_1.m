@@ -1,4 +1,5 @@
-n_st = load('s11_inference_input_multi_well_03_16.csv');
+%n_st = load('s11_inference_input_multi_well.csv');
+n_st = load('s11_inference_input.csv');
 
 n_chop = n_st(:,3:61);
 n_out = n_chop.';

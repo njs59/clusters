@@ -26,8 +26,11 @@ b0.b = 0.0001;
 [bsol,sumsq] = solve(prob,b0)
 disp(bsol.b)
 
-noise = 25;
-n_noisy = n_out + normrnd(0,25,size(n_out));
+
+
+
+noise_par = 0.25;
+n_noisy = n_out .* (1 + noise_par * normrnd(0,1,size(n_out)));
 
 
 obj_noisy = sum(sum((myfcn - n_noisy).^2));
