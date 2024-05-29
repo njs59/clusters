@@ -1,13 +1,16 @@
 %% Set-up
 global N
-N = 500;
+%N = 500;
+N = 100;
+%N = 7.13097669e+02;
 
 global b_test
 global m_test
 
 %b_test = [0.0010, 0.0015, 0.0020, 0.0030];
 %b_test = [0.0004, 0.0004, 0.0005, 0.0005];
-b_test = [0.0004];
+%b_test = [0.0004];
+b_test = [4.11235554e-07];
 %b_test = [0.000433477336187832]
 
 %m_test = [0, 0.1, 0, 0.1];
@@ -55,19 +58,22 @@ shed_or_split = 0;
 
 %% IC 
 % (set to allow for metastatic invasion)
-%n0 = zeros(1,N);
-%n0(1) = 500;
+n0 = zeros(1,N);
+n0(1) = 7.13097669e+02;
 
-n_st = load('s11_inference_input.csv');
-
-n_chop = n_st(:,3:61);
-n_out = n_chop.';
-n0 = n_out(1,:);
-final_data_point = tail(n_out,1)
+% n_st = load('s11_inference_input.csv');
+% 
+% n_chop = n_st(:,3:61);
+% n_out = n_chop.';
+% n0 = n_out(1,:);
+% final_data_point = tail(n_out,1)
 
 %% Running of solver
-tmin = 39;
-tmax = 97;
+% tmin = 39;
+% tmax = 97;
+tmin = 0;
+tmax = 145;
+
 % tmax = 1000;
 tspan = [tmin tmax];
 for runs = 1:length(b_test)
@@ -122,7 +128,7 @@ for runs = 1:length(b_test)
     figure(2)
     hold on
     histogram('BinEdges',x_plot,'BinCounts',final_row_10, FaceAlpha=0.5)
-    histogram('BinEdges',x_plot,'BinCounts',final_data_point, FaceAlpha=0.5)
+    %histogram('BinEdges',x_plot,'BinCounts',final_data_point, FaceAlpha=0.5)
     hold off
     legendStrings = "b = " + string(b_test) + "  m = " + string(m_test);
     legend(legendStrings)

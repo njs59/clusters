@@ -1,9 +1,10 @@
-%n_st = load('s11_inference_input_multi_well.csv');
-n_st = load('s11_inference_input.csv');
+n_st = load('s11_inference_input_multi_well.csv');
+%n_st = load('s11_inference_input.csv');
 
 n_chop = n_st(:,3:61);
 n_out = n_chop.';
 t_span = linspace(39,97,59);
+
 
 % b = optimvar('b',"LowerBound",0.0001,"UpperBound",1);
 % N = optimvar('N',"LowerBound",100,"UpperBound",10000);
@@ -29,14 +30,14 @@ end
 
 
 
-r = optimvar('r',3,"LowerBound",[0.00001 0.00001 1],"UpperBound",[1 1 10000]);
+r = optimvar('r',2,"LowerBound",[0.00001 1],"UpperBound",[1 10000]);
 %r0.r = [0.00001 0.00001 mean(N_t_before) ];
-r0.r = [0.00001 0.00001 500 ];
+r0.r = [0.00001 500 ];
 
 % global N
 % N = 500;
 
-n0 = n_out(1,:);
+%n0 = n_out(1,:);
 % n0(1) = 500;
 
 %type extended_smol.m
@@ -44,11 +45,11 @@ n0 = n_out(1,:);
 
 
 
-myfcn = fcn2optimexpr(@btoODE,t_span,n0,r);
+myfcn = fcn2optimexpr(@btoODE,t_span,r);
 
 n_out_min = n_out.';
 
-obj = sum(sum((myfcn - n_out_10).^2));
+obj = sum(sum((myfcn - n_out_min).^2));
 
 prob = optimproblem("Objective",obj);
 
@@ -78,10 +79,17 @@ disp(rsol.r)
 % results = bayesopt(obj,[b,n0])
 
 
-function solpts_10 = btoODE(t_span,n0,r)
+function solpts = btoODE(t_span,r)
     b = r(1);
-    m = r(2);
-    N = r(3);
+    % m = r(2);
+    N = r(2);
+    m = 0;
+    n0_true = zeros(100,1);
+    n0_true(1) = N;
+    t_span_before = linspace(1,t_span(1),t_span(1));
+    sol_before = ode45(@(t,n)ext_smol(t,n,b,m,N),t_span_before,n0_true);
+
+    n0 = tail(sol_before.y.',1);
     sol = ode45(@(t,n)ext_smol(t,n,b,m,N),t_span,n0);
     solpts = deval(sol,t_span);
     solpts_10 = zeros(10,length(t_span));
