@@ -35,17 +35,17 @@ def image_show(image):
 
 ###    -----------   Input parameters   --------------     ###
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/'
-# experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
-# exp_date = '2017-02-03'
-experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
-exp_date = '2017-02-13'
+experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
+exp_date = '2017-02-03'
+#experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
+#exp_date = '2017-02-13'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 fileID = '.tif'
 time_list = range(42,98,5)
-well_loc = 's27'
+well_loc = 's11'
 
 
-for i in range(82,83,1):
+for i in range(67,68,1):
     time = i
 
     raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, str(time), fileID)
