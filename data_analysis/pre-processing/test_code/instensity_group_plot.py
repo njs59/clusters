@@ -14,7 +14,7 @@ exp_date = '2017-02-03'
 
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 fileID = '.tif'
-timestep = '87'
+timestep = '67'
 
 # thresh_1 = 250
 # thresh_2 = 300
@@ -25,6 +25,12 @@ thresh_0 = 300
 thresh_1 = 408
 thresh_2 = 440
 thresh_3 = 600
+well_loc = 's11'
+
+thresh_0 = 200
+thresh_1 = 300
+thresh_2 = 400
+thresh_3 = 500
 well_loc = 's11'
 
 
@@ -56,10 +62,9 @@ cmap_1 = LinearSegmentedColormap.from_list(cmap_name, colors, N=n_bins)
     # im = ax.imshow(Z, origin='lower', cmap=cmap)
     # ax.set_title("N bins: %s" % n_bin)
     # fig.colorbar(im, ax=ax)
+cmap_2 = cm.get_cmap('terrain',5)
 
-
-
-plt.imshow(array, cmap=cmap_1)
+plt.imshow(array, cmap=cmap_2)
 plt.colorbar()
 plt.show()
 
