@@ -23,6 +23,7 @@ import numpy as np
 
 def image_show_save(image):
     plt.imshow(image, cmap='gray')
+    plt.axis([0, image.shape[1], 0, image.shape[0]])
     plt.axis('off')
     plt.savefig('test_un.jpg')
     plt.show()

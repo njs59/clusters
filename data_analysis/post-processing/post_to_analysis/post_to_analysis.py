@@ -11,7 +11,7 @@ exp_date = '2017-02-03'
 # multi_loc = ['s11', 's12']
 multi_loc = ['s09', 's10']
 # multi_loc = ['s073','s074']
-start_time = 20
+start_time = 50
 end_time = 97
 timestep = 1
 
@@ -49,6 +49,6 @@ for k in range(len(multi_loc)):
 ODE_out_multi = ODE_out_multi/len(multi_loc)
 
 # save array into csv file 
-np.savetxt("homogeneous/s09_inference_input_multi_well_t_20.csv", ODE_out_multi,  
+np.savetxt("homogeneous/s09_inference_input_multi_well_t_50.csv", ODE_out_multi,  
             delimiter = ",")
 # ODE_out.tofile('s11_inference_input.csv', sep = ',')

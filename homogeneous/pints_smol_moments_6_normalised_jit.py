@@ -45,7 +45,7 @@ class SmolModel(pints.ForwardModel):
 
     def n_outputs(self):
         """ See :meth:`pints.ForwardModel.n_outputs()`. """
-        return 5
+        return 6
 
     def n_parameters(self):
         """ See :meth:`pints.ForwardModel.n_parameters()`. """
@@ -125,15 +125,17 @@ class SmolModel(pints.ForwardModel):
         centred_moment_3 = moment(n, moment=3, axis=1)
         centred_moment_4 = moment(n, moment=4, axis=1)
         centred_moment_5 = moment(n, moment=5, axis=1)
+        centred_moment_6 = moment(n, moment=6, axis=1)
 
         # Out array, mean, variance then centred standardised moments (aka skewness, kurtosis, hyperskewness)
         st_dev = np.sqrt(centred_moment_2)
-        out_array = np.zeros((n.shape[0],5))
+        out_array = np.zeros((n.shape[0],6))
         out_array[:,0] = np.mean(n,axis=1)
         out_array[:,1] = centred_moment_2
         out_array[:,2] = np.divide(centred_moment_3,st_dev*st_dev*st_dev)
         out_array[:,3] = np.divide(centred_moment_4,st_dev*st_dev*st_dev*st_dev)
         out_array[:,4] = np.divide(centred_moment_5,st_dev*st_dev*st_dev*st_dev*st_dev)
+        out_array[:,5] = np.divide(centred_moment_6,st_dev*st_dev*st_dev*st_dev*st_dev*st_dev)
 
         # Standardized
         # st_dev = np.sqrt(centred_moment_2)

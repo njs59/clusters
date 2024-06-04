@@ -4,6 +4,7 @@ import time
 import numpy as np
 
 import matplotlib.pyplot as plt
+from matplotlib import cm
 
 import read_tif_file_operator as tif
 
@@ -20,12 +21,19 @@ exp_date = '2017-02-03'
 # exp_date = '2017-03-16'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 fileID = '.tif'
-time_list = range(42,98,5)
+time_list = range(67,98,5)
 well_loc = 's11'
 # well_loc = 's073'
 
 # get the current time to use in the filename
 timestr = time.strftime("%Y%m%d-%H%M%S")
+
+thresh_0 = 220
+thresh_1 = 330
+thresh_2 = 440
+thresh_3 = 550
+cmap_2 = cm.get_cmap('inferno',5)
+cmap_2.colors[1,:]=[0.6,0.6,1,1]
 
 # Plot and store histogram images at each timepoint for use in a gif
 for j in range(len(time_list)):
@@ -47,8 +55,12 @@ for j in range(len(time_list)):
 
     # plt.stairs(*np.histogram(raw_arr_2D, 1000), fill=True, color='skyblue')
     plt.hist(raw_arr_2D)
-    plt.axvline(thresh_otsu, color='b', linestyle='dashed', linewidth=1)
-    plt.axvline(thresh_yen, color='g', linestyle='dashed', linewidth=1)
+    # plt.axvline(thresh_otsu, color='b', linestyle='dashed', linewidth=1)
+    # plt.axvline(thresh_yen, color='g', linestyle='dashed', linewidth=1)
+    plt.axvline(thresh_0, color=cmap_2.colors[0,:], linestyle='dashed', linewidth=1)
+    plt.axvline(thresh_1, color=cmap_2.colors[1,:], linestyle='dashed', linewidth=1)
+    plt.axvline(thresh_2, color=cmap_2.colors[2,:], linestyle='dashed', linewidth=1)
+    plt.axvline(thresh_3, color=cmap_2.colors[3,:], linestyle='dashed', linewidth=1)
     # plt.xlim(150, 600) 
     plt.savefig(f'/Users/Nathan/Documents/Oxford/DPhil/clusters/data_analysis/pre-processing/test_code/histogram/frame-{j:03d}.png', bbox_inches='tight', dpi=300)
     plt.clf()

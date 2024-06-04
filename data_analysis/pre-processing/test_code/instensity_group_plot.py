@@ -27,10 +27,10 @@ thresh_2 = 440
 thresh_3 = 600
 well_loc = 's11'
 
-thresh_0 = 200
-thresh_1 = 300
-thresh_2 = 400
-thresh_3 = 500
+thresh_0 = 220
+thresh_1 = 330
+thresh_2 = 440
+thresh_3 = 550
 well_loc = 's11'
 
 
@@ -62,9 +62,11 @@ cmap_1 = LinearSegmentedColormap.from_list(cmap_name, colors, N=n_bins)
     # im = ax.imshow(Z, origin='lower', cmap=cmap)
     # ax.set_title("N bins: %s" % n_bin)
     # fig.colorbar(im, ax=ax)
-cmap_2 = cm.get_cmap('terrain',5)
+cmap_2 = cm.get_cmap('inferno',5)
+cmap_2.colors[1,:]=[0.9,0.9,1,1]
 
 plt.imshow(array, cmap=cmap_2)
+plt.axis([0, array.shape[1], 0, array.shape[0]])
 plt.colorbar()
 plt.show()
 

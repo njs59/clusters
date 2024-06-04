@@ -45,7 +45,7 @@ class SmolModel(pints.ForwardModel):
 
     def n_outputs(self):
         """ See :meth:`pints.ForwardModel.n_outputs()`. """
-        return 5
+        return 2
 
     def n_parameters(self):
         """ See :meth:`pints.ForwardModel.n_parameters()`. """
@@ -122,27 +122,13 @@ class SmolModel(pints.ForwardModel):
         # 1st moment is mean, 1st centred moment should be array 6
         centred_moment_1 = moment(n, moment=1, axis=1)
         centred_moment_2 = moment(n, moment=2, axis=1)
-        centred_moment_3 = moment(n, moment=3, axis=1)
-        centred_moment_4 = moment(n, moment=4, axis=1)
-        centred_moment_5 = moment(n, moment=5, axis=1)
+
 
         # Out array, mean, variance then centred standardised moments (aka skewness, kurtosis, hyperskewness)
         st_dev = np.sqrt(centred_moment_2)
-        out_array = np.zeros((n.shape[0],5))
+        out_array = np.zeros((n.shape[0],2))
         out_array[:,0] = np.mean(n,axis=1)
         out_array[:,1] = centred_moment_2
-        out_array[:,2] = np.divide(centred_moment_3,st_dev*st_dev*st_dev)
-        out_array[:,3] = np.divide(centred_moment_4,st_dev*st_dev*st_dev*st_dev)
-        out_array[:,4] = np.divide(centred_moment_5,st_dev*st_dev*st_dev*st_dev*st_dev)
-
-        # Standardized
-        # st_dev = np.sqrt(centred_moment_2)
-        # centred_moments = np.zeros((n.shape[0],5))
-        # centred_moments[:,0] = np.divide(centred_moment_1,st_dev)
-        # centred_moments[:,1] = np.divide(centred_moment_2,st_dev*st_dev)
-        # centred_moments[:,2] = np.divide(centred_moment_3,st_dev*st_dev*st_dev)
-        # centred_moments[:,3] = np.divide(centred_moment_4,st_dev*st_dev*st_dev*st_dev)
-        # centred_moments[:,4] = np.divide(centred_moment_5,st_dev*st_dev*st_dev*st_dev*st_dev)
 
         return out_array
         # return n

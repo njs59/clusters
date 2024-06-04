@@ -11,6 +11,8 @@ from numba import jit
 from scipy.integrate import odeint
 from scipy.stats import moment
 
+import math
+
 # from pints import ToyModel
 
 
@@ -50,12 +52,12 @@ class SmolModel(pints.ForwardModel):
     def n_parameters(self):
         """ See :meth:`pints.ForwardModel.n_parameters()`. """
         # IN time change this to N + 1 parameters (one b for each size)
-        return 2
+        return 3
 
 
     @staticmethod
     @jit
-    def _rhs(n0,t_curr,b,N):
+    def _rhs(n0,t_curr,b,p,N):
         N = int(N)
         dn_dt = np.zeros(100)
         for i in range(0,100):
@@ -70,11 +72,13 @@ class SmolModel(pints.ForwardModel):
                 sum1 = 0
                 if i == 0:
                     sum1 = 0
+                    proliferation = -p*2*math.sqrt(i+1)*n0[i]
 
                 elif i <= 100-1:
                     for j in range(0,i):
                         # sum1 += self.B_ij((i-j),j,b,scaling,t)*n[i-j-1]*n[j]
                         sum1 += b*1*n0[i-j-1]*n0[j]
+                        proliferation = p*2*math.sqrt(i)*n0[i-1] - p*2*math.sqrt(i+1)*n0[i]
 
 
                 if i == N_t:
@@ -84,13 +88,17 @@ class SmolModel(pints.ForwardModel):
                     sum2 = 0
                     for j in range(0,min(100-i,N_t-i)-1):
                         sum2 += b*1*n0[i]*n0[j]
+
+                    proliferation = p*2*math.sqrt(i)*n0[i-1]
                 
                 coagulation_sum = (1/2)*sum1 - sum2
 
 
             coagulation = coagulation_sum
+
+
                 # lifespan = cell_proliferation(n,i,N,m);
-            dn_dt[i] = coagulation
+            dn_dt[i] = coagulation + proliferation
 
 
         return dn_dt
@@ -99,7 +107,7 @@ class SmolModel(pints.ForwardModel):
 
     def simulate(self, parameters, times):
         """ See :meth:`pints.ForwardModel.simulate()`. """
-        b, N = parameters
+        b, p, N = parameters
         n0 = np.array(self._n0)
         n0[0] = N
         # n = odeint(self._rhs, n0, times, (b,N))
@@ -110,13 +118,13 @@ class SmolModel(pints.ForwardModel):
             previous_times = np.linspace(0, int(times[0]), int((int(times[0])-0)/time_gap) + 1)
             # print('Previous times', previous_times)
             # print('Inputs', n0, previous_times, b, N)
-            n_previous_times = odeint(SmolModel._rhs, n0, previous_times, (b,N))
+            n_previous_times = odeint(SmolModel._rhs, n0, previous_times, (b,p,N))
             n_input = n_previous_times[-1,:]
             # print('N input', n_input)
             # print('Length', len(n_input))
         else:
             n_input = n0
-        n = odeint(SmolModel._rhs, n_input, times, (b,N))
+        n = odeint(SmolModel._rhs, n_input, times, (b,p,N))
 
 
         # 1st moment is mean, 1st centred moment should be array 6

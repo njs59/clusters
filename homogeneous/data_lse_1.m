@@ -30,9 +30,9 @@ end
 
 
 
-r = optimvar('r',2,"LowerBound",[0.00001 1],"UpperBound",[1 10000]);
+r = optimvar('r',3,"LowerBound",[0.00001 0.0000001 1],"UpperBound",[1 1 10000]);
 %r0.r = [0.00001 0.00001 mean(N_t_before) ];
-r0.r = [0.00001 500 ];
+r0.r = [0.00001 0.00001 500 ];
 
 % global N
 % N = 500;
@@ -81,9 +81,9 @@ disp(rsol.r)
 
 function solpts = btoODE(t_span,r)
     b = r(1);
-    % m = r(2);
-    N = r(2);
-    m = 0;
+    m = r(2);
+    N = r(3);
+    %m = 0;
     n0_true = zeros(100,1);
     n0_true(1) = N;
     t_span_before = linspace(1,t_span(1),t_span(1));
