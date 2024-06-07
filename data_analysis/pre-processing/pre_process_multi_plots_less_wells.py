@@ -132,7 +132,7 @@ for j in range(len(multi_dates)):
         plt.plot(tot_3D_volume, color = cm.colors[plt_num])
         # plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
         #            '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
-        plt.ylim(0,10000)
+        plt.ylim(0,4000)
         plt.title("Total 3D Volume")
         plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Total_3D_Number_cells_' + 'multi' + '.png', dpi=300)
         # plt.show()
