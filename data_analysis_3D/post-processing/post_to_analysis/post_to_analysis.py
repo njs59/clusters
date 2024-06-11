@@ -11,14 +11,14 @@ exp_date = '2017-03-16'
 # well_loc = 's11'
 # multi_loc = ['s11', 's12']
 # multi_loc = ['s09', 's10']
-# multi_loc = ['s073','s074']
-multi_loc = ['s037']
-start_time = 50
+multi_loc = ['s073','s074']
+# multi_loc = ['s037', 's038']
+start_time = 20
 end_time = 145
 timestep = 1
 
-ODE_out = np.zeros((100,end_time+1-start_time))
-ODE_out_multi = np.zeros((100,end_time+1-start_time))
+ODE_out = np.zeros((1000,end_time+1-start_time))
+ODE_out_multi = np.zeros((1000,end_time+1-start_time))
 for k in range(len(multi_loc)):
     well_loc = multi_loc[k]
     for i in range(start_time, end_time + 1, timestep):
@@ -41,8 +41,8 @@ for k in range(len(multi_loc)):
 
         # cluster_number = np.round(cluster_volumes/1955)
         cluster_number = np.round(cluster_volumes)
-        bin = list(range(1,101))
-        bin.append(200)
+        bin = list(range(1,1001))
+        bin.append(100000)
         hist_arr = np.histogram(cluster_number,bin)
 
         time_ODE_output = hist_arr[0]
@@ -57,6 +57,6 @@ for k in range(len(multi_loc)):
 ODE_out_multi = ODE_out_multi/len(multi_loc)
 
 # save array into csv file 
-np.savetxt("homogeneous_3D/2017-03-16_PRO_single_well_inference_input_multi_well_t_50.csv", ODE_out_multi,  
+np.savetxt("homogeneous_3D/2017-03-16_INV_500_max_size_multi_well_inference_input_multi_well_t_20.csv", ODE_out_multi,  
             delimiter = ",")
 # ODE_out.tofile('s11_inference_input.csv', sep = ',')

@@ -11,6 +11,8 @@ from numba import jit
 from scipy.integrate import odeint
 from scipy.stats import moment
 
+import math
+
 # from pints import ToyModel
 
 
@@ -45,7 +47,7 @@ class SmolModel(pints.ForwardModel):
 
     def n_outputs(self):
         """ See :meth:`pints.ForwardModel.n_outputs()`. """
-        return 5
+        return 4
 
     def n_parameters(self):
         """ See :meth:`pints.ForwardModel.n_parameters()`. """
@@ -70,13 +72,13 @@ class SmolModel(pints.ForwardModel):
                 sum1 = 0
                 if i == 0:
                     sum1 = 0
-                    proliferation = -p*n0[i]
+                    proliferation = -p*2*math.sqrt(i+1)*n0[i]
 
                 elif i <= 100-1:
                     for j in range(0,i):
                         # sum1 += self.B_ij((i-j),j,b,scaling,t)*n[i-j-1]*n[j]
                         sum1 += b*1*n0[i-j-1]*n0[j]
-                        proliferation = p*n0[i-1] - p*n0[i]
+                        proliferation = p*2*math.sqrt(i)*n0[i-1] - p*2*math.sqrt(i+1)*n0[i]
 
 
                 if i == N_t:
@@ -87,7 +89,7 @@ class SmolModel(pints.ForwardModel):
                     for j in range(0,min(100-i,N_t-i)-1):
                         sum2 += b*1*n0[i]*n0[j]
 
-                    proliferation = p*n0[i-1]
+                    proliferation = p*2*math.sqrt(i)*n0[i-1]
                 
                 coagulation_sum = (1/2)*sum1 - sum2
 
@@ -130,16 +132,14 @@ class SmolModel(pints.ForwardModel):
         centred_moment_2 = moment(n, moment=2, axis=1)
         centred_moment_3 = moment(n, moment=3, axis=1)
         centred_moment_4 = moment(n, moment=4, axis=1)
-        centred_moment_5 = moment(n, moment=5, axis=1)
 
         # Out array, mean, variance then centred standardised moments (aka skewness, kurtosis, hyperskewness)
         st_dev = np.sqrt(centred_moment_2)
-        out_array = np.zeros((n.shape[0],5))
+        out_array = np.zeros((n.shape[0],4))
         out_array[:,0] = np.mean(n,axis=1)
         out_array[:,1] = centred_moment_2
         out_array[:,2] = np.divide(centred_moment_3,st_dev*st_dev*st_dev)
         out_array[:,3] = np.divide(centred_moment_4,st_dev*st_dev*st_dev*st_dev)
-        out_array[:,4] = np.divide(centred_moment_5,st_dev*st_dev*st_dev*st_dev*st_dev)
 
         # Standardized
         # st_dev = np.sqrt(centred_moment_2)
@@ -156,7 +156,7 @@ class SmolModel(pints.ForwardModel):
     def suggested_parameters(self):
         """ See :meth:`pints.toy.ToyModel.suggested_parameters()`. """
 
-        return np.array([0.0004, 100])
+        return np.array([0.0004, 0.01, 100])
 
     def suggested_times(self):
         """ See :meth:`pints.toy.ToyModel.suggested_times()`. """
