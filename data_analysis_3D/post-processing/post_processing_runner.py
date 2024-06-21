@@ -21,7 +21,8 @@ exp_type = 'In_vitro_homogeneous_data/'
 # exp_date = '2017-02-13'
 # exp_date = '2017-03-10'
 # exp_date = '2017-03-13'
-exp_date = '2017-03-16'
+# exp_date = '2017-03-16'
+exp_date = '2018-06-21'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
@@ -45,10 +46,12 @@ time_list = [str(x).zfill(3) for x in time_array]
 
 # well_loc = 's06'
 
-well_loc = 's038'
+# well_loc = 's038'
 # well_loc = 's073'
 
 # well_loc = 's003'
+
+well_loc = 's24'
 
 # Column titles to be used in dataframes
 cols = ["Tag number","Cluster size", "Cluster volume", "Cluster Centre x", "Cluster Centre y", 

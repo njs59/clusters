@@ -16,7 +16,6 @@ well_loc = 's11'
 
 # multi_loc = ['s11', 's12']
 multi_loc = ['s073', 's074']
-
 #cluster_lineage = ltf.lineage_tracer(51,97, basedir, exp_date, well_loc, plots = False)
 #slp.size_and_loc_tracker(37, 97, 10, basedir, exp_date, well_loc, cluster_lineage)
 

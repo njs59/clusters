@@ -21,7 +21,7 @@ exp_date = '2017-02-03'
 # exp_date = '2017-03-16'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 fileID = '.tif'
-time_list = range(67,98,5)
+time_list = range(67,88,5)
 well_loc = 's11'
 # well_loc = 's073'
 
@@ -39,7 +39,7 @@ cmap_2.colors[1,:]=[0.6,0.6,1,1]
 for j in range(len(time_list)):
     raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, str(time_list[j]), fileID)
 
-    # raw_arr_2D = raw_arr_2D[:,1:]
+    raw_arr_2D = raw_arr_2D[:,1:]
     # raw_arr_2D -= raw_arr_2D.min()
     # raw_arr_2D *= 10
 
@@ -55,6 +55,8 @@ for j in range(len(time_list)):
 
     # plt.stairs(*np.histogram(raw_arr_2D, 1000), fill=True, color='skyblue')
     plt.hist(raw_arr_2D)
+    plt.xlabel("Pixel intensity")
+    plt.ylabel("Number of pixels")
     # plt.axvline(thresh_otsu, color='b', linestyle='dashed', linewidth=1)
     # plt.axvline(thresh_yen, color='g', linestyle='dashed', linewidth=1)
     plt.axvline(thresh_0, color=cmap_2.colors[0,:], linestyle='dashed', linewidth=1)
@@ -62,12 +64,12 @@ for j in range(len(time_list)):
     plt.axvline(thresh_2, color=cmap_2.colors[2,:], linestyle='dashed', linewidth=1)
     plt.axvline(thresh_3, color=cmap_2.colors[3,:], linestyle='dashed', linewidth=1)
     # plt.xlim(150, 600) 
-    plt.savefig(f'/Users/Nathan/Documents/Oxford/DPhil/clusters/data_analysis/pre-processing/test_code/histogram/frame-{j:03d}.png', bbox_inches='tight', dpi=300)
+    plt.savefig(f'/Users/Nathan/Documents/Oxford/DPhil/clusters/data_analysis_3D/pre-processing/test_code/histogram/frame-{j:03d}.png', bbox_inches='tight', dpi=300)
     plt.clf()
 
 images_hist = []
 # get all the images in the 'images for gif' folder
-for filename_hist in sorted(glob.glob('/Users/Nathan/Documents/Oxford/DPhil/clusters/data_analysis/pre-processing/test_code/histogram/frame-*.png')): # loop through all png files in the folder
+for filename_hist in sorted(glob.glob('/Users/Nathan/Documents/Oxford/DPhil/clusters/data_analysis_3D/pre-processing/test_code/histogram/frame-*.png')): # loop through all png files in the folder
     im_hist = Image.open(filename_hist) # open the image
     images_hist.append(im_hist) # add the image to the list
 

@@ -19,23 +19,26 @@ basedir = '/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/'
 # experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
 experiment = ''
 # experiment_data = '2017-02-03 sphere timelapse/'
-experiment_data = '2017-03-16 sphere TL 6/'
+# experiment_data = '2017-03-16 sphere TL 6/'
 # experiment_data = '2017-03-10 sphere TL 3pt 4/'
 # experiment_data = '2017-03-13 sphere TL 5/'
 # experiment_data = '2017-03-24 sphere 9/'
+experiment_data = '2018-06-21 sphere TL AE/'
 # exp_date = '2017-02-03'
 # exp_date = '2017-02-13'
 # exp_date = '2017-03-10'
 # exp_date = '2017-03-13'
-exp_date = '2017-03-16'
+# exp_date = '2017-03-16'
 # exp_date = '2017-03-24'
+exp_date = '2018-06-21'
 # folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder = ''
 # folder_data = 'RAW/Timelapse/sphere_timelapse/'
-folder_data = 'RAW/2017-03-16 sphere TL 6/2017-03-13 sphere TL 6-03/'
+# folder_data = 'RAW/2017-03-16 sphere TL 6/2017-03-13 sphere TL 6-03/'
 # folder_data = 'RAW/2017-03-10 sphere TL 3pt/2017-03-10 sphere TL 3pt/'
 # folder_data = 'RAW/2017-03-13 sphere TL 5/2017-03-13 sphere TL 5/'
 # folder_data = 'RAW/2017-03-24 sphere 9/2017-03-24 sphere 9-2/'
+folder_data = 'RAW/2018-06-21_AE_TL_s24/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
@@ -56,13 +59,13 @@ time_list = [str(x).zfill(3) for x in time_array]
 # well_loc = 's12'
 # well_loc = 's28'
 
-well_loc = 's038'
+# well_loc = 's038'
 # well_loc = 's074'
 
 # well_loc = 's10'
 # 4,5,6
 
-
+well_loc = 's24'
 # threshold = 320
 # threshold = 440
 min_clus_size = 150

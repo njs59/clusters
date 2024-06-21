@@ -55,6 +55,8 @@ for j in range(len(time_list)):
 
     # plt.stairs(*np.histogram(raw_arr_2D, 1000), fill=True, color='skyblue')
     plt.hist(raw_arr_2D)
+    plt.xlabel("Pixel intensity")
+    plt.ylabel("Number of pixels")
     # plt.axvline(thresh_otsu, color='b', linestyle='dashed', linewidth=1)
     # plt.axvline(thresh_yen, color='g', linestyle='dashed', linewidth=1)
     plt.axvline(thresh_0, color=cmap_2.colors[0,:], linestyle='dashed', linewidth=1)

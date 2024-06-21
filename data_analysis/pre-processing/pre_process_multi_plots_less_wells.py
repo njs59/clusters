@@ -15,13 +15,17 @@ from scipy.ndimage import *
 
 import pre_pro_operators as pre_oper
 
+import matplotlib
+
+matplotlib.rcParams.update({'font.size': 16})
 
 ### ------------   Input parameters    -----------------  ###
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
 exp_type = 'In_vitro_homogeneous_data/'
 experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
 experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
-multi_dates = ['2017-03-16', '2017-03-10']
+multi_dates = ['2017-03-16']
+# multi_dates = ['2017-03-16', '2017-03-10']
 # multi_dates = ['2017-02-03', '2017-02-13', '2017-03-16', '2017-03-10']
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
@@ -38,8 +42,8 @@ time_list = [str(x).zfill(3) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
 
 
-
-multi_well_multi_dates = [['s073', 's074'], ['s04', 's05']]
+multi_well_multi_dates = [['s073', 's074']]
+# multi_well_multi_dates = [['s073', 's074'], ['s04', 's05']]
 # multi_well_multi_dates = [['s11', 's12'], ['s27', 's28'], ['s073', 's074'], ['s04', 's05']]
 
 plt_num = 0
@@ -82,10 +86,13 @@ for j in range(len(multi_dates)):
         # Plot mean size of cluster
         plt.figure(1)
         # plt.colormaps('tab20')
-        plt.xlim(20,142)
-        plt.plot(mean_areas/189, color = cm.colors[plt_num])
-        # plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
-        #            '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
+        mean_areas = mean_areas/189
+        x = np.linspace(10,71,123)
+        plt.plot(x, mean_areas[19:142])
+        plt.xlim(10,71)
+        # plt.ylim(0,4000)
+        plt.ylabel("Number of cells")
+        plt.xlabel("time (hours)")
         plt.title("Mean number of cells in a cluster")
         plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Mean_areas_' + 'multi' + '.png', dpi=300)
         # plt.show()
@@ -104,12 +111,15 @@ for j in range(len(multi_dates)):
 
         # Plot number of clusters
         plt.figure(3)
-        plt.xlim(20,142)
-        plt.plot(number_clusters, color = cm.colors[plt_num])
+        x = np.linspace(10,71,123)
+        plt.plot(x,number_clusters[19:142])
+        plt.xlim(10,71)
+        plt.ylabel("Number of clusters")
+        plt.xlabel("time (hours)")
         # plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
         #            '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
         plt.title("Number of clusters over time")
-        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Number_clusters_' + 'multi' + '.png', dpi=300)
+        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Number_clusters_' + 'multi' + '.svg', dpi=300)
         # plt.show()
         # plt.clf()
 
@@ -128,23 +138,31 @@ for j in range(len(multi_dates)):
 
         # Plot total 3D
         plt.figure(4)
-        plt.xlim(20,142)
-        plt.plot(tot_3D_volume, color = cm.colors[plt_num])
+        x = np.linspace(10,71,123)
+        # plt.plot(tot_3D_volume, color = cm.colors[plt_num])
+        plt.plot(x, tot_3D_volume[19:])
         # plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
         #            '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
+        plt.xlim(10,71)
         plt.ylim(0,4000)
-        plt.title("Total 3D Volume")
-        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Total_3D_Number_cells_' + 'multi' + '.png', dpi=300)
+        plt.ylabel("Number of cells")
+        plt.xlabel("time (hours)")
+        plt.title("Total number of cells")
+
+        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Total_3D_Number_cells_' + 'multi' + '.svg', dpi=300)
         # plt.show()
         # plt.clf()
 
         # Plot mean 3D volume of cluster
         plt.figure(5)
-        plt.xlim(20,142)
-        plt.plot(mean_3D_volume, color = cm.colors[plt_num])
-        # plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
-        #            '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
-        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Mean_volume_cluster_' + 'multi' + '.png', dpi=300)
+        x = np.linspace(10,71,123)
+        plt.plot(x, mean_3D_volume[19:])
+        plt.xlim(10,71)
+        # plt.ylim(0,4000)
+        plt.ylabel("Number of cells")
+        plt.xlabel("time (hours)")
+        plt.title("Mean number of cells in a cluster")
+        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Mean_volume_cluster_' + 'multi' + '.svg', dpi=300)
         # plt.show()
         # plt.clf()
         plt_num += 1

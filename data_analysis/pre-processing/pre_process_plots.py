@@ -25,7 +25,8 @@ experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
 # exp_date = '2017-02-13'
 # exp_date = '2017-03-13'
 # exp_date = '2017-03-16'
-exp_date = '2017-03-24'
+# exp_date = '2017-03-24'
+exp_date = '2018-06-21'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
@@ -47,7 +48,8 @@ time_list = [str(x).zfill(3) for x in time_array]
 # well_loc = 's037'
 # well_loc = 's074'
 # well_loc = 's001'
-well_loc = 's04'
+# well_loc = 's04'
+well_loc = 's24'
 
 # Does the histogram get plotted
 plot_hist = True

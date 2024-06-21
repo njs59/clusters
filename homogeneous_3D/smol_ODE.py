@@ -17,7 +17,7 @@ def rhs_i(i,n,t,b,N):
 
     coagulation = cell_coagulation.cell_coagulation(n,i,b,t,N_t,N)
     
-    # lifespan = cell_proliferation(n,i,N,m);
+    # lifespan = cell_proliferation(n,i,N)
     dni_dt = coagulation 
 
     return dni_dt
