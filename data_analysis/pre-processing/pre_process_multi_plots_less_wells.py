@@ -42,7 +42,8 @@ time_list = [str(x).zfill(3) for x in time_array]
 # time_list= ['21','22','23','24','25','26','27','28','29','30']
 
 
-multi_well_multi_dates = [['s073', 's074']]
+# multi_well_multi_dates = [['s073', 's074']]
+multi_well_multi_dates = [['s037', 's038']]
 # multi_well_multi_dates = [['s073', 's074'], ['s04', 's05']]
 # multi_well_multi_dates = [['s11', 's12'], ['s27', 's28'], ['s073', 's074'], ['s04', 's05']]
 
@@ -87,39 +88,39 @@ for j in range(len(multi_dates)):
         plt.figure(1)
         # plt.colormaps('tab20')
         mean_areas = mean_areas/189
-        x = np.linspace(10,71,123)
-        plt.plot(x, mean_areas[19:142])
-        plt.xlim(10,71)
+        x = np.linspace(35,71,73)
+        plt.plot(x, mean_areas[69:142])
+        plt.xlim(35,71)
         # plt.ylim(0,4000)
         plt.ylabel("Number of cells")
         plt.xlabel("time (hours)")
         plt.title("Mean number of cells in a cluster")
-        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Mean_areas_' + 'multi' + '.png', dpi=300)
+        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/PRO_Mean_areas_' + 'multi' + '.png', dpi=300)
         # plt.show()
         # plt.clf()
 
         # Plot total coverage of clusters over array
-        plt.figure(2)
-        plt.xlim(20,142)
-        plt.plot(total_areas/(1025*1344), color = cm.colors[plt_num])
-        # plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
-        #            '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10',))
-        plt.title("Confluence of well")
-        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Total_2D_cell_area_' + 'multi' + '.png', dpi=300)
-        # plt.show()
-        # plt.clf()
+        # plt.figure(2)
+        # plt.xlim(20,142)
+        # plt.plot(total_areas/(1025*1344), color = cm.colors[plt_num])
+        # # plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
+        # #            '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10',))
+        # plt.title("Confluence of well")
+        # plt.savefig(basedir + 'clusters/data_analysis/pre-processing/PRO_Total_2D_cell_area_' + 'multi' + '.png', dpi=300)
+        # # plt.show()
+        # # plt.clf()
 
         # Plot number of clusters
         plt.figure(3)
-        x = np.linspace(10,71,123)
-        plt.plot(x,number_clusters[19:142])
-        plt.xlim(10,71)
+        x = np.linspace(35,71,73)
+        plt.plot(x,number_clusters[69:142])
+        plt.xlim(35,71)
         plt.ylabel("Number of clusters")
         plt.xlabel("time (hours)")
         # plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
         #            '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
         plt.title("Number of clusters over time")
-        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Number_clusters_' + 'multi' + '.svg', dpi=300)
+        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/PRO_Number_clusters_' + 'multi' + '.png', dpi=300)
         # plt.show()
         # plt.clf()
 
@@ -138,31 +139,31 @@ for j in range(len(multi_dates)):
 
         # Plot total 3D
         plt.figure(4)
-        x = np.linspace(10,71,123)
+        x = np.linspace(35,71,73)
         # plt.plot(tot_3D_volume, color = cm.colors[plt_num])
-        plt.plot(x, tot_3D_volume[19:])
+        plt.plot(x, tot_3D_volume[69:])
         # plt.legend(('2017-02-03', '2017-02-03', '2017-02-13', '2017-02-13',
         #            '2017-03-16', '2017-03-16', '2017-03-10', '2017-03-10'))
-        plt.xlim(10,71)
-        plt.ylim(0,4000)
+        plt.xlim(35,71)
+        plt.ylim(0,6000)
         plt.ylabel("Number of cells")
         plt.xlabel("time (hours)")
         plt.title("Total number of cells")
 
-        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Total_3D_Number_cells_' + 'multi' + '.svg', dpi=300)
+        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/PRO_Total_3D_Number_cells_' + 'multi' + '.png', dpi=300)
         # plt.show()
         # plt.clf()
 
         # Plot mean 3D volume of cluster
         plt.figure(5)
-        x = np.linspace(10,71,123)
-        plt.plot(x, mean_3D_volume[19:])
-        plt.xlim(10,71)
+        x = np.linspace(35,71,73)
+        plt.plot(x, mean_3D_volume[69:])
+        plt.xlim(35,71)
         # plt.ylim(0,4000)
         plt.ylabel("Number of cells")
         plt.xlabel("time (hours)")
         plt.title("Mean number of cells in a cluster")
-        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/Mean_volume_cluster_' + 'multi' + '.svg', dpi=300)
+        plt.savefig(basedir + 'clusters/data_analysis/pre-processing/PRO_Mean_volume_cluster_' + 'multi' + '.png', dpi=300)
         # plt.show()
         # plt.clf()
         plt_num += 1

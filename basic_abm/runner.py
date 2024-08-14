@@ -15,6 +15,7 @@ timesteps = 50000
 cols = ["ID", "Radius", "Centre x", "Centre y"]
 cell_df = pd.DataFrame(columns=cols)
 
+basedir = '/Users/Nathan/Documents/Oxford/DPhil/clusters/'
 
 
 initial_df, next_available_ID = fns.initialise(initial_number,x_len,y_len,initial_size)
@@ -44,9 +45,12 @@ for i in range(timesteps):
             visual_arr = fns.visualise_arr(cell_df, x_len, y_len)
 
             fig_num = int(i/100)
+            pd.DataFrame(visual_arr).to_csv(f'{basedir}basic_abm/frame-{i:03d}.csv', index=False, header=False)           
 
-            plt.imshow(visual_arr)
-            plt.savefig('/Users/Nathan/Documents/Oxford/DPhil/clusters/basic_abm/method2_figure_' + str(fig_num) + '_IC_500_steps_50000' + '.png')
+            pd.DataFrame(cell_df).to_csv(f'{basedir}basic_abm/df-{i:03d}.csv', index=False, header=True)           
+
+            # plt.imshow(visual_arr)
+            # plt.savefig('/Users/Nathan/Documents/Oxford/DPhil/clusters/basic_abm/method2_figure_' + str(fig_num) + '_IC_500_steps_50000' + '.png')
 
 
 print(initial_df)

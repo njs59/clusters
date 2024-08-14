@@ -43,7 +43,7 @@ exp_date = '2017-02-03'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 fileID = '.tif'
 time_list = range(42,98,5)
-well_loc = 's11'
+well_loc = 's09'
 
 
 for i in range(67,68,1):
@@ -58,12 +58,15 @@ for i in range(67,68,1):
     # text = data.page()
     image_show_save(raw_arr_2D)
 
-    text_threshold = filters.threshold_otsu  # Hit tab with the cursor after the underscore, try several methods
+    text_threshold = filters.threshold_yen  # Hit tab with the cursor after the underscore, try several methods
     thresh = text_threshold(raw_arr_2D)
     array = raw_arr_2D > thresh
     image_show(raw_arr_2D > thresh)
     print("Threshold is", thresh)
 
+    plt.imshow(array, cmap='gray')
+    plt.axis('off')
+    plt.savefig('PRO_Yen.png', dpi=300)
     # plt.hist(raw_arr_2D)
     # plt.show()
 

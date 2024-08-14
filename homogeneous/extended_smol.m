@@ -72,9 +72,9 @@ n0(1) = 7.13097669e+02;
 % tmin = 39;
 % tmax = 97;
 tmin = 0;
-tmax = 145;
+% tmax = 145;
 
-% tmax = 1000;
+tmax = 100000;
 tspan = [tmin tmax];
 for runs = 1:length(b_test)
     global run_number

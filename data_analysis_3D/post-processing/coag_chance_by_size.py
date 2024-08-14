@@ -173,10 +173,19 @@ for k in range(1, 301):
 
 print('Yes')
 
-plt.plot(chance_array)
+x = np.linspace(0,299,300).astype('int')
+
+plt.plot(x[1:],chance_array[1:,:])
 
 # plt.xlim(0,20)
 plt.savefig(basedir + 'clusters/data_analysis_3D/post-processing/Coag_chance_by_size_2.png', dpi=300)
+
+plt.show()
+
+plt.plot(x[1:151],chance_array[1:151,:])
+
+# plt.xlim(0,20)
+plt.savefig(basedir + 'clusters/data_analysis_3D/post-processing/Coag_chance_by_size_3.png', dpi=300)
 
 plt.show()
 
