@@ -121,8 +121,9 @@ def single_index_bool(arr, val):
 
 
 def nearby_clusters(x_loc, y_loc, search_radius, labelled_arr):
-    search_arr = labelled_arr[x_loc - search_radius : x_loc + search_radius,
-                              y_loc - search_radius: y_loc + search_radius]
+    max_x, max_y = np.shape(labelled_arr)
+    search_arr = labelled_arr[max(x_loc - search_radius, 0) : min(x_loc + search_radius + 1, max_x),
+                              max(y_loc - search_radius, 0) : min(y_loc + search_radius + 1, max_y)]
     # search_arr[search_arr == index] = 0
     clusters_index_present = np.unique(search_arr)
     #Remove 0's from consideration
@@ -134,14 +135,15 @@ def nearby_clusters(x_loc, y_loc, search_radius, labelled_arr):
         #     print('Hello')
         # Looping this way ignores the 0's present
 
-        list_of_locs = np.where(search_arr == clusters_index_present[i])
+        list_of_locs = np.where(labelled_arr == clusters_index_present[i])
+        # list_of_locs = np.where(search_arr == clusters_index_present[i])
+        min_dist = math.inf
         for k in range(len(list_of_locs[0])):
-            min_dist = math.inf
             # Loop over each element of cluster visible
-            dist_x = abs(list_of_locs[0][k] - search_radius)
-            dist_y = abs(list_of_locs[1][k] - search_radius)
+            dist_x = abs(list_of_locs[0][k] - x_loc)
+            dist_y = abs(list_of_locs[1][k] - y_loc)
 
-            dist = dist_x + dist_y + 1
+            dist = dist_x + dist_y
             min_dist = min(min_dist, dist)
 
         distances = np.append(distances, min_dist)
