@@ -9,8 +9,8 @@ x_len = 1000
 y_len = 1000
 next_available_ID = 1
 initial_size = 200
-initial_number = 500
-timesteps = 50000
+initial_number = 100
+timesteps = 5000
 
 cols = ["ID", "Radius", "Centre x", "Centre y"]
 cell_df = pd.DataFrame(columns=cols)
@@ -39,15 +39,15 @@ for i in range(timesteps):
     if i % 100 == 0:
         print('Step', i , 'complete')
 
-        if i % 1000 == 0:
+        if i % 100 == 0:
             print('Current df', cell_df)
 
             visual_arr = fns.visualise_arr(cell_df, x_len, y_len)
 
-            fig_num = int(i/100)
-            pd.DataFrame(visual_arr).to_csv(f'{basedir}basic_abm/frame-{i:03d}.csv', index=False, header=False)           
+            fig_num = int(i/10)
+            pd.DataFrame(visual_arr).to_csv(f'{basedir}basic_abm/csv_files/less_clus_im-frame-{i:01d}.csv', index=False, header=False)           
 
-            pd.DataFrame(cell_df).to_csv(f'{basedir}basic_abm/df-{i:03d}.csv', index=False, header=True)           
+            pd.DataFrame(cell_df).to_csv(f'{basedir}basic_abm/csv_files/less_clus_im-df-{i:01d}.csv', index=False, header=True)           
 
             # plt.imshow(visual_arr)
             # plt.savefig('/Users/Nathan/Documents/Oxford/DPhil/clusters/basic_abm/method2_figure_' + str(fig_num) + '_IC_500_steps_50000' + '.png')

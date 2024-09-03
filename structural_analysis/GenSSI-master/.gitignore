@@ -1,0 +1,4 @@
+Docu/output
+*.DS_Store
+*.m~
+genssiUserSpecificDefaults.m
