@@ -70,7 +70,7 @@ def threshold_arr_unsupervised(tf_array):
     for i in range(tf_array.shape[2]):
       tf_ad = tf_array[:,:,i]
 
-      text_threshold = filters.threshold_otsu  # Hit tab with the cursor after the underscore, try several methods
+      text_threshold = filters.threshold_yen  # Hit tab with the cursor after the underscore, try several methods
       thresh = text_threshold(tf_ad)
       array_i = tf_ad > thresh
 
