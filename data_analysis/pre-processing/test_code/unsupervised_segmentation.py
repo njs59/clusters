@@ -35,34 +35,58 @@ def image_show(image):
 
 
 ###    -----------   Input parameters   --------------     ###
-basedir = '/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/'
-experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
-exp_date = '2017-02-03'
+basedir = '/Volumes/Elements/Nate thesis data/Thesis Data/'
+# experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
+experiment = '2017-03-16 sphere TL 6/RAW/2017-03-16 sphere TL 6/2017-03-13 sphere TL 6-03/2017-03-13 sphere TL 6-03_'
+# exp_date = '2017-02-03'
+exp_date = '2017-03-16'
 #experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
 #exp_date = '2017-02-13'
-folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
+# folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
+folder = ''
+
 fileID = '.tif'
 time_list = range(42,98,5)
-well_loc = 's11'
+# well_loc = 's11'
+well_loc = 's073'
 
 
 for i in range(67,68,1):
     time = i
 
-    raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, str(time), fileID)
-
+    raw_arr_2D = tif.tif_to_arr(basedir, experiment, folder, well_loc, str(time).zfill(3), fileID)
+    
     raw_arr_2D = raw_arr_2D[:,1:]
     # raw_arr_2D -= raw_arr_2D.min()
     # raw_arr_2D *= 10
 
     # text = data.page()
-    image_show_save(raw_arr_2D)
+    image_show(raw_arr_2D)
 
-    text_threshold = filters.threshold_otsu  # Hit tab with the cursor after the underscore, try several methods
+    text_threshold = filters.threshold_yen  # Hit tab with the cursor after the underscore, try several methods
     thresh = text_threshold(raw_arr_2D)
     array = raw_arr_2D > thresh
     image_show(raw_arr_2D > thresh)
     print("Threshold is", thresh)
+
+# arr = np.loadtxt("/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/pre_processing_output/2017-02-03/s11t67c2_area.csv",
+#                  delimiter=",", dtype=int)
+arr = np.loadtxt("/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/pre_processing_output/2017-03-16/s073t067c2_area.csv",
+                 delimiter=",", dtype=int)
+
+
+arr = arr[:,1:]
+arr = arr > 0
+plt.imshow(arr)
+plt.show()
+
+array = array*1
+arr = arr*1
+
+diff_arr = np.subtract(arr,array)
+plt.imshow(diff_arr)
+plt.show()
+
 
     # plt.hist(raw_arr_2D)
     # plt.show()
