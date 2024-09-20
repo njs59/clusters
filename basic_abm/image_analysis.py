@@ -21,11 +21,11 @@ folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 folder_3 = 'sphere_timelapse/'
 fileID = '.tif'
 
-time_array = range(1,200)
+time_array = range(1,101)
 
 # Rename single digit values with 0 eg 1 to 01 for consistency
 # time_list = [str(x).zfill(2) for x in time_array]
-time_list = [str(int(x*1)) for x in time_array]
+time_list = [str(int(x*20)) for x in time_array]
 
 
 # Column titles to be used in dataframes
@@ -50,7 +50,7 @@ for i in range(len(time_list)):
 
     ###   ---------------   Step 0: Initialisation   --------------   ###
     # Read in index array for given time
-    csv_name_list_index = basedir, '/csv_files', '/full_short_im-frame-', time_list[i],'.csv'
+    csv_name_list_index = basedir, '/csv_files_similar_exp/', 'cell_500_every_10_im-frame-', time_list[i],'.csv'
     csv_name_list_2_index  =''.join(csv_name_list_index)
     df_index = pd.read_csv(csv_name_list_2_index, header=None)
     array_binary = df_index.to_numpy()
@@ -366,7 +366,7 @@ for i in range(len(time_list)):
 
     # Save dataframe output for current timepoint to .csv file
     df_total_areas = pd.DataFrame(df_step)
-    df_step_csv_name_list = basedir, '/csv_files', '/full_short_pipeline_df_' 't_', time_list[i], '.csv'
+    df_step_csv_name_list = basedir, '/csv_files_similar_exp/', 'pipeline_df_' 't_', time_list[i], '.csv'
     df_step_name_list_2  =''.join(df_step_csv_name_list)
     df_total_areas.to_csv(df_step_name_list_2, index=False, header=True)
 

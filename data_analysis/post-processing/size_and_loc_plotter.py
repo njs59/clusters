@@ -112,9 +112,9 @@ Output:
             r = 1-g
             color = (r, g, b)
             # Location plot
-            plt.plot(cluster_location_x[i:i+2], cluster_location_y[i:i+2], c=color, lw=2)
+            # plt.plot(cluster_location_x[i:i+2], cluster_location_y[i:i+2], c=color, lw=2)
             # Spider plot
-            # plt.plot(cluster_change_from_init_x[i:i+2], cluster_change_from_init_y[i:i+2], c=color, lw=2)
+            plt.plot(cluster_change_from_init_x[i:i+2], cluster_change_from_init_y[i:i+2], c=color, lw=2)
             # plt.plot(cluster_location_x, cluster_location_y)
 
         plt.figure(4)
@@ -127,8 +127,10 @@ Output:
         colors = cmap(np.linspace(0, 1, len(cluster_tags)))
         # colors = plt.colormaps['Set3'].colors
         for i in range(len(cluster_change_from_init_x)-1):
+            # plt.plot(cluster_change_from_init_x[i:i+2], cluster_change_from_init_y[i:i+2],
+            #          color=colors[colour_ticker],linewidth=((cluster_size[i+1]/189)/20))
             plt.plot(cluster_change_from_init_x[i:i+2], cluster_change_from_init_y[i:i+2],
-                     color=colors[colour_ticker],linewidth=((cluster_size[i+1]/189)/20))
+                     color=colors[colour_ticker],linewidth=1)
     
         # plt.figure(5)
         # points = np.array([cluster_change_from_init_x, cluster_change_from_init_y]).T.reshape(-1, 1, 2)
@@ -141,7 +143,7 @@ Output:
     plt.show()
     plt.show()
     plt.show()
-    plt.show()
+    # plt.show()
     
 
         

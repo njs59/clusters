@@ -21,7 +21,7 @@ multi_loc = ['s073', 's074']
 
 # hsg.hist_size_plotter(basedir, exp_type, exp_date, multi_loc, 37, 142, 5)
 
-slp.size_and_loc_tracker(37, 97, 1, basedir, exp_type, exp_date, well_loc, [])
+slp.size_and_loc_tracker(37, 97, 5, basedir, exp_type, exp_date, well_loc, [])
 
 '''
 Cluster tracker tracks an individually taggged cluster over time

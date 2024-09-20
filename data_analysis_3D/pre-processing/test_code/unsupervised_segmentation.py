@@ -43,7 +43,7 @@ exp_date = '2017-02-03'
 folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
 fileID = '.tif'
 time_list = range(42,98,5)
-well_loc = 's09'
+well_loc = 's11'
 
 
 for i in range(67,68,1):

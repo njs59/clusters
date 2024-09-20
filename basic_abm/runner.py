@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 
 import functions as fns
 
-x_len = 1000
-y_len = 1000
+x_len = 1025
+y_len = 1344
 next_available_ID = 1
 initial_size = 200
-initial_number = 100
+initial_number = 500
 timesteps = 5000
 
 cols = ["ID", "Radius", "Centre x", "Centre y"]
@@ -36,18 +36,18 @@ for i in range(timesteps):
     cell_df, next_available_ID = fns.sweep(cell_df, x_len, y_len, next_available_ID)
 
     # visual_arr = fns.visualise_arr(cell_df, x_len, y_len)
-    if i % 100 == 0:
+    if i % 10 == 0:
         print('Step', i , 'complete')
 
-        if i % 100 == 0:
+        if i % 10 == 0:
             print('Current df', cell_df)
 
             visual_arr = fns.visualise_arr(cell_df, x_len, y_len)
 
             fig_num = int(i/10)
-            pd.DataFrame(visual_arr).to_csv(f'{basedir}basic_abm/csv_files/less_clus_im-frame-{i:01d}.csv', index=False, header=False)           
+            pd.DataFrame(visual_arr).to_csv(f'{basedir}basic_abm/csv_files_similar_exp/cell_500_every_10_im-frame-{i:01d}.csv', index=False, header=False)           
 
-            pd.DataFrame(cell_df).to_csv(f'{basedir}basic_abm/csv_files/less_clus_im-df-{i:01d}.csv', index=False, header=True)           
+            pd.DataFrame(cell_df).to_csv(f'{basedir}basic_abm/csv_files_similar_exp/cell_500_every_10_im-df-{i:01d}.csv', index=False, header=True)           
 
             # plt.imshow(visual_arr)
             # plt.savefig('/Users/Nathan/Documents/Oxford/DPhil/clusters/basic_abm/method2_figure_' + str(fig_num) + '_IC_500_steps_50000' + '.png')

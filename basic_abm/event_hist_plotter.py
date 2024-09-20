@@ -9,7 +9,7 @@ from itertools import chain
 # These three parameters are needed for accessing data and saving to files
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/clusters/basic_abm'
 start_time = 1
-end_time = 48
+end_time = 100
 
 '''
 Lineage tracer traces each cluster in turn back in time using event to find contributing clusters
@@ -27,7 +27,7 @@ for each cluster's lineage next to each other
 
 '''
 
-df_end_now_csv_name_list = basedir, '/csv_files/', 'less_clus_pipeline_df_t_', str(end_time), '00', '.csv'
+df_end_now_csv_name_list = basedir, '/csv_files_similar_exp/', 'pipeline_df_t_', str(end_time*20), '', '.csv'
 df_end_now_csv_name_list_2  =''.join(df_end_now_csv_name_list)
 df_end_now = pd.read_csv(df_end_now_csv_name_list_2)
 cluster_tags = df_end_now["Tag number"].to_numpy().astype(int)
@@ -66,8 +66,8 @@ cluster_appear_sizes = []
 number_event = np.zeros(len(event_cols))
 for i in range(end_time, start_time - 1, -1) :
     print('i is', i)
-    time_i = str(i)
-    df_step_csv_name_list = basedir, '/csv_files/', 'less_clus_pipeline_df_t_', time_i, '00', '.csv'
+    time_i = str(i*20)
+    df_step_csv_name_list = basedir, '/csv_files_similar_exp/', 'pipeline_df_t_', time_i, '', '.csv'
     df_step_csv_name_list_2  =''.join(df_step_csv_name_list)
     df_step = pd.read_csv(df_step_csv_name_list_2)
     # cluster_2D_areas = df_clus_areas.to_numpy()

@@ -86,11 +86,36 @@ for i in range(end_time, start_time - 1, -1) :
         number_event[j] += number_events_adding
 
 
+# event_cols = ["Move", "Coagulation", "Move large", "Splitting", 
+#               "Move large and grow", "Possible Coagulation",
+#               "Edge Appearance type 1", "Appearance type 1",
+#               "Edge Appearance type 2", "Appearance type 2", 
+#               "Edge Appearance type 3", "Appearance type 3", "Appearance Error"]
+if len(event_cols) == 13:
+        event_cols_short = ["Move", "Coagulation","Splitting","Edge App","Appearance"]
+
+        number_event_short = np.array([1, 2, 3, 4, 5])
+        number_event_short[0] = number_event[0] + number_event[2] + number_event[4]
+        number_event_short[1] = number_event[1] + number_event[5]
+        number_event_short[2] = number_event[3]
+        number_event_short[3] = number_event[6] + number_event[8] + number_event[10]
+        number_event_short[4] = number_event[7] + number_event[9] + number_event[11]
+else:
+        event_cols_short = ["Coagulation","Splitting","Edge Appearance","Appearance"]
+
+        number_event_short = np.array([1, 2, 3, 4])
+        number_event_short[0] = number_event[0] + number_event[4]
+        number_event_short[1] = number_event[2]
+        number_event_short[2] = number_event[5] + number_event[7] + number_event[9]
+        number_event_short[3] = number_event[6] + number_event[8] + number_event[10]
 
 plt.hist(cluster_appear_sizes)
 plt.show()
 
 plt.bar(event_cols_plot, number_event)
+plt.show()
+
+plt.bar(event_cols_short, number_event_short)
 plt.show()
 
 
