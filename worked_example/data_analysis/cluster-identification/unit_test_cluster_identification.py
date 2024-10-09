@@ -4,7 +4,7 @@ import numpy.testing as npt
 
 import unittest
 
-import pre_pro_operators as pre_oper
+import cluster_identification_operators as iden_oper
 import read_tif_file_operator as read_tif
 
 from pylab import *
@@ -20,19 +20,19 @@ class TestPreProOperators(unittest.TestCase):
         # Parameters are (tf_array, threshold)
 
         test_tf_array = np.array([[[0,1],[1,2]],[[2,2],[0,0]]])
-        test_bool = pre_oper.threshold_arr_supervised(test_tf_array, 1)
+        test_bool = iden_oper.threshold_arr_supervised(test_tf_array, 1)
 
         self.assertTrue(np.all(test_bool == np.array([[[0,0],[0,1]],[[1,1],[0,0]]])))
 
     def test_bool_threshold_val(self):
         # Parameters are (a, threshold)
 
-        test_1 = pre_oper.bool_threshold_val(3,2)
+        test_1 = iden_oper.bool_threshold_val(3,2)
         self.assertEqual(test_1,1)
-        test_0 = pre_oper.bool_threshold_val(2,2)
-        self.assertEqual(test_0,0)
-        test_0 = pre_oper.bool_threshold_val(1,2)
-        self.assertEqual(test_0,0)
+        test_2 = iden_oper.bool_threshold_val(2,2)
+        self.assertEqual(test_2,0)
+        test_3 = iden_oper.bool_threshold_val(1,2)
+        self.assertEqual(test_3,0)
 
 
     def test_threshold_arr_unsupervised(self):
@@ -44,7 +44,7 @@ class TestPreProOperators(unittest.TestCase):
         time_list = [str(x).zfill(2) for x in time_array]
         test_tf_array = read_tif.tif_to_arr("", "", folder, "s11", time_list, '.tif')
 
-        test_bool = pre_oper.threshold_arr_unsupervised(test_tf_array)
+        test_bool = iden_oper.threshold_arr_unsupervised(test_tf_array)
         
         arr = np.loadtxt("/Users/Nathan/Documents/Oxford/DPhil/In_vitro_homogeneous_data/pre_processing_output/2017-02-03/s11t67c2_area.csv",
                  delimiter=",", dtype=int)
@@ -74,7 +74,7 @@ class TestPreProOperators(unittest.TestCase):
         area = np.array([0,100,2,300,4,500])
 
         
-        area_new, index_keep = pre_oper.remove_fragments(area, 5, 150)
+        area_new, index_keep = iden_oper.remove_fragments(area, 5, 150)
         print('Outputs', area_new,index_keep)
         self.assertTrue(np.all(area_new == np.array([300,500])))
         self.assertTrue(np.all(index_keep == np.array([3,5])))
