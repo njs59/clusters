@@ -5,17 +5,12 @@ import pandas as pd
 import glob
 from PIL import Image
 import time
-import matplotlib.animation as animation
 from matplotlib.colors import LogNorm
-from IPython import display
 
 from pylab import *
-from scipy.ndimage import *
 
 
-import cluster_identification_operators as iden_oper
 
-# basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, '_cluster_areas', '.csv'
 ### ------------   Input parameters    -----------------  ###
 basedir = '/Users/Nathan/Documents/Oxford/DPhil/clusters/worked_example/'
 csv_loc = 'data_analysis_outputs/csv_files/'
