@@ -8,50 +8,35 @@ import matplotlib.pyplot as plt
 
 from scipy.ndimage import *
 
-import post_pro_operators as post_oper
+import cluster_tracking_operators as track_oper
 
 t_before = time.time()
 
 ###    -----------   Input parameters   --------------     ###
-basedir = '/Users/Nathan/Documents/Oxford/DPhil/'
-exp_type = 'In_vitro_homogeneous_data/'
-# experiment = 'RAW_data/2017-02-03_sphere_timelapse/'
-# experiment = 'RAW_data/2017-02-13_sphere_timelapse_2/'
+# csv_saving_folder = '/Users/Nathan/Documents/Oxford/DPhil/clusters/data_analysis_outputs/csv_files/'
+# basedir = '/Users/Nathan/Documents/Oxford/DPhil/clusters/worked_example/'
+# csv_loc = 'data_analysis_outputs/csv_files/'
 # exp_date = '2017-02-03'
-# exp_date = '2017-02-13'
-# exp_date = '2017-03-10'
-# exp_date = '2017-03-13'
-# exp_date = '2017-03-16'
-exp_date = '2018-06-21'
-folder = 'RAW/Timelapse/sphere_timelapse_useful_wells/'
-folder_3 = 'sphere_timelapse/'
-fileID = '.tif'
 
 # time_array = range(1,98)
-# time_array = range(1,95)
-time_array = range(1,146)
-# time_array = range(1,143)
-# time_array = range(1,97)
-
-# Rename single digit values with 0 eg 1 to 01 for consistency
+# # Rename single digit values with 0 eg 1 to 01 for consistency
 # time_list = [str(x).zfill(2) for x in time_array]
+# well_loc = 's11'
+
+
+csv_saving_folder = '/Users/Nathan/Documents/Oxford/DPhil/clusters/data_analysis_outputs/csv_files/'
+basedir = '/Users/Nathan/Documents/Oxford/DPhil/clusters/worked_example/'
+csv_loc = 'data_analysis_outputs/csv_files/'
+exp_date = '2017-03-16'
+
+time_array = range(1,146)
+# Rename single digit values with 0 eg 1 to 01 for consistency
 time_list = [str(x).zfill(3) for x in time_array]
-# time_list= ['21','22','23','24','25','26','27','28','29','30']
+# well_loc = 's037'
+well_loc = 's074'
 
-# 2017-02-13 sphere timelapse 2_s13t01c2_ORG
 
-# well_loc = 's10'
-# well_loc = 's10'
-# well_loc = 's28'
 
-# well_loc = 's06'
-
-# well_loc = 's038'
-# well_loc = 's073'
-
-# well_loc = 's003'
-
-well_loc = 's24'
 
 # Column titles to be used in dataframes
 cols = ["Tag number","Cluster size", "Cluster volume", "Cluster Centre x", "Cluster Centre y", 
@@ -75,13 +60,13 @@ for i in range(len(time_list)):
 
     ###   ---------------   Step 0: Initialisation   --------------   ###
     # Read in area array for given time
-    csv_name_list = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', time_list[i], 'c2_area', '.csv'
+    csv_name_list = basedir, csv_loc, exp_date, '/', well_loc, 't', time_list[i], 'c2_area', '.csv'
     csv_name_list_2  =''.join(csv_name_list)
     df_area = pd.read_csv(csv_name_list_2, header=None)
     array_area_current_time = df_area.to_numpy()
 
     # Read in index array for given time
-    csv_name_list_index = basedir, exp_type, 'pre_processing_output/', exp_date, '/', well_loc, 't', time_list[i], 'c2_indexed', '.csv'
+    csv_name_list_index = basedir, csv_loc, exp_date, '/', well_loc, 't', time_list[i], 'c2_indexed', '.csv'
     csv_name_list_2_index  =''.join(csv_name_list_index)
     df_index = pd.read_csv(csv_name_list_2_index, header=None)
     array_index_current_time = df_index.to_numpy()
@@ -92,7 +77,7 @@ for i in range(len(time_list)):
     df_step["Clusters in event"] = ""
 
     # Calculate the centres of the clusters (to nearest integer value in x,y)
-    centres_2D_current = post_oper.calc_clus_centre(array_index_current_time)
+    centres_2D_current = track_oper.calc_clus_centre(array_index_current_time)
 
     # Generate 1D array of cluster areas
     area_2D_current = []
@@ -121,7 +106,7 @@ for i in range(len(time_list)):
         # Loop over each cluster
         for k in range(1,array_index_current_time.max()+1):
             # Find how many cluster centres from previous timestep overlap with this cluster
-            same_locs, same_locs_store = post_oper.previous_clusters_at_loc(array_index_current_time, centres_2D_old, k)
+            same_locs, same_locs_store = track_oper.previous_clusters_at_loc(array_index_current_time, centres_2D_old, k)
             if same_locs == 1:
                 # Simple, it's just movement case
 
@@ -202,8 +187,8 @@ for i in range(len(time_list)):
             y_cen = int(centres_2D_current[index_of_interest-1][1])
 
             # Compares with previous timestep array for all clusters and for non-assigned clusters respectively 
-            near_clus, clus_distances = post_oper.nearby_clusters(x_cen, y_cen, search_radius, array_index_old)
-            near_non_assigned_clus, clus_distances_non_assigned = post_oper.nearby_clusters(x_cen, y_cen, search_radius, non_assigned_cluster_array)
+            near_clus, clus_distances = track_oper.nearby_clusters(x_cen, y_cen, search_radius, array_index_old)
+            near_non_assigned_clus, clus_distances_non_assigned = track_oper.nearby_clusters(x_cen, y_cen, search_radius, non_assigned_cluster_array)
 
 
             if len(near_clus) == 0:
@@ -227,7 +212,7 @@ for i in range(len(time_list)):
                     # Large move event if close in size else split or large move and grow
                     
                     # Find ID of nearby non-assigned cluster
-                    cluster_index_split_from = post_oper.pick_cluster_inverse_dist(near_non_assigned_clus, clus_distances_non_assigned)
+                    cluster_index_split_from = track_oper.pick_cluster_inverse_dist(near_non_assigned_clus, clus_distances_non_assigned)
                     # Keeps ID of old cluster
                     cluster_ID = df_old.iloc[cluster_index_split_from - 1 , 0]
 
@@ -294,7 +279,7 @@ for i in range(len(time_list)):
 
                     else:
                         # Pick random event with single cluster inversely proportional to distance
-                        cluster_index_split_from = post_oper.pick_cluster_inverse_dist(near_non_assigned_clus, clus_distances_non_assigned)
+                        cluster_index_split_from = track_oper.pick_cluster_inverse_dist(near_non_assigned_clus, clus_distances_non_assigned)
                         # Get ID of selected cluster
                         cluster_ID = df_old.iloc[cluster_index_split_from - 1 , 0]
 
@@ -336,7 +321,7 @@ for i in range(len(time_list)):
                 else:
                     # No nearby non-assigned clusters but there are nearby clusters already assigned
                     # Pick random event with single cluster inversely proportional to distance
-                    candidate_cluster_index_split_from = post_oper.pick_cluster_inverse_dist(near_clus, clus_distances)
+                    candidate_cluster_index_split_from = track_oper.pick_cluster_inverse_dist(near_clus, clus_distances)
                     # Get ID of selected cluster
                     candidate_cluster_ID = df_old.iloc[candidate_cluster_index_split_from - 1 , 0]
 
@@ -402,7 +387,7 @@ for i in range(len(time_list)):
 
     # Save dataframe output for current timepoint to .csv file
     df_total_areas = pd.DataFrame(df_step)
-    df_step_csv_name_list = basedir, exp_type, 'post_processing_output_3D/', exp_date, '/', well_loc, 't', time_list[i], 'c2', '_post_processing', '.csv'
+    df_step_csv_name_list = csv_saving_folder, exp_date, '/', well_loc, 't', time_list[i], 'c2', '_tracking', '.csv'
     df_step_name_list_2  =''.join(df_step_csv_name_list)
     df_total_areas.to_csv(df_step_name_list_2, index=False, header=True)
 
